@@ -1,0 +1,53 @@
+<div class="setup-body">
+    <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t">
+            <title id="st-t">A laptop with the ByteBridge desktop app connects to an RTU, a PLC and an energy meter, and simulates an OPC UA server for a SCADA test</title>
+            <defs>
+                <marker id="st-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+            </defs>
+            <rect class="nb" x="200" y="130" width="240" height="120" rx="14"/>
+            <text class="tb" x="320" y="170" text-anchor="middle">ByteBridge Desktop</text>
+            <text class="tba" x="320" y="194" text-anchor="middle">one window, every protocol</text>
+            <text class="tba" x="320" y="216" text-anchor="middle">clients · servers · simulator</text>
+
+            <rect class="n" x="10" y="20" width="170" height="56" rx="10"/>
+            <text class="t" x="95" y="44" text-anchor="middle">Substation RTU</text>
+            <text class="tm" x="95" y="62" text-anchor="middle">IEC 104 · client</text>
+            <rect class="n" x="10" y="162" width="170" height="56" rx="10"/>
+            <text class="t" x="95" y="186" text-anchor="middle">Line PLC</text>
+            <text class="tm" x="95" y="204" text-anchor="middle">Siemens S7 · client</text>
+            <rect class="n" x="10" y="304" width="170" height="56" rx="10"/>
+            <text class="t" x="95" y="328" text-anchor="middle">Energy meter</text>
+            <text class="tm" x="95" y="346" text-anchor="middle">Modbus TCP · client</text>
+
+            <rect class="n" x="460" y="20" width="170" height="56" rx="10"/>
+            <text class="t" x="545" y="44" text-anchor="middle">SCADA under test</text>
+            <text class="tm" x="545" y="62" text-anchor="middle">IEC 104 · server</text>
+            <rect class="n" x="460" y="162" width="170" height="56" rx="10"/>
+            <text class="t" x="545" y="186" text-anchor="middle">OPC UA client app</text>
+            <text class="tm" x="545" y="204" text-anchor="middle">OPC UA · server</text>
+            <rect class="nz" x="460" y="304" width="170" height="56" rx="10"/>
+            <text class="t" x="545" y="328" text-anchor="middle">Simulated device</text>
+            <text class="tm" x="545" y="346" text-anchor="middle">no hardware needed</text>
+
+            <path class="f" d="M180 48C220 48 240 90 262 128" marker-start="url(#st-a)"/>
+            <path class="f" d="M180 190H198" marker-start="url(#st-a)"/>
+            <path class="f" d="M180 332C220 332 240 290 262 252" marker-start="url(#st-a)"/>
+            <path class="f" d="M378 128C400 90 420 48 458 48" marker-end="url(#st-a)"/>
+            <path class="f" d="M440 190H458" marker-end="url(#st-a)"/>
+            <path class="f" d="M378 252C400 290 420 332 458 332" marker-end="url(#st-a)"/>
+        </svg>
+    </figure>
+    <div>
+        <h3>Protocol test bench</h3>
+        <p class="muted">A commissioning engineer with one laptop. Read the RTU, the PLC and the meter, then
+            play the device's part towards the SCADA system that is being tested.</p>
+        <ul class="ticks">
+            <li>Client to read real devices, server to simulate them</li>
+            <li>Same live table, trends and command form for every protocol</li>
+            <li>Commands show the device's confirmation or rejection</li>
+            <li>Map a recorded or simulated source onto a server to replay it</li>
+        </ul>
+        <p class="muted"><strong>Next step:</strong> when the test is done, the same configuration runs on a gateway.</p>
+    </div>
+</div>

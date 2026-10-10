@@ -1,0 +1,60 @@
+<div class="setup-body">
+    <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 680 400" role="img" aria-labelledby="ce-t">
+            <title id="ce-t">Many site gateways connect to ByteBridge Central over a secure, buffered link; engineers and operators use Central from a browser</title>
+            <defs>
+                <marker id="ce-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+                <marker id="ce-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+            </defs>
+
+            <rect class="nb" x="230" y="20" width="220" height="110" rx="14"/>
+            <text class="tb" x="340" y="56" text-anchor="middle">ByteBridge Central</text>
+            <text class="tba" x="340" y="80" text-anchor="middle">status · live values · commands</text>
+            <text class="tba" x="340" y="102" text-anchor="middle">configurations · users · audit</text>
+
+            <rect class="n" x="500" y="38" width="170" height="74" rx="10"/>
+            <text class="t" x="585" y="64" text-anchor="middle">Engineers, operators</text>
+            <text class="tm" x="585" y="84" text-anchor="middle">browser · roles · SSO</text>
+            <path class="e" d="M498 75H452" marker-end="url(#ce-b)"/>
+
+            <rect class="nb" x="10" y="250" width="150" height="64" rx="12"/>
+            <text class="tb" x="85" y="278" text-anchor="middle">Site A</text>
+            <text class="tba" x="85" y="298" text-anchor="middle">Windows service</text>
+            <rect class="nb" x="180" y="250" width="150" height="64" rx="12"/>
+            <text class="tb" x="255" y="278" text-anchor="middle">Site B</text>
+            <text class="tba" x="255" y="298" text-anchor="middle">Docker on a PLC</text>
+            <rect class="nb" x="350" y="250" width="150" height="64" rx="12"/>
+            <text class="tb" x="425" y="278" text-anchor="middle">Site C</text>
+            <text class="tba" x="425" y="298" text-anchor="middle">Linux edge box</text>
+            <rect class="nz" x="520" y="250" width="150" height="64" rx="12"/>
+            <text class="t" x="595" y="278" text-anchor="middle">Site …n</text>
+            <text class="tm" x="595" y="298" text-anchor="middle">add with a token</text>
+
+            <path class="f" d="M85 248C85 180 280 180 300 132" marker-end="url(#ce-a)"/>
+            <path class="f" d="M255 248C255 190 320 180 325 132" marker-end="url(#ce-a)"/>
+            <path class="f" d="M425 248C425 190 360 180 355 132" marker-end="url(#ce-a)"/>
+            <path class="f" d="M595 248C595 180 400 180 380 132" marker-end="url(#ce-a)" style="opacity:.5"/>
+            <text class="lbl" x="340" y="214" text-anchor="middle">mutual TLS · buffered while offline</text>
+
+            <text class="tm" x="85" y="340" text-anchor="middle">RTUs · IEC 104</text>
+            <text class="tm" x="255" y="340" text-anchor="middle">meters · Modbus</text>
+            <text class="tm" x="425" y="340" text-anchor="middle">outstations · DNP3</text>
+            <text class="tm" x="595" y="340" text-anchor="middle">any protocol</text>
+            <path class="e" d="M20 360H660" stroke-dasharray="3 6"/>
+            <text class="tm" x="340" y="386" text-anchor="middle">field devices at each site</text>
+        </svg>
+    </figure>
+    <div>
+        <h3>Central for many sites</h3>
+        <p class="muted">Gateways at every site report to one central. See which are online, follow live
+            values, send commands and roll out configuration changes, all from a browser.</p>
+        <ul class="ticks">
+            <li>Live state and values of every gateway and endpoint</li>
+            <li>Edit a site's configuration with the same editors, deploy it signed, roll back in one click</li>
+            <li>Built-in certificate authority: add a gateway with a one-time token</li>
+            <li>Gateways buffer values while the link is down and catch up afterwards</li>
+            <li>Viewer, Engineer, Operator and Admin roles, single sign-on, full audit log</li>
+            <li>Runs as a Docker image</li>
+        </ul>
+    </div>
+</div>

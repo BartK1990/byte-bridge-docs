@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ByteBridge · Industrial protocol tester and gateway</title>
+    <meta name="description" content="ByteBridge is one lightweight application for industrial protocols: a tester on your desk, a gateway at the edge, and a central hub that connects many gateways. IEC 104, Modbus, DNP3, OPC UA, OPC XML-DA, Siemens S7.">
+    <meta name="theme-color" content="#111828">
+    <meta property="og:title" content="ByteBridge · Industrial protocol tester and gateway">
+    <meta property="og:description" content="Test, bridge and connect industrial protocols with one lightweight application.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="preload" href="partials/setups/tester.html" as="fetch" crossorigin>
+    <script src="assets/htmx.min.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+    <div class="wrap">
+        <a class="brand" href="#top" aria-label="ByteBridge home">
+            <svg viewBox="100 300 700 300" aria-hidden="true">
+                <g fill="currentColor" fill-rule="evenodd">
+                    <path id="bb-b" d="M121 311H260C305 311 343 345 343 388C343 415 330 433 312 445C332 457 348 475 348 505C348 545 318 589 262 589H121A8 8 0 0 1 113 581V319A8 8 0 0 1 121 311ZM185 362V422H240A29 30 0 0 0 240 362ZM185 471V538H235A39 33.5 0 0 0 235 471Z"/>
+                    <use href="#bb-b" transform="matrix(-1 0 0 1 900 0)"/>
+                </g>
+                <path d="M332 440 312 450 332 460ZM568 440 588 450 568 460Z" fill="#f2a33a"/>
+                <g fill="none" stroke="#f2a33a">
+                    <path d="M331.1 450A139.5 139.5 0 0 1 568.9 450A139.5 139.5 0 0 1 331.1 450Z" stroke-width="15"/>
+                    <path d="M332 450H568" stroke-width="22"/>
+                    <path d="M387.5 392V508M450 386V514M512.5 392V508" stroke-width="11"/>
+                </g>
+            </svg>
+            ByteBridge
+        </a>
+        <nav class="nav" aria-label="Main">
+            <a href="#roles">Roles</a>
+            <a href="#tester">Tester</a>
+            <a href="#gateway">Gateway</a>
+            <a href="#setups">Setups</a>
+            <a class="btn small" href="#download">Download</a>
+        </nav>
+    </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+    <div class="wrap">
+        <div>
+            <div class="eyebrow">Industrial protocols, one tool</div>
+            <h1>Test it. Bridge it. Connect it all.</h1>
+            <p class="lead">ByteBridge is one lightweight application for industrial communication. It is a protocol
+                tester on your desk, a gateway next to your devices, and the central point that ties
+                many gateways together.</p>
+            <div class="actions">
+                <a class="btn" href="#download">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+                    Download the desktop tester
+                </a>
+                <a class="btn ghost" href="#setups">See example setups</a>
+            </div>
+            <ul class="chips" aria-label="Supported protocols">
+                <li>IEC 60870-5-104</li>
+                <li>Modbus TCP</li>
+                <li>DNP3</li>
+                <li>OPC UA</li>
+                <li>OPC XML-DA</li>
+                <li>Siemens S7</li>
+                <li>REST</li>
+                <li>MQTT</li>
+            </ul>
+        </div>
+        <div class="hero-logo">
+            <picture>
+                <source srcset="assets/logo-dark.gif" media="(prefers-color-scheme: dark)">
+                <img src="assets/logo-light.gif" width="320" height="320" alt="Animated ByteBridge logo: two mirrored B letters joined by a bridge">
+            </picture>
+        </div>
+    </div>
+</section>
+
+<section id="roles">
+    <div class="wrap">
+        <div class="section-head">
+            <div class="eyebrow">One application, three roles</div>
+            <h2>Start with one device. Grow to every site.</h2>
+            <p>The same software works as a tester, as a gateway, or as the central point for many
+                gateways. Pick the role you need today; the configuration you build carries over to the next one.</p>
+        </div>
+
+        <div class="grid c3">
+            <article class="card role">
+                <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20M8 10l2 2 4-4"/></svg></div>
+                <span class="tag">desktop</span>
+                <h3>Tester</h3>
+                <p class="muted">Connect to a device, watch live values, send commands, or simulate the
+                    other side. Every protocol in the same window.</p>
+            </article>
+            <article class="card role">
+                <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h6M4 12h6M4 17h6M14 7h6M14 12h6M14 17h6"/><path d="M10 7l4 5-4 5"/></svg></div>
+                <span class="tag">edge</span>
+                <h3>Gateway</h3>
+                <p class="muted">Runs headless next to your devices and maps data between protocols. A
+                    Windows service, a Linux box, or a Docker container on a PLC.</p>
+            </article>
+            <article class="card role">
+                <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="5" r="2"/><circle cx="20" cy="5" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><path d="M6 6.5l3.8 3.6M18 6.5l-3.8 3.6M6 17.5l3.8-3.6M18 17.5l-3.8-3.6"/></svg></div>
+                <span class="tag">central</span>
+                <h3>Central</h3>
+                <p class="muted">Follows many gateways from one place: who is online, live values,
+                    commands, configuration deployment, users and an audit log.</p>
+            </article>
+        </div>
+
+        <figure class="diagram" style="margin: 32px 0 0">
+            <svg viewBox="0 0 880 400" role="img" aria-labelledby="ov-t">
+                <title id="ov-t">Devices connect to ByteBridge gateways, gateways connect to Central and to SCADA, MES or cloud systems; a tester connects directly to devices</title>
+                <defs>
+                    <marker id="ov-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+                    <marker id="ov-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+                </defs>
+
+                <!-- devices -->
+                <rect class="n" x="10" y="30" width="180" height="54" rx="10"/>
+                <text class="t" x="100" y="54" text-anchor="middle">RTU</text>
+                <text class="tm" x="100" y="72" text-anchor="middle">IEC 60870-5-104</text>
+                <rect class="n" x="10" y="104" width="180" height="54" rx="10"/>
+                <text class="t" x="100" y="128" text-anchor="middle">Energy meter</text>
+                <text class="tm" x="100" y="146" text-anchor="middle">Modbus TCP</text>
+                <rect class="n" x="10" y="228" width="180" height="54" rx="10"/>
+                <text class="t" x="100" y="252" text-anchor="middle">PLC</text>
+                <text class="tm" x="100" y="270" text-anchor="middle">Siemens S7</text>
+                <rect class="n" x="10" y="302" width="180" height="54" rx="10"/>
+                <text class="t" x="100" y="326" text-anchor="middle">Outstation</text>
+                <text class="tm" x="100" y="344" text-anchor="middle">DNP3</text>
+
+                <!-- device links -->
+                <path class="e" d="M190 57C260 57 260 82 328 82" marker-end="url(#ov-a)"/>
+                <path class="e" d="M190 131C260 131 260 108 328 108" marker-end="url(#ov-a)"/>
+                <path class="e" d="M190 255C260 255 260 280 328 280" marker-end="url(#ov-a)"/>
+                <path class="e" d="M190 329C260 329 260 306 328 306" marker-end="url(#ov-a)"/>
+
+                <!-- tester -->
+                <rect class="nz" x="330" y="168" width="200" height="54" rx="10"/>
+                <text class="t" x="430" y="192" text-anchor="middle">Tester</text>
+                <text class="tm" x="430" y="210" text-anchor="middle">desktop app on a laptop</text>
+                <path class="e" d="M328 186C265 186 250 150 192 140" stroke-dasharray="4 5" marker-end="url(#ov-a)"/>
+                <path class="e" d="M328 204C265 204 250 236 192 244" stroke-dasharray="4 5" marker-end="url(#ov-a)"/>
+
+                <!-- gateways -->
+                <rect class="nb" x="330" y="60" width="200" height="70" rx="12"/>
+                <text class="tb" x="430" y="90" text-anchor="middle">Gateway · Site A</text>
+                <text class="tba" x="430" y="110" text-anchor="middle">Windows service</text>
+                <rect class="nb" x="330" y="258" width="200" height="70" rx="12"/>
+                <text class="tb" x="430" y="288" text-anchor="middle">Gateway · Site B</text>
+                <text class="tba" x="430" y="308" text-anchor="middle">Docker on a PLC</text>
+
+                <!-- to central and consumers -->
+                <path class="f" d="M530 85C600 85 610 80 668 80" marker-end="url(#ov-b)"/>
+                <path class="f" d="M530 280C610 280 600 120 668 112" marker-end="url(#ov-b)"/>
+                <path class="e" d="M530 108C610 108 600 278 668 284" marker-end="url(#ov-a)"/>
+                <path class="e" d="M530 305C600 305 610 312 668 312" marker-end="url(#ov-a)"/>
+
+                <rect class="nb" x="670" y="50" width="200" height="90" rx="12"/>
+                <text class="tb" x="770" y="88" text-anchor="middle">Central</text>
+                <text class="tba" x="770" y="108" text-anchor="middle">all sites in one view</text>
+
+                <rect class="n" x="670" y="260" width="200" height="76" rx="10"/>
+                <text class="t" x="770" y="288" text-anchor="middle">SCADA · MES · Cloud</text>
+                <text class="tm" x="770" y="308" text-anchor="middle">OPC UA · REST · MQTT</text>
+                <text class="tm" x="770" y="324" text-anchor="middle">IEC 104 · Modbus · …</text>
+
+                <text class="lbl" x="560" y="388">secure, buffered link</text>
+                <path class="f" d="M520 384H552" style="stroke-dasharray:6 6"/>
+            </svg>
+            <figcaption class="caption">One product connects everything: test a single device, convert protocols at a site, or follow every site from one place.</figcaption>
+        </figure>
+    </div>
+</section>
+
+<section id="tester" class="alt">
+    <div class="wrap">
+        <div class="split">
+            <div>
+                <div class="eyebrow">Tester</div>
+                <h2>One interface for every protocol</h2>
+                <p class="muted">Stop switching between a different tool for every protocol. ByteBridge gives
+                    IEC 104, Modbus, DNP3, OPC UA, OPC XML-DA and Siemens S7 the same screens: the same
+                    connection editor, the same live data table, the same way to send a command.</p>
+                <ul class="ticks">
+                    <li>Act as the client to read a real device, or as the server to simulate one</li>
+                    <li>Live values with quality, time stamp and a trend for every point</li>
+                    <li>Send commands and see the device confirm or reject them</li>
+                    <li>Browse OPC UA and OPC XML-DA servers instead of typing addresses</li>
+                    <li>Built-in simulator to try everything without hardware</li>
+                    <li>OPC UA security policies and certificate management included</li>
+                </ul>
+            </div>
+            <figure style="margin:0">
+                <picture>
+                    <source srcset="assets/ui-live-dark.webp" media="(prefers-color-scheme: dark)">
+                    <img class="shot" src="assets/ui-live-light.webp" width="1280" height="640" loading="lazy" decoding="async" alt="ByteBridge live data view of an IEC 104 connection: values, quality, time stamps and trends, with a command form">
+                </picture>
+                <figcaption class="caption">Live data of an IEC 104 connection. Modbus, DNP3, OPC UA, OPC XML-DA and S7 look and work the same.</figcaption>
+            </figure>
+        </div>
+
+        <div class="split rev" style="margin-top: 72px">
+            <div>
+                <h2>From test bench to working gateway</h2>
+                <p class="muted">What you build while testing is already the solution. The gateway uses the
+                    same editors and the same configuration, so there is nothing to rebuild.</p>
+                <ol class="steps">
+                    <li><strong>Connect and test</strong><span class="muted">Add the device as a client endpoint and check its values and commands.</span></li>
+                    <li><strong>Add the target</strong><span class="muted">Add a server endpoint (OPC UA, IEC 104, Modbus, …) and map points onto it, with scaling and calculations.</span></li>
+                    <li><strong>Move it to the gateway</strong><span class="muted">Take the same configuration to a gateway. It starts and runs unattended.</span></li>
+                </ol>
+            </div>
+            <figure class="diagram" style="margin:0">
+                <svg viewBox="0 0 620 300" role="img" aria-labelledby="tg-t">
+                    <title id="tg-t">The same configuration moves from the desktop tester to a gateway</title>
+                    <defs>
+                        <marker id="tg-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+                    </defs>
+                    <rect class="n" x="10" y="40" width="230" height="220" rx="14"/>
+                    <text class="t" x="125" y="72" text-anchor="middle">Desktop tester</text>
+                    <rect class="nz" x="30" y="92" width="190" height="40" rx="8"/>
+                    <text class="tm" x="125" y="117" text-anchor="middle">Client · IEC 104 RTU</text>
+                    <rect class="nz" x="30" y="142" width="190" height="40" rx="8"/>
+                    <text class="tm" x="125" y="167" text-anchor="middle">Mapping + calculations</text>
+                    <rect class="nz" x="30" y="192" width="190" height="40" rx="8"/>
+                    <text class="tm" x="125" y="217" text-anchor="middle">Server · OPC UA</text>
+
+                    <path class="f" d="M250 150H372" marker-end="url(#tg-a)"/>
+                    <text class="lbl" x="311" y="134" text-anchor="middle">same config</text>
+
+                    <rect class="nb" x="380" y="40" width="230" height="220" rx="14"/>
+                    <text class="tb" x="495" y="72" text-anchor="middle">Gateway</text>
+                    <rect x="400" y="92" width="190" height="40" rx="8" fill="none" stroke="#f2a33a" stroke-opacity=".5"/>
+                    <text class="tba" x="495" y="117" text-anchor="middle">Client · IEC 104 RTU</text>
+                    <rect x="400" y="142" width="190" height="40" rx="8" fill="none" stroke="#f2a33a" stroke-opacity=".5"/>
+                    <text class="tba" x="495" y="167" text-anchor="middle">Mapping + calculations</text>
+                    <rect x="400" y="192" width="190" height="40" rx="8" fill="none" stroke="#f2a33a" stroke-opacity=".5"/>
+                    <text class="tba" x="495" y="217" text-anchor="middle">Server · OPC UA</text>
+                    <text class="tm" x="495" y="288" text-anchor="middle">runs 24/7, no desktop needed</text>
+                    <text class="tm" x="125" y="288" text-anchor="middle">built and verified on your laptop</text>
+                </svg>
+            </figure>
+        </div>
+    </div>
+</section>
+
+<section id="gateway">
+    <div class="wrap">
+        <div class="section-head">
+            <div class="eyebrow">Gateway</div>
+            <h2>Expose your data the way each system wants it</h2>
+            <p>Read from any supported device and publish the values through REST, MQTT, OPC UA or any other
+                implemented protocol, at the same time. Commands from the consumer side travel back to the
+                device, and the device's answer comes back to the sender.</p>
+        </div>
+
+        <figure class="diagram">
+            <svg viewBox="0 0 880 330" role="img" aria-labelledby="gw-t">
+                <title id="gw-t">Devices feed a ByteBridge gateway, which maps, converts and calculates, then exposes data through REST, MQTT, OPC UA, IEC 104 and Modbus</title>
+                <defs>
+                    <marker id="gw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+                    <marker id="gw-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+                </defs>
+                <text class="tm" x="100" y="20" text-anchor="middle">SOURCES</text>
+                <rect class="n" x="10" y="34" width="180" height="46" rx="10"/><text class="t" x="100" y="62" text-anchor="middle">IEC 104 RTUs</text>
+                <rect class="n" x="10" y="94" width="180" height="46" rx="10"/><text class="t" x="100" y="122" text-anchor="middle">Modbus meters</text>
+                <rect class="n" x="10" y="154" width="180" height="46" rx="10"/><text class="t" x="100" y="182" text-anchor="middle">Siemens S7 PLCs</text>
+                <rect class="n" x="10" y="214" width="180" height="46" rx="10"/><text class="t" x="100" y="242" text-anchor="middle">DNP3 outstations</text>
+                <rect class="n" x="10" y="274" width="180" height="46" rx="10"/><text class="t" x="100" y="302" text-anchor="middle">OPC UA / XML-DA</text>
+
+                <path class="f" d="M190 57C250 57 250 150 300 160" marker-end="url(#gw-b)"/>
+                <path class="f" d="M190 117C245 117 250 165 300 168"/>
+                <path class="f" d="M190 177C240 177 260 177 300 177"/>
+                <path class="f" d="M190 237C245 237 250 188 300 186"/>
+                <path class="f" d="M190 297C250 297 250 205 300 195" marker-end="url(#gw-b)"/>
+
+                <rect class="nb" x="304" y="70" width="272" height="216" rx="14"/>
+                <text class="tb" x="440" y="104" text-anchor="middle">ByteBridge Gateway</text>
+                <text class="tba" x="440" y="140" text-anchor="middle">map points between protocols</text>
+                <text class="tba" x="440" y="164" text-anchor="middle">rename addresses · convert types</text>
+                <text class="tba" x="440" y="188" text-anchor="middle">scale and offset</text>
+                <text class="tba" x="440" y="212" text-anchor="middle">custom calculations</text>
+                <text class="tba" x="440" y="236" text-anchor="middle">commands back to the device</text>
+                <text class="tba" x="440" y="260" text-anchor="middle">web UI to configure and watch</text>
+
+                <path class="f" d="M576 160C630 150 630 57 686 57" marker-end="url(#gw-b)"/>
+                <path class="f" d="M576 168C635 165 630 117 686 117" marker-end="url(#gw-b)"/>
+                <path class="f" d="M576 177H686" marker-end="url(#gw-b)"/>
+                <path class="f" d="M576 186C635 190 630 237 686 237" marker-end="url(#gw-b)"/>
+                <path class="f" d="M576 195C630 205 630 297 686 297" marker-end="url(#gw-b)"/>
+
+                <text class="tm" x="780" y="20" text-anchor="middle">EXPOSED AS</text>
+                <rect class="n" x="690" y="34" width="180" height="46" rx="10"/><text class="t" x="780" y="62" text-anchor="middle">REST API</text>
+                <rect class="n" x="690" y="94" width="180" height="46" rx="10"/><text class="t" x="780" y="122" text-anchor="middle">MQTT</text>
+                <rect class="n" x="690" y="154" width="180" height="46" rx="10"/><text class="t" x="780" y="182" text-anchor="middle">OPC UA server</text>
+                <rect class="n" x="690" y="214" width="180" height="46" rx="10"/><text class="t" x="780" y="242" text-anchor="middle">IEC 104 server</text>
+                <rect class="n" x="690" y="274" width="180" height="46" rx="10"/><text class="t" x="780" y="302" text-anchor="middle">Modbus TCP server</text>
+            </svg>
+        </figure>
+
+        <div class="grid c3" style="margin-top: 32px">
+            <article class="card">
+                <h3>Custom calculations</h3>
+                <p class="muted">Compute new points from live values with short scripts: totals, averages,
+                    deadbands, state logic. Calculated points are mapped and exposed like any device point.</p>
+<pre><span class="c">// TotalPower: feeder 1 + 2</span>
+p1 + p2
+
+<span class="c">// deadband of 0.5</span>
+<span class="k">if</span> !(<span class="s">"last"</span> <span class="k">in</span> state)
+    || abs(x - state.last) &gt; 0.5 {
+    state.last = x;
+    x
+}</pre>
+            </article>
+            <article class="card">
+                <h3>Lightweight and native</h3>
+                <p class="muted">The protocol engine is a small native program with a low memory footprint. It
+                    runs on an industrial PC, a Linux box, or as a Docker container on a PLC such as the
+                    WAGO PFC200, while you open the web interface from another machine.</p>
+                <ul class="ticks">
+                    <li>Windows service or Linux, x64 and ARM</li>
+                    <li>Starts on boot, restarts after failures</li>
+                    <li>Web UI can run on a separate machine</li>
+                </ul>
+            </article>
+            <article class="card">
+                <h3>Built for the field</h3>
+                <p class="muted">Gateways keep working when the uplink does not.</p>
+                <ul class="ticks">
+                    <li>Values are buffered on disk while the central is unreachable</li>
+                    <li>Mutual TLS with certificates issued and renewed by Central</li>
+                    <li>Signed configurations, versioned, with one-click rollback</li>
+                    <li>Remote commands only where you allow them, every one audited</li>
+                </ul>
+            </article>
+        </div>
+
+        <figure style="margin: 40px 0 0">
+            <picture>
+                <source srcset="assets/ui-dashboard-dark.webp" media="(prefers-color-scheme: dark)">
+                <img class="shot" src="assets/ui-dashboard-light.webp" width="1280" height="625" loading="lazy" decoding="async" alt="ByteBridge gateway dashboard in a browser: simulator, IEC 104, OPC UA and Modbus endpoints, all online">
+            </picture>
+            <figcaption class="caption">The gateway's web interface: every endpoint, its state and its points, from any browser.</figcaption>
+        </figure>
+    </div>
+</section>
+
+<section id="setups" class="alt">
+    <div class="wrap">
+        <div class="section-head">
+            <div class="eyebrow">Example setups</div>
+            <h2>From a single laptop to a fleet of sites</h2>
+            <p>A few ways ByteBridge is put to work. Pick one to see how it fits together.</p>
+        </div>
+
+        <div class="tabs" role="tablist" hx-target="#setup" hx-swap="innerHTML"
+             hx-on:htmx:before-request="if (event.detail.elt.parentElement === this) for (const a of this.children) a.setAttribute('aria-selected', a === event.detail.elt)">
+            <a role="tab" aria-selected="true" href="partials/setups/tester.html" hx-get="partials/setups/tester.html">Protocol test bench</a>
+            <a role="tab" aria-selected="false" href="partials/setups/converter.html" hx-get="partials/setups/converter.html">Protocol converter</a>
+            <a role="tab" aria-selected="false" href="partials/setups/plc.html" hx-get="partials/setups/plc.html">Gateway on a PLC</a>
+            <a role="tab" aria-selected="false" href="partials/setups/central.html" hx-get="partials/setups/central.html">Central for many sites</a>
+        </div>
+
+        <div id="setup" role="tabpanel" aria-live="polite" hx-get="partials/setups/tester.html" hx-trigger="load">
+            <p class="muted">Loading the example… <a href="partials/setups/tester.html">open it directly</a>.</p>
+        </div>
+    </div>
+</section>
+
+<section id="download">
+    <div class="wrap">
+        <div class="download">
+            <div>
+                <div class="eyebrow">Download</div>
+                <h2>Get the ByteBridge desktop tester</h2>
+                <p class="muted">The desktop app is the tester and a full gateway on your workstation: every
+                    protocol, mappings, calculations and the built-in simulator.</p>
+                <div id="release" hx-get="partials/release.html" hx-trigger="load" hx-swap="innerHTML">
+                    <div class="release-assets">
+                        <a class="btn" href="https://github.com/BartK1990/byte-bridge-docs/releases/latest">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+                            Latest release for Windows
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Requirements</h3>
+                <ul class="ticks">
+                    <li>Windows 10 or 11, 64-bit</li>
+                    <li>Microsoft Edge WebView2 runtime (preinstalled on current Windows)</li>
+                    <li>No hardware needed to start: try the built-in simulator</li>
+                </ul>
+                <h3 style="margin-top: 20px">Quick start</h3>
+                <ol class="steps">
+                    <li><span class="muted">Add a <em>Simulator</em> client and an <em>IEC 104</em> server on port 2404.</span></li>
+                    <li><span class="muted">Map <code>simulator *</code> onto the server with <em>forward commands</em> on.</span></li>
+                    <li><span class="muted">Add an <em>IEC 104</em> client to <code>127.0.0.1:2404</code> and watch the values arrive.</span></li>
+                </ol>
+                <p class="muted" style="margin-top: 16px">Interested in the gateway or central edition for your
+                    sites? <a href="https://github.com/BartK1990/byte-bridge-docs/issues">Get in touch</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="wrap">
+        <span class="brand"><svg viewBox="100 300 700 300" aria-hidden="true"><g fill="currentColor"><use href="#bb-b"/><use href="#bb-b" transform="matrix(-1 0 0 1 900 0)"/></g><path d="M331.1 450A139.5 139.5 0 0 1 568.9 450A139.5 139.5 0 0 1 331.1 450ZM332 450H568" fill="none" stroke="#f2a33a" stroke-width="18"/></svg> ByteBridge</span>
+        <span>© 2026 ByteBridge. Industrial protocol tester and gateway.</span>
+    </div>
+</footer>
+
+</body>
+</html>

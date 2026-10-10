@@ -1,0 +1,61 @@
+<div class="setup-body">
+    <div>
+        <figure class="diagram" style="margin:0">
+            <svg viewBox="0 0 700 340" role="img" aria-labelledby="cv-t">
+                <title id="cv-t">IEC 104 RTUs and Modbus meters feed a gateway on an industrial PC, which serves SCADA over OPC UA, an MES over REST and a cloud platform over MQTT</title>
+                <defs>
+                    <marker id="cv-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+                </defs>
+                <rect class="n" x="10" y="30" width="160" height="56" rx="10"/>
+                <text class="t" x="90" y="54" text-anchor="middle">RTU 1…n</text>
+                <text class="tm" x="90" y="72" text-anchor="middle">IEC 60870-5-104</text>
+                <rect class="n" x="10" y="142" width="160" height="56" rx="10"/>
+                <text class="t" x="90" y="166" text-anchor="middle">Feeder meters</text>
+                <text class="tm" x="90" y="184" text-anchor="middle">Modbus TCP</text>
+                <rect class="n" x="10" y="254" width="160" height="56" rx="10"/>
+                <text class="t" x="90" y="278" text-anchor="middle">Legacy OPC server</text>
+                <text class="tm" x="90" y="296" text-anchor="middle">OPC XML-DA</text>
+
+                <path class="f" d="M170 58C215 58 215 140 250 150" marker-end="url(#cv-a)"/>
+                <path class="f" d="M170 170H250" marker-end="url(#cv-a)"/>
+                <path class="f" d="M170 282C215 282 215 200 250 190" marker-end="url(#cv-a)"/>
+
+                <rect class="nb" x="254" y="100" width="200" height="140" rx="14"/>
+                <text class="tb" x="354" y="136" text-anchor="middle">Gateway</text>
+                <text class="tba" x="354" y="158" text-anchor="middle">industrial PC</text>
+                <text class="tba" x="354" y="186" text-anchor="middle">mappings · scaling</text>
+                <text class="tba" x="354" y="206" text-anchor="middle">TotalPower = Σ feeders</text>
+
+                <path class="f" d="M454 150C495 140 495 58 530 58" marker-end="url(#cv-a)"/>
+                <path class="f" d="M454 170H530" marker-end="url(#cv-a)"/>
+                <path class="f" d="M454 190C495 200 495 282 530 282" marker-end="url(#cv-a)"/>
+
+                <rect class="n" x="534" y="30" width="156" height="56" rx="10"/>
+                <text class="t" x="612" y="54" text-anchor="middle">SCADA</text>
+                <text class="tm" x="612" y="72" text-anchor="middle">OPC UA</text>
+                <rect class="n" x="534" y="142" width="156" height="56" rx="10"/>
+                <text class="t" x="612" y="166" text-anchor="middle">MES / reports</text>
+                <text class="tm" x="612" y="184" text-anchor="middle">REST</text>
+                <rect class="n" x="534" y="254" width="156" height="56" rx="10"/>
+                <text class="t" x="612" y="278" text-anchor="middle">Cloud / IIoT</text>
+                <text class="tm" x="612" y="296" text-anchor="middle">MQTT</text>
+            </svg>
+        </figure>
+        <picture>
+            <source srcset="assets/ui-mappings-dark.webp" media="(prefers-color-scheme: dark)">
+            <img class="shot" style="margin-top:20px" src="assets/ui-mappings-light.webp" width="1280" height="330" loading="lazy" decoding="async" alt="Mappings page: a source endpoint mapped onto IEC 104, OPC UA and Modbus servers, with scaling and forwarded commands">
+        </picture>
+    </div>
+    <div>
+        <h3>Protocol converter</h3>
+        <p class="muted">A substation or plant with devices that speak different protocols, and systems that
+            want the data in their own. One gateway on an industrial PC serves them all.</p>
+        <ul class="ticks">
+            <li>Map all points at once, or point by point with new addresses</li>
+            <li>Convert types, scale and offset on the way</li>
+            <li>Add calculated points such as totals or averages</li>
+            <li>SCADA commands are forwarded to the RTU, and its answer comes back</li>
+            <li>Runs as a Windows service that starts on boot</li>
+        </ul>
+    </div>
+</div>
