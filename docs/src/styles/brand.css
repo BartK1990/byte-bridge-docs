@@ -1,0 +1,17 @@
+/* ByteBridge brand colours (navy #111828, amber #f2a33a), as on the website. */
+:root[data-theme='dark'] {
+    --sl-color-accent-low: #3b2a10;
+    --sl-color-accent: #f2a33a;
+    --sl-color-accent-high: #fbd9a6;
+    --sl-color-black: #0b111d;
+    --sl-color-gray-6: #111828;
+    --sl-color-gray-5: #2b364a;
+}
+
+:root[data-theme='light'] {
+    --sl-color-accent-low: #fbe3c0;
+    --sl-color-accent: #9a5408;
+    --sl-color-accent-high: #5c3205;
+    --sl-color-white: #111828;
+    --sl-color-gray-7: #f7f8fa;
+}
