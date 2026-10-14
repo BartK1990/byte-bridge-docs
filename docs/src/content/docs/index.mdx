@@ -1,0 +1,45 @@
+---
+title: ByteBridge documentation
+description: Learn how to test industrial protocols with the ByteBridge desktop tester and how to configure a ByteBridge gateway.
+template: splash
+hero:
+  tagline: Test devices on your desk, then run the same configuration on a gateway at the edge.
+  actions:
+    - text: Tester quick start
+      link: tester/quick-start/
+      icon: right-arrow
+    - text: Configure a gateway
+      link: gateway/configure/
+      icon: right-arrow
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+ByteBridge is one application for industrial protocols: IEC 60870-5-104, Modbus TCP, DNP3,
+OPC UA, OPC XML-DA and Siemens S7. Every protocol uses the same screens: the same endpoint
+editor, the same live data table and the same way to send a command.
+
+<CardGrid>
+  <Card title="Tester" icon="laptop">
+    The desktop app. Read a real device as a client, or play the device's part as a server
+    towards a SCADA system under test.
+  </Card>
+  <Card title="Gateway" icon="setting">
+    A headless Windows service with a web UI. It maps data between protocols and runs unattended.
+  </Card>
+  <Card title="Central" icon="star">
+    Follows many gateways over MQTT (Sparkplug B), deploys signed configurations and audits every change.
+  </Card>
+  <Card title="Same configuration" icon="random">
+    What you build while testing is already the gateway's configuration. Nothing to rebuild.
+  </Card>
+</CardGrid>
+
+## Where to start
+
+<LinkCard title="Concepts" description="Endpoints, mappings, calculations and point addresses in five minutes." href="concepts/" />
+<LinkCard title="Tester quick start" description="Try ByteBridge without hardware: a simulator, an IEC 104 server and a client." href="tester/quick-start/" />
+<LinkCard title="Connect to a device" description="Modbus TCP, Siemens S7 and OPC UA examples, with the address formats." href="tester/connect-a-device/" />
+<LinkCard title="Install the gateway" description="Run ByteBridge as a Windows service." href="gateway/install/" />
+<LinkCard title="Configure the gateway" description="Expose an IEC 104 RTU through OPC UA and Modbus, with scaling." href="gateway/configure/" />
