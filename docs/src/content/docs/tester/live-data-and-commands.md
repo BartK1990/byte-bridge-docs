@@ -31,7 +31,9 @@ device for all its values again (for IEC 104 this is a general interrogation). *
 4. Click **Send**.
 
 The result comes back from the device: *Confirmed*, *Rejected*, *Timeout* or *Not connected*.
-That tells you not only that the command was sent, but whether the device accepted it.
+That tells you not only that the command was sent, but whether the device accepted it. To see the
+frames of a command, start the frame trace on the **Troubleshoot** tab first (see
+[Troubleshoot a connection](../troubleshoot/)).
 
 Examples:
 

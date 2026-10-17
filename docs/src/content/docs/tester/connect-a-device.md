@@ -12,7 +12,8 @@ protocol, each with its default value.
 :::note
 Make sure the laptop can reach the device: the same network, the right IP address and no
 firewall in between. The endpoint shows its state (connecting, running, faulted) in the menu
-and on the **Dashboard**.
+and on the **Dashboard**. If it stays *connecting*, use **Test connection** in the editor or the
+**Troubleshoot** tab: see [Troubleshoot a connection](../troubleshoot/).
 :::
 
 ## Modbus TCP energy meter

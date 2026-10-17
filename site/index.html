@@ -194,6 +194,7 @@
                     <li>Act as the client to read a real device, or as the server to simulate one</li>
                     <li>Live values with quality, time stamp and a trend for every point</li>
                     <li>Send commands and see the device confirm or reject them</li>
+                    <li>Troubleshoot step by step: TCP port, protocol start, interrogation, with a hint at the first failure</li>
                     <li>Browse OPC UA and OPC XML-DA servers instead of typing addresses</li>
                     <li>Built-in simulator to try everything without hardware</li>
                     <li>OPC UA security policies and certificate management included</li>
@@ -209,6 +210,31 @@
         </div>
 
         <div class="split rev" style="margin-top: 72px">
+            <div>
+                <h2>See every frame, and what it means</h2>
+                <p class="muted">When a device does not answer, the connection check finds the layer that
+                    fails: the network, the TCP port, or the protocol itself. The frame trace records the
+                    connection and translates every frame field by field, so you do not need a protocol
+                    analyser or the standard at hand.</p>
+                <ul class="ticks">
+                    <li>Every frame decoded: type, cause of transmission, addresses, values, quality bits, time tags</li>
+                    <li>Optional TCP layer: connects, bytes on the wire, who closed the connection and how</li>
+                    <li>Hints for known problems, such as a wrong common address or a port that is not IEC 104</li>
+                    <li>Device clock checked against arrival time: time zone, drift, clock not synchronised</li>
+                    <li>No admin rights and no capture driver needed</li>
+                </ul>
+                <p class="muted">IEC 104 first; the other protocols follow. <a href="docs/tester/troubleshoot/">How it works</a></p>
+            </div>
+            <figure style="margin:0">
+                <picture>
+                    <source srcset="assets/ui-trace-dark.webp" media="(prefers-color-scheme: dark)">
+                    <img class="shot" src="assets/ui-trace-light.webp" width="1010" height="640" loading="lazy" decoding="async" alt="ByteBridge frame trace of an IEC 104 connection: the list of frames and the decoded fields of a general interrogation answer">
+                </picture>
+                <figcaption class="caption">The frame trace of an IEC 104 connection, with the fields of one frame.</figcaption>
+            </figure>
+        </div>
+
+        <div class="split" style="margin-top: 72px">
             <div>
                 <h2>From test bench to working gateway</h2>
                 <p class="muted">What you build while testing is already the solution. The gateway uses the
