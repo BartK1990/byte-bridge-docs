@@ -1,0 +1,126 @@
+---
+title: Troubleshoot a connection
+description: Find out why a device does not answer, read every frame of a connection and let ByteBridge explain what it means.
+sidebar:
+  order: 4
+---
+
+import { Image } from 'astro:assets';
+import checkLight from '../../../assets/screens/check-light.webp';
+import checkDark from '../../../assets/screens/check-dark.webp';
+import traceLight from '../../../assets/screens/trace-light.webp';
+import traceDark from '../../../assets/screens/trace-dark.webp';
+
+When a device does not answer, or a value or command does not arrive, open the endpoint from the
+**Endpoints** list and switch to the **Troubleshoot** tab. It has two tools:
+
+- the **connection check** tests the connection layer by layer and stops at the first problem,
+  with a hint what to look at;
+- the **frame trace** records every frame of the connection, optionally with the TCP layer
+  below it, and explains each field.
+
+The tab is there for client endpoints. Every TCP protocol has the TCP part of the check;
+**IEC 60870-5-104** also has the protocol steps and the frame trace. The other protocols follow.
+
+## Connection check
+
+Click **Check connection**. ByteBridge opens a connection of its own and runs these steps in
+order:
+
+| Step | What it tells you |
+|---|---|
+| Resolve host | The host name is known (skipped for an IP address). |
+| TCP connect | The port is open. *Refused*: nothing listens on the port. *No answer*: wrong IP address, the device is off, or a firewall drops the connection. *No route*: the laptop is not in the device's network. |
+| Device keeps the connection | The device does not close the connection right away. If it does, it probably accepts only configured client IP addresses, or only one client at a time. |
+| Start data transfer | IEC 104 answers: `STARTDT act` is confirmed. If not, the port may not be IEC 104 (when the device answers with something else, the first bytes are shown, for example `HTTP/1.1`). |
+| Link test | `TESTFR act` is confirmed. |
+| General interrogation | The device confirms the interrogation and sends its data. The result counts the objects per type. *COT 46* means the **Common address (ASDU)** is wrong. |
+| Stop data transfer | The device confirms `STOPDT act`; the check closes the connection. |
+
+Steps after a failed one are skipped. Below the steps, **What the check sent and received**
+shows the frames of the check.
+
+<Image src={checkLight} alt="Connection check of an IEC 104 RTU: the TCP port is open, but nothing answered STARTDT, with a hint" class="dark:sl-hidden" />
+<Image src={checkDark} alt="Connection check of an IEC 104 RTU: the TCP port is open, but nothing answered STARTDT, with a hint" class="light:sl-hidden" />
+
+:::note[The check respects a running connection]
+Many RTUs accept only one connection. So the check adapts to the endpoint:
+
+- **Stopped**: all steps.
+- **Connecting** (the device does not answer): the endpoint stops trying while the check runs, so
+  only the check talks to the device; afterwards it tries again.
+- **Online**: only the TCP steps, because the connection already works. Use the frame trace to
+  see it. **Stop endpoint and run full check** runs all steps anyway; the endpoint's values become
+  invalid meanwhile, also for mapped servers, SCADA and central.
+
+The check never changes anything on the device: it sends no commands and no clock
+synchronisation.
+:::
+
+You can also test settings before you save them: **Test connection** in the endpoint editor runs
+the same check with the values in the form.
+
+## Frame trace
+
+Click **Start** to record the endpoint's frames. Starting does not reconnect the endpoint; the
+trace shows the running connection from now on. With **Include TCP layer** (on by default) you
+also see the connects, the bytes as they were read from and written to the socket, and how each
+connection ended (closed by the device, reset, closed by ByteBridge with the reason, for example
+`t1 expired`).
+
+<Image src={traceLight} alt="Frame trace of an IEC 104 connection: the frame list on the left, the decoded fields of a general interrogation answer on the right" class="dark:sl-hidden" />
+<Image src={traceDark} alt="Frame trace of an IEC 104 connection: the frame list on the left, the decoded fields of a general interrogation answer on the right" class="light:sl-hidden" />
+
+The list shows for each record:
+
+| Column | Meaning |
+|---|---|
+| # | Record number within the trace. |
+| Time, Δt | When it was recorded, and the time since the previous record shown. |
+| Arrow | `→` sent by ByteBridge, `←` received from the device. |
+| Delay | Arrival time minus the device's own time stamp in the frame (see below). |
+| Summary | The frame in one line, e.g. `I(118,2) M_ME_NC_1 inrogen CA=1 IOA 1001=60.6`. |
+
+Click a record to see every field with its meaning: the frame format and sequence numbers, the
+type identification (TI), the cause of transmission (COT) with P/N and test bit, the common
+address (CA), and per object the IOA, the value, each quality bit and the time tag. Click a field
+to highlight its bytes, or a byte to find its field.
+
+### Filters
+
+- **Text**: matches the summary and the field values, e.g. `inrogen`, `IOA 2001` or `M_SP`.
+- **name=value**: a field with that value, e.g. `COT=47` or `CA=5`.
+- **Direction**, **Warnings and errors**, **Hints only**, a **connection** (each reconnect is a
+  new connection) and **TCP layer**.
+- **Follow** scrolls to new records; untick it to read in peace.
+
+Negative confirmations, unknown causes (COT 44 to 47), invalid quality and bytes that are not
+IEC 104 are shown in colour.
+
+### Hints
+
+The trace adds a **Hint** where it recognises a known pattern, for example:
+
+- the device closes the connection right after accepting it, again and again;
+- bytes arrive but they are not IEC 104 frames;
+- `STARTDT act` was never confirmed, or a link test (`TESTFR`) was not answered;
+- sent frames were not acknowledged within t1;
+- the device does not know the common address or an IOA;
+- every object of a general interrogation is invalid.
+
+### Device clock
+
+For values with a time tag, **Delay** compares the device's time with the time the frame arrived
+(measured against your laptop's clock). The trace points out:
+
+- an offset of about a whole number of hours: a time zone, daylight saving or UTC/local setting;
+- a clock that drifts, one that was set during the trace, or a time in the future;
+- a device that marks its own clock as not synchronised.
+
+Old time stamps right after a connect are usually buffered events and are expected.
+
+### Limits
+
+A trace keeps the newest 20,000 records on the desktop (5,000 on a gateway) and stops by itself
+after one hour. It is kept while the endpoint reconnects or is stopped and started, and it stays
+on the computer that runs the endpoint: it is never sent to central.
