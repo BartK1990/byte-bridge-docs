@@ -219,11 +219,11 @@
                 <ul class="ticks">
                     <li>Every frame decoded: type, cause of transmission, addresses, values, quality bits, time tags</li>
                     <li>Optional TCP layer: connects, bytes on the wire, who closed the connection and how</li>
-                    <li>Hints for known problems, such as a wrong common address or a port that is not IEC 104</li>
+                    <li>Hints for known problems, such as a wrong common address, a Modbus register that does not exist, or a port that speaks another protocol</li>
                     <li>Device clock checked against arrival time: time zone, drift, clock not synchronised</li>
                     <li>No admin rights and no capture driver needed</li>
                 </ul>
-                <p class="muted">IEC 104 first; the other protocols follow. <a href="docs/tester/troubleshoot/">How it works</a></p>
+                <p class="muted">IEC 104 and Modbus TCP today; the other protocols follow. <a href="docs/tester/troubleshoot/">How it works</a></p>
             </div>
             <figure style="margin:0">
                 <picture>

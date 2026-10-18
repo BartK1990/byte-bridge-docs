@@ -10,6 +10,10 @@ import checkLight from '../../../assets/screens/check-light.webp';
 import checkDark from '../../../assets/screens/check-dark.webp';
 import traceLight from '../../../assets/screens/trace-light.webp';
 import traceDark from '../../../assets/screens/trace-dark.webp';
+import modbusCheckLight from '../../../assets/screens/modbus-check-light.webp';
+import modbusCheckDark from '../../../assets/screens/modbus-check-dark.webp';
+import modbusTraceLight from '../../../assets/screens/modbus-trace-light.webp';
+import modbusTraceDark from '../../../assets/screens/modbus-trace-dark.webp';
 
 When a device does not answer, or a value or command does not arrive, open the endpoint from the
 **Endpoints** list and switch to the **Troubleshoot** tab. It has two tools:
@@ -20,22 +24,35 @@ When a device does not answer, or a value or command does not arrive, open the e
   below it, and explains each field.
 
 The tab is there for client endpoints. Every TCP protocol has the TCP part of the check;
-**IEC 60870-5-104** also has the protocol steps and the frame trace. The other protocols follow.
+**IEC 60870-5-104** and **Modbus TCP** also have their protocol steps and the frame trace. The
+other protocols follow.
 
 ## Connection check
 
 Click **Check connection**. ByteBridge opens a connection of its own and runs these steps in
-order:
+order. First, for every protocol:
 
 | Step | What it tells you |
 |---|---|
 | Resolve host | The host name is known (skipped for an IP address). |
 | TCP connect | The port is open. *Refused*: nothing listens on the port. *No answer*: wrong IP address, the device is off, or a firewall drops the connection. *No route*: the laptop is not in the device's network. |
 | Device keeps the connection | The device does not close the connection right away. If it does, it probably accepts only configured client IP addresses, or only one client at a time. |
+
+Then, for **IEC 104**:
+
+| Step | What it tells you |
+|---|---|
 | Start data transfer | IEC 104 answers: `STARTDT act` is confirmed. If not, the port may not be IEC 104 (when the device answers with something else, the first bytes are shown, for example `HTTP/1.1`). |
 | Link test | `TESTFR act` is confirmed. |
 | General interrogation | The device confirms the interrogation and sends its data. The result counts the objects per type. *COT 46* means the **Common address (ASDU)** is wrong. |
 | Stop data transfer | The device confirms `STOPDT act`; the check closes the connection. |
+
+For **Modbus TCP** (it only reads, never writes):
+
+| Step | What it tells you |
+|---|---|
+| First request | The device answers Modbus: the first block of **Points to poll** is read. An exception answer also counts, the next step names it. *No answer* usually means a wrong **Unit id** (gateways often stay silent for unknown units); an answer that is not Modbus TCP shows its first bytes. |
+| All configured points | Every read the endpoint polls is tried. Each failure is listed with its address range and exception, for example `HR:40200: exception 02 illegal data address`. |
 
 Steps after a failed one are skipped. Below the steps, **What the check sent and received**
 shows the frames of the check.
@@ -43,8 +60,11 @@ shows the frames of the check.
 <Image src={checkLight} alt="Connection check of an IEC 104 RTU: the TCP port is open, but nothing answered STARTDT, with a hint" class="dark:sl-hidden" />
 <Image src={checkDark} alt="Connection check of an IEC 104 RTU: the TCP port is open, but nothing answered STARTDT, with a hint" class="light:sl-hidden" />
 
+<Image src={modbusCheckLight} alt="Connection check of a Modbus TCP meter: one configured register does not exist on the device" class="dark:sl-hidden" />
+<Image src={modbusCheckDark} alt="Connection check of a Modbus TCP meter: one configured register does not exist on the device" class="light:sl-hidden" />
+
 :::note[The check respects a running connection]
-Many RTUs accept only one connection. So the check adapts to the endpoint:
+Many RTUs and Modbus gateways accept only one connection. So the check adapts to the endpoint:
 
 - **Stopped**: all steps.
 - **Connecting** (the device does not answer): the endpoint stops trying while the check runs, so
@@ -86,16 +106,28 @@ type identification (TI), the cause of transmission (COT) with P/N and test bit,
 address (CA), and per object the IOA, the value, each quality bit and the time tag. Click a field
 to highlight its bytes, or a byte to find its field.
 
+### Modbus TCP frames
+
+Each request shows its transaction id, unit id, function code and the address range in the
+notation of the settings, e.g. `#12 unit 1 FC03 Read Holding Registers HR:40001..40010 (10)`.
+The response is matched to its request by transaction id, so its values carry their addresses:
+`HR:40001=0x4248 (16968)`, each register also as signed and unsigned number. Exception responses
+name the exception and the range they refer to.
+
+<Image src={modbusTraceLight} alt="Frame trace of a Modbus TCP connection: an exception response for HR:40200 with its decoded fields" class="dark:sl-hidden" />
+<Image src={modbusTraceDark} alt="Frame trace of a Modbus TCP connection: an exception response for HR:40200 with its decoded fields" class="light:sl-hidden" />
+
 ### Filters
 
-- **Text**: matches the summary and the field values, e.g. `inrogen`, `IOA 2001` or `M_SP`.
-- **name=value**: a field with that value, e.g. `COT=47` or `CA=5`.
+- **Text**: matches the summary and the field values, e.g. `inrogen`, `IOA 2001`, `M_SP` or
+  `HR:40101`.
+- **name=value**: a field with that value, e.g. `COT=47`, `CA=5` or `FC=3`.
 - **Direction**, **Warnings and errors**, **Hints only**, a **connection** (each reconnect is a
   new connection) and **TCP layer**.
 - **Follow** scrolls to new records; untick it to read in peace.
 
-Negative confirmations, unknown causes (COT 44 to 47), invalid quality and bytes that are not
-IEC 104 are shown in colour.
+Negative confirmations, unknown causes (COT 44 to 47), invalid quality, Modbus exceptions and
+bytes that are not the expected protocol are shown in colour.
 
 ### Hints
 
@@ -106,7 +138,14 @@ The trace adds a **Hint** where it recognises a known pattern, for example:
 - `STARTDT act` was never confirmed, or a link test (`TESTFR`) was not answered;
 - sent frames were not acknowledged within t1;
 - the device does not know the common address or an IOA;
-- every object of a general interrogation is invalid.
+- every object of a general interrogation is invalid;
+- a Modbus exception, once per address range, with what to look at: *01* the function is not
+  supported (e.g. holding vs input registers), *02* the address does not exist (also when several
+  points are read in one request across a gap: set **Max gap to merge reads** to 0), *03* the
+  quantity is too large (**Registers per read request**), *04* device failure, *06* busy, *0A* and
+  *0B* the gateway cannot reach the unit;
+- a Modbus request without an answer (often a wrong unit id), or a response that matches no
+  request.
 
 ### Device clock
 
