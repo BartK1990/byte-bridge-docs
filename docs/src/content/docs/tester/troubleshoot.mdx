@@ -14,6 +14,10 @@ import modbusCheckLight from '../../../assets/screens/modbus-check-light.webp';
 import modbusCheckDark from '../../../assets/screens/modbus-check-dark.webp';
 import modbusTraceLight from '../../../assets/screens/modbus-trace-light.webp';
 import modbusTraceDark from '../../../assets/screens/modbus-trace-dark.webp';
+import s7CheckLight from '../../../assets/screens/s7-check-light.webp';
+import s7CheckDark from '../../../assets/screens/s7-check-dark.webp';
+import s7TraceLight from '../../../assets/screens/s7-trace-light.webp';
+import s7TraceDark from '../../../assets/screens/s7-trace-dark.webp';
 
 When a device does not answer, or a value or command does not arrive, open the endpoint from the
 **Endpoints** list and switch to the **Troubleshoot** tab. It has two tools:
@@ -24,8 +28,8 @@ When a device does not answer, or a value or command does not arrive, open the e
   below it, and explains each field.
 
 The tab is there for client endpoints. Every TCP protocol has the TCP part of the check;
-**IEC 60870-5-104** and **Modbus TCP** also have their protocol steps and the frame trace. The
-other protocols follow.
+**IEC 60870-5-104**, **Modbus TCP** and **Siemens S7** also have their protocol steps and the
+frame trace. The other protocols follow.
 
 ## Connection check
 
@@ -54,6 +58,15 @@ For **Modbus TCP** (it only reads, never writes):
 | First request | The device answers Modbus: the first block of **Points to poll** is read. An exception answer also counts, the next step names it. *No answer* usually means a wrong **Unit id** (gateways often stay silent for unknown units); an answer that is not Modbus TCP shows its first bytes. |
 | All configured points | Every read the endpoint polls is tried. Each failure is listed with its address range and exception, for example `HR:40200: exception 02 illegal data address`. |
 
+For **Siemens S7** (it only reads, never writes):
+
+| Step | What it tells you |
+|---|---|
+| ISO connection | The PLC accepts the connection to the TSAP of **Connection type**, **Rack** and **Slot**, shown as e.g. `TSAP 0102 (PG, rack 0, slot 2)`. If the PLC refuses, check rack and slot (S7-300: 0 and 2; S7-1200/1500: 0 and 1) and the connection type, and whether all of the CPU's connections are in use. An answer that is not ISO-on-TCP shows its first bytes. |
+| Setup communication | The PDU size the PLC agreed to (240 for most S7-300, 480 for S7-400 and S7-1200, 960 for S7-1500). |
+| CPU identification | Order number, module and firmware, and the operating state, as far as the CPU reports them. A CPU in STOP is a warning: reading works, but the values do not change. |
+| Configured points | Every read the endpoint polls is tried. Each failing item is listed with its address and return code, for example `DB9.DBB0..3 (4 bytes): object does not exist (0A)`; a refused request with its error, for example `0x8104` when PUT/GET access is not allowed. |
+
 Steps after a failed one are skipped. Below the steps, **What the check sent and received**
 shows the frames of the check.
 
@@ -62,6 +75,9 @@ shows the frames of the check.
 
 <Image src={modbusCheckLight} alt="Connection check of a Modbus TCP meter: one configured register does not exist on the device" class="dark:sl-hidden" />
 <Image src={modbusCheckDark} alt="Connection check of a Modbus TCP meter: one configured register does not exist on the device" class="light:sl-hidden" />
+
+<Image src={s7CheckLight} alt="Connection check of an S7-300 PLC: connected to rack 0, slot 2, PDU 480, CPU in RUN, one configured data block does not exist" class="dark:sl-hidden" />
+<Image src={s7CheckDark} alt="Connection check of an S7-300 PLC: connected to rack 0, slot 2, PDU 480, CPU in RUN, one configured data block does not exist" class="light:sl-hidden" />
 
 :::note[The check respects a running connection]
 Many RTUs and Modbus gateways accept only one connection. So the check adapts to the endpoint:
@@ -117,17 +133,31 @@ name the exception and the range they refer to.
 <Image src={modbusTraceLight} alt="Frame trace of a Modbus TCP connection: an exception response for HR:40200 with its decoded fields" class="dark:sl-hidden" />
 <Image src={modbusTraceDark} alt="Frame trace of a Modbus TCP connection: an exception response for HR:40200 with its decoded fields" class="light:sl-hidden" />
 
+### Siemens S7 frames
+
+Each frame shows its layers: TPKT, COTP and the S7 message. The connection request and confirm
+show both TSAPs, the PLC's as connection type, rack and slot, e.g. `COTP CR TSAP 0100 → 0102
+(PG, rack 0, slot 2), TPDU 1024`. Jobs and answers carry their PDU reference (`S7 Job #12`,
+`S7 Ack_Data #12`), so an answer is matched to its job and each of its items carries the address
+it was read from: `DB1.DBB10..15 (6 bytes) = 00 64 40 20 00 00`, or the return code when the
+PLC refused the item. *Read SZL* shows the list it reads (module identification, component
+identification, CPU state) and the CPU state in the answer. S7 messages split over several data
+units are joined.
+
+<Image src={s7TraceLight} alt="Frame trace of an S7 connection: a read answer in which one item, DB9.DBB0..3, does not exist" class="dark:sl-hidden" />
+<Image src={s7TraceDark} alt="Frame trace of an S7 connection: a read answer in which one item, DB9.DBB0..3, does not exist" class="light:sl-hidden" />
+
 ### Filters
 
 - **Text**: matches the summary and the field values, e.g. `inrogen`, `IOA 2001`, `M_SP` or
-  `HR:40101`.
+  `HR:40101` or `DB1.DBB10`.
 - **name=value**: a field with that value, e.g. `COT=47`, `CA=5` or `FC=3`.
 - **Direction**, **Warnings and errors**, **Hints only**, a **connection** (each reconnect is a
   new connection) and **TCP layer**.
 - **Follow** scrolls to new records; untick it to read in peace.
 
-Negative confirmations, unknown causes (COT 44 to 47), invalid quality, Modbus exceptions and
-bytes that are not the expected protocol are shown in colour.
+Negative confirmations, unknown causes (COT 44 to 47), invalid quality, Modbus exceptions, S7
+errors and refused items, and bytes that are not the expected protocol are shown in colour.
 
 ### Hints
 
@@ -145,7 +175,14 @@ The trace adds a **Hint** where it recognises a known pattern, for example:
   quantity is too large (**Registers per read request**), *04* device failure, *06* busy, *0A* and
   *0B* the gateway cannot reach the unit;
 - a Modbus request without an answer (often a wrong unit id), or a response that matches no
-  request.
+  request;
+- an S7 PLC that refuses the connection: rack, slot or connection type, or no free connection;
+- S7 error *0x8104*: on S7-1200/1500, allow *PUT/GET communication from remote partner* and switch
+  off *Optimized block access* for the data blocks; *0x8500* and *0x8304*: lower the **PDU size**
+  or **Items per read request**;
+- an S7 item refused, once per address, with what to look at: *0A* the data block is missing or
+  shorter, *05* address out of range, *03* access denied, *06*/*07* data type;
+- an S7 CPU that is not in RUN.
 
 ### Device clock
 
