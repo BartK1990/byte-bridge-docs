@@ -18,6 +18,10 @@ import s7CheckLight from '../../../assets/screens/s7-check-light.webp';
 import s7CheckDark from '../../../assets/screens/s7-check-dark.webp';
 import s7TraceLight from '../../../assets/screens/s7-trace-light.webp';
 import s7TraceDark from '../../../assets/screens/s7-trace-dark.webp';
+import dnp3CheckLight from '../../../assets/screens/dnp3-check-light.webp';
+import dnp3CheckDark from '../../../assets/screens/dnp3-check-dark.webp';
+import dnp3TraceLight from '../../../assets/screens/dnp3-trace-light.webp';
+import dnp3TraceDark from '../../../assets/screens/dnp3-trace-dark.webp';
 
 When a device does not answer, or a value or command does not arrive, open the endpoint from the
 **Endpoints** list and switch to the **Troubleshoot** tab. It has two tools:
@@ -28,8 +32,8 @@ When a device does not answer, or a value or command does not arrive, open the e
   below it, and explains each field.
 
 The tab is there for client endpoints. Every TCP protocol has the TCP part of the check;
-**IEC 60870-5-104**, **Modbus TCP** and **Siemens S7** also have their protocol steps and the
-frame trace. The other protocols follow.
+**IEC 60870-5-104**, **Modbus TCP**, **Siemens S7** and **DNP3** also have their protocol steps
+and the frame trace. The other protocols follow.
 
 ## Connection check
 
@@ -67,6 +71,17 @@ For **Siemens S7** (it only reads, never writes):
 | CPU identification | Order number, module and firmware, and the operating state, as far as the CPU reports them. A CPU in STOP is a warning: reading works, but the values do not change. |
 | Configured points | Every read the endpoint polls is tried. Each failing item is listed with its address and return code, for example `DB9.DBB0..3 (4 bytes): object does not exist (0A)`; a refused request with its error, for example `0x8104` when PUT/GET access is not allowed. |
 
+For **DNP3** (it reads only the static values and changes nothing on the outstation):
+
+| Step | What it tells you |
+|---|---|
+| Link status | The outstation answers a link status request sent from the **Master link address** to the **Outstation link address**. An outstation ignores frames for other addresses, so silence usually means a wrong address. If the outstation sends from another address (for example its first unsolicited response), the step names it: *set Outstation link address to 1024*. |
+| Read static values | The outstation answers a read of class 0. The result counts the values per type (`BI 2, AI 2, CT 1`) and lists the internal indications (IIN) that matter. *Object unknown*, *function not supported* and *parameter error* fail the step; device trouble, an event buffer overflow, local control and a request for the time while **Sync the outstation's clock** is off are warnings. |
+
+The DNP3 check reads class 0 only: events stay in the outstation's buffer for the endpoint. It
+confirms an empty (null) unsolicited response, which many outstations wait for before they
+answer anything, but never one that carries events.
+
 Steps after a failed one are skipped. Below the steps, **What the check sent and received**
 shows the frames of the check.
 
@@ -78,6 +93,9 @@ shows the frames of the check.
 
 <Image src={s7CheckLight} alt="Connection check of an S7-300 PLC: connected to rack 0, slot 2, PDU 480, CPU in RUN, one configured data block does not exist" class="dark:sl-hidden" />
 <Image src={s7CheckDark} alt="Connection check of an S7-300 PLC: connected to rack 0, slot 2, PDU 480, CPU in RUN, one configured data block does not exist" class="light:sl-hidden" />
+
+<Image src={dnp3CheckLight} alt="Connection check of a DNP3 RTU configured for outstation address 10: the device sends from address 1024, with the hint to set it" class="dark:sl-hidden" />
+<Image src={dnp3CheckDark} alt="Connection check of a DNP3 RTU configured for outstation address 10: the device sends from address 1024, with the hint to set it" class="light:sl-hidden" />
 
 :::note[The check respects a running connection]
 Many RTUs and Modbus gateways accept only one connection. So the check adapts to the endpoint:
@@ -147,10 +165,25 @@ units are joined.
 <Image src={s7TraceLight} alt="Frame trace of an S7 connection: a read answer in which one item, DB9.DBB0..3, does not exist" class="dark:sl-hidden" />
 <Image src={s7TraceDark} alt="Frame trace of an S7 connection: a read answer in which one item, DB9.DBB0..3, does not exist" class="light:sl-hidden" />
 
+### DNP3 frames
+
+Each link frame shows its header (direction, primary bit, link function, destination and source
+addresses) with the CRCs checked; a wrong address or CRC is marked. The application layer shows
+the sequence number, the function code, every internal indication bit, and every object header
+with its group, variation and range, e.g. `#2 READ class 1, class 2, class 3, class 0`. A
+response names the request it answers, and its values use the notation of the settings:
+`#2 Response to READ: BI 0=on, AI 0=12.5, CT 0=42`. Unsolicited events show their time stamp,
+so the **Delay** column compares the outstation's clock with yours. Controls show their status
+(`BO 7 latch on: not supported (4)`). A response spread over several link frames is joined and
+explained once.
+
+<Image src={dnp3TraceLight} alt="Frame trace of a DNP3 master: unsolicited analog and counter events with their UTC time stamps" class="dark:sl-hidden" />
+<Image src={dnp3TraceDark} alt="Frame trace of a DNP3 master: unsolicited analog and counter events with their UTC time stamps" class="light:sl-hidden" />
+
 ### Filters
 
 - **Text**: matches the summary and the field values, e.g. `inrogen`, `IOA 2001`, `M_SP` or
-  `HR:40101` or `DB1.DBB10`.
+  `HR:40101`, `DB1.DBB10` or `AI 0`.
 - **name=value**: a field with that value, e.g. `COT=47`, `CA=5` or `FC=3`.
 - **Direction**, **Warnings and errors**, **Hints only**, a **connection** (each reconnect is a
   new connection) and **TCP layer**.
@@ -182,12 +215,21 @@ The trace adds a **Hint** where it recognises a known pattern, for example:
   or **Items per read request**;
 - an S7 item refused, once per address, with what to look at: *0A* the data block is missing or
   shorter, *05* address out of range, *03* access denied, *06*/*07* data type;
-- an S7 CPU that is not in RUN.
+- an S7 CPU that is not in RUN;
+- DNP3 frames from or to another link address, with the address to set, and frames with a wrong
+  CRC;
+- DNP3 internal indications: *function not supported*, *object unknown* and *parameter error*
+  (with the request they answer), *event buffer overflow*, *device trouble*, *configuration
+  corrupt*, *local control*, *need time* while **Sync the outstation's clock** is off, and a
+  *device restart* bit that stays set after the master cleared it;
+- a DNP3 control status other than SUCCESS, once per point, with what it means (for example
+  *NO_SELECT*: OPERATE without a matching SELECT);
+- a DNP3 request without a response, and a link keep-alive without an answer.
 
 ### Device clock
 
-For values with a time tag, **Delay** compares the device's time with the time the frame arrived
-(measured against your laptop's clock). The trace points out:
+For values with a time tag (IEC 104 time tags, DNP3 events with time), **Delay** compares the
+device's time with the time the frame arrived (measured against your laptop's clock). The trace points out:
 
 - an offset of about a whole number of hours: a time zone, daylight saving or UTC/local setting;
 - a clock that drifts, one that was set during the trace, or a time in the future;
