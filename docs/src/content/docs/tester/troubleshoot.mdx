@@ -30,18 +30,26 @@ import opcxmlCheckLight from '../../../assets/screens/opcxml-check-light.webp';
 import opcxmlCheckDark from '../../../assets/screens/opcxml-check-dark.webp';
 import opcxmlTraceLight from '../../../assets/screens/opcxml-trace-light.webp';
 import opcxmlTraceDark from '../../../assets/screens/opcxml-trace-dark.webp';
+import reportLight from '../../../assets/screens/report-light.webp';
+import reportDark from '../../../assets/screens/report-dark.webp';
+import decodeLight from '../../../assets/screens/decode-light.webp';
+import decodeDark from '../../../assets/screens/decode-dark.webp';
 
 When a device does not answer, or a value or command does not arrive, open the endpoint from the
-**Endpoints** list and switch to the **Troubleshoot** tab. It has two tools:
+**Endpoints** list and switch to the **Troubleshoot** tab. It has these tools:
 
 - the **connection check** tests the connection layer by layer and stops at the first problem,
   with a hint what to look at;
 - the **frame trace** records every frame of the connection, optionally with the TCP layer
-  below it, and explains each field.
+  below it, and explains each field; you can export it for Wireshark;
+- the **AI report** puts the configuration, the check and the trace into one file for the AI
+  assistant of your choice (or a colleague);
+- **Decode bytes** explains hex copied from a SCADA log or another tool.
 
-The tab is there for client endpoints. Every TCP protocol has the TCP part of the check;
-**IEC 60870-5-104**, **Modbus TCP**, **Siemens S7**, **DNP3**, **OPC UA** and **OPC XML-DA**
-also have their protocol steps and the frame trace.
+Every TCP protocol has the TCP part of the check; **IEC 60870-5-104**, **Modbus TCP**,
+**Siemens S7**, **DNP3**, **OPC UA** and **OPC XML-DA** also have their protocol steps and the
+frame trace. **IEC 104 server** endpoints have the frame trace too, see
+[Server endpoints](#server-endpoints).
 
 ## Connection check
 
@@ -326,8 +334,96 @@ against your laptop's clock). The trace points out:
 
 Old time stamps right after a connect are usually buffered events and are expected.
 
+### Frames of a command or refresh
+
+While the trace runs, a command or **Refresh** on the **Live data** tab shows **Show frames**
+next to its result. It opens this tab with only the frames that belong to it: for IEC 104 the
+command's activation, its confirmation (positive or negative) and its termination, or the
+general interrogation with every value it brought. **Show all frames** next to the notice brings
+the whole trace back.
+
+### TCP statistics
+
+With **Include TCP layer**, each connection also gets the operating system's TCP statistics:
+when it opens, at most every 5 seconds while it is used, when the protocol notices a problem
+(IEC 104: t1 expired) and when it closes. A record shows the round-trip time, retransmitted
+segments, the send and receive window and more (`TCP statistics (while running): RTT 1.2 ms
+±0.3, RTO 204 ms, retransmitted 0 segment(s) (0 bytes), send window 64240 bytes, …`). Rising retransmissions or
+a send window of 0 (the device does not read what it is sent) are shown in colour with a hint:
+that points at the network or a device that is overloaded, not at the protocol settings.
+
+### Export
+
+**Export pcapng** saves the trace for Wireshark. ByteBridge records what the endpoint read and
+wrote on its socket, not packets on the wire, so the file is built: each read and write becomes a
+TCP segment with Ethernet, IP and TCP headers made up from the connection's addresses, and a
+connect a three-way handshake. Wireshark reassembles the streams and applies its own dissector
+(for a port other than the protocol's usual one: *Decode As*). Each packet's comment names its
+record number (`#123`) in ByteBridge. **Export JSON** saves every record with its decoded
+fields, as the runtime API returns them.
+
 ### Limits
 
 A trace keeps the newest 20,000 records on the desktop (5,000 on a gateway) and stops by itself
 after one hour. It is kept while the endpoint reconnects or is stopped and started, and it stays
 on the computer that runs the endpoint: it is never sent to central.
+
+## Server endpoints
+
+When ByteBridge is the **IEC 104 server** (controlled station) for a SCADA, the trace shows every
+connected SCADA client, each on a connection of its own; the **connection** filter picks one.
+Starting the trace disconnects no one. A client that ByteBridge turns away because **Max
+connections** are in use shows up as a connection that closes right away, with the reason.
+
+The hints look at the frames from ByteBridge's side: the SCADA addressed a common address this
+server does not have (COT 46), used an IOA that no point of this server has (COT 47) or a type
+it does not support (COT 44), or a command that this server refused, with the usual reasons (no
+mapping forwards commands to the point, the source device refused it, or it did not answer in
+time).
+
+## AI report
+
+**AI report** in the frame trace panel writes one Markdown file to paste into the chat of an AI
+assistant, or to send to a colleague, to find the root cause. ByteBridge itself calls no AI
+service and sends the report nowhere: you copy or save it and decide where it goes.
+
+<Image src={reportLight} alt="The AI report panel: symptom, Anonymize, size, the report's preview with the placeholders marked, and the key from placeholder to real value" class="dark:sl-hidden" />
+<Image src={reportDark} alt="The AI report panel: symptom, Anonymize, size, the report's preview with the placeholders marked, and the key from placeholder to real value" class="light:sl-hidden" />
+
+The report has fixed sections: a short task for the assistant with your **Symptom**, the
+context (version, protocol, addresses, when the trace ran), the endpoint's settings and the
+mappings that use it, the last connection check, the endpoint's status history (connects,
+reconnects, faults), the findings (every hint, warning and error with the frames around it),
+statistics (frames per kind, connections, the longest silence, commands and their results, the
+device clock offset), the trace itself, the latest values and a short glossary of the protocol
+terms that appear. Record numbers are the trace's own, so when the assistant answers "see #412",
+you find that frame here.
+
+- **Size**: about 10,000, 30,000 (default) or 100,000 tokens, so the report fits the assistant.
+  Repetitive frames are collapsed into one line (`#130–#470 341 records, all without findings:
+  …`), frames near a finding stay in full, and the oldest uneventful frames are left out first.
+  Every section says what it left out.
+- **Anonymize** (on by default): IP addresses, host names, endpoint names, user names and point
+  names are replaced by placeholders that name their role, e.g. `DEVICE-1 host` or
+  `BYTEBRIDGE address`, also in the symptom. The top of the report explains each placeholder
+  with what matters for the diagnosis (`private IPv4, same /24 as BYTEBRIDGE`), so the assistant
+  can still reason about the network. Port numbers, protocol addresses (common address, IOA,
+  registers), values and times are kept. The **Key** below the preview lists the real value of
+  each placeholder; it is not part of the report, so keep it to read the answer back.
+- **Passwords are never included**, anonymized or not.
+- **Save as .zip** adds the full trace as JSON and as pcapng, anonymized the same way; the
+  pcapng uses addresses from the documentation range `192.0.2.0/24`.
+
+The report works on the gateway's web interface too, since the gateway builds it itself.
+
+## Decode bytes
+
+**Decode bytes** explains hex you copied from somewhere else: a SCADA's communication log, a
+colleague's e-mail or Wireshark's *Copy as hex dump*. Pick the protocol and who sent the bytes
+(**From the device** or **To the device**), paste and click **Decode**. Spaces, `0x` prefixes,
+separators and the offsets and text column of a hex dump are all fine. The frames appear in the
+same list and detail view as in the trace, with the hints for them; it needs no connection and
+no endpoint of that protocol.
+
+<Image src={decodeLight} alt="Decode bytes: a pasted IEC 104 frame explained as a negative confirmation of a single command to IOA 2001" class="dark:sl-hidden" />
+<Image src={decodeDark} alt="Decode bytes: a pasted IEC 104 frame explained as a negative confirmation of a single command to IOA 2001" class="light:sl-hidden" />
