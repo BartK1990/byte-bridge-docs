@@ -26,6 +26,10 @@ import opcuaCheckLight from '../../../assets/screens/opcua-check-light.webp';
 import opcuaCheckDark from '../../../assets/screens/opcua-check-dark.webp';
 import opcuaTraceLight from '../../../assets/screens/opcua-trace-light.webp';
 import opcuaTraceDark from '../../../assets/screens/opcua-trace-dark.webp';
+import opcxmlCheckLight from '../../../assets/screens/opcxml-check-light.webp';
+import opcxmlCheckDark from '../../../assets/screens/opcxml-check-dark.webp';
+import opcxmlTraceLight from '../../../assets/screens/opcxml-trace-light.webp';
+import opcxmlTraceDark from '../../../assets/screens/opcxml-trace-dark.webp';
 
 When a device does not answer, or a value or command does not arrive, open the endpoint from the
 **Endpoints** list and switch to the **Troubleshoot** tab. It has two tools:
@@ -36,8 +40,8 @@ When a device does not answer, or a value or command does not arrive, open the e
   below it, and explains each field.
 
 The tab is there for client endpoints. Every TCP protocol has the TCP part of the check;
-**IEC 60870-5-104**, **Modbus TCP**, **Siemens S7**, **DNP3** and **OPC UA** also have their
-protocol steps and the frame trace. OPC XML-DA follows.
+**IEC 60870-5-104**, **Modbus TCP**, **Siemens S7**, **DNP3**, **OPC UA** and **OPC XML-DA**
+also have their protocol steps and the frame trace.
 
 ## Connection check
 
@@ -96,6 +100,17 @@ For **OPC UA** (it reads and browses, writes nothing and creates no subscription
 | Session | A session is created and activated with the configured security, user name and password, on a second connection for a secured policy, as the client does. A wrong password fails here. |
 | Configured nodes | Every NodeId in **Nodes** is read and every one that fails is listed with its status (`ns=2;s=Pump1.Speed: BadNodeIdUnknown`); with **Browse for variables** on, the variables below the browse root are counted. |
 
+For **OPC XML-DA** (it reads and browses, writes nothing, and cancels the subscription it
+tries):
+
+| Step | What it tells you |
+|---|---|
+| TLS | For an `https://` **Service URL**: the TLS version and the server certificate. A certificate that is not trusted (self-signed, or from your own CA: put it in **CA certificate file**), issued for another host name (use that name in the URL, not the IP address) or expired fails here. Skipped for `http://`. |
+| GetStatus | The service answers: vendor, version, the server's state and how far its clock is from yours. *HTTP 401* means a wrong **User name** or **Password**, or a server that asks for Windows authentication (NTLM), which ByteBridge does not do; *404* or a web page instead of SOAP means a wrong path in the URL (often `/OPCXMLDA/Service.asmx`). A state other than *running* is a warning. |
+| Browse | With **Browse for items** on: the items and branches found below the browse root, as the endpoint finds them, and every branch the server refuses. |
+| Configured items | Every item in **Items** is read from the device. Each one that fails is listed with its result, e.g. `Line1.Speed: E_UNKNOWNITEMNAME`; a bad or uncertain quality is a warning. |
+| Subscription | With **Collect values by** set to Subscription: the server creates a subscription for the items, answers one polled refresh and cancels it. A server that cannot subscribe fails here: use Read. |
+
 Steps after a failed one are skipped. Below the steps, **What the check sent and received**
 shows the frames of the check.
 
@@ -113,6 +128,9 @@ shows the frames of the check.
 
 <Image src={opcuaCheckLight} alt="Connection check of an OPC UA server: hello, secure channel, endpoints and session pass; one configured NodeId does not exist, with a hint" class="dark:sl-hidden" />
 <Image src={opcuaCheckDark} alt="Connection check of an OPC UA server: hello, secure channel, endpoints and session pass; one configured NodeId does not exist, with a hint" class="light:sl-hidden" />
+
+<Image src={opcxmlCheckLight} alt="Connection check of an OPC XML-DA server: GetStatus, browse and subscription pass; one configured item does not exist, with a hint" class="dark:sl-hidden" />
+<Image src={opcxmlCheckDark} alt="Connection check of an OPC XML-DA server: GetStatus, browse and subscription pass; one configured item does not exist, with a hint" class="light:sl-hidden" />
 
 :::note[The check respects a running connection]
 Many RTUs and Modbus gateways accept only one connection. So the check adapts to the endpoint:
@@ -214,10 +232,31 @@ None on a test system.
 <Image src={opcuaTraceLight} alt="Frame trace of an OPC UA client filtered by NodeId: data changes of ns=1;s=Sine with their source timestamps" class="dark:sl-hidden" />
 <Image src={opcuaTraceDark} alt="Frame trace of an OPC UA client filtered by NodeId: data changes of ns=1;s=Sine with their source timestamps" class="light:sl-hidden" />
 
+### OPC XML-DA messages
+
+Each HTTP request and response is one record: the request or status line, the headers and the
+SOAP operation with every item. A request shows its operation and items, e.g. `POST
+/OPCXMLDA/Service.asmx Read (2 item(s)): Line1.Speed, Line1.Count`; the response names the
+request it answers and the values with their type and quality: `200 Response to Read (2
+item(s)): Line1.Speed = 12.5 (double), Line1.Count = 42 (int)`. Polled refreshes of a
+subscription show the items that changed, by name, also when the server sends only handles. A
+SOAP fault, an item error (`E_UNKNOWNITEMNAME`) or a bad quality is shown in colour. The
+answer's reply time is the server's clock, so the **Delay** column compares it with yours.
+
+The client keeps a few HTTP connections open (a polled refresh waits on the server while a
+write uses another one), so a trace shows several connections. **Authorization** headers show
+the user name, never the password: it is replaced by `*` in the bytes too, also in the TCP
+layer. With an `https://` URL the trace shows the decrypted HTTP, and a note at the start of
+each connection names the TLS version and the server certificate; the encrypted bytes on the
+wire are not shown.
+
+<Image src={opcxmlTraceLight} alt="Frame trace of an OPC XML-DA client: polled refresh answers with the changed items, and the decoded SOAP of one of them" class="dark:sl-hidden" />
+<Image src={opcxmlTraceDark} alt="Frame trace of an OPC XML-DA client: polled refresh answers with the changed items, and the decoded SOAP of one of them" class="light:sl-hidden" />
+
 ### Filters
 
 - **Text**: matches the summary and the field values, e.g. `inrogen`, `IOA 2001`, `M_SP` or
-  `HR:40101`, `DB1.DBB10`, `AI 0` or `ns=2;s=Pump1.Speed`.
+  `HR:40101`, `DB1.DBB10`, `AI 0`, `ns=2;s=Pump1.Speed` or `E_UNKNOWNITEMNAME`.
 - **name=value**: a field with that value, e.g. `COT=47`, `CA=5` or `FC=3` (or that text).
 - **Direction**, **Warnings and errors**, **Hints only**, a **connection** (each reconnect is a
   new connection) and **TCP layer**.
@@ -266,12 +305,19 @@ The trace adds a **Hint** where it recognises a known pattern, for example:
 - an OPC UA node status once per NodeId: *BadNodeIdUnknown* (check namespace and identifier in
   **Nodes**), *BadNotReadable*, *BadNotWritable*, *BadTypeMismatch*;
 - an OPC UA request without a response, a missed keep-alive, and a secured channel whose
-  services the trace cannot show.
+  services the trace cannot show;
+- an OPC XML-DA server's HTTP error with what to look at: *401* (user name and password, or
+  Windows authentication that ByteBridge does not do), *403*, *404* (the path in **Service
+  URL**), a proxy error (*502* to *504*), and an answer that is not SOAP (a web page);
+- an OPC XML-DA fault or item result once per item: *E_UNKNOWNITEMNAME* (check **Items**),
+  *E_READONLY* and the other write errors, *E_SERVERSTATE*, *E_BUSY*, a subscription the server
+  forgot, changes lost in the server's buffer (*DataBufferOverflow*), a server state other than
+  *running*, and an item with a bad or uncertain quality.
 
 ### Device clock
 
 For values with a time tag (IEC 104 time tags, DNP3 events with time, OPC UA source
-timestamps), **Delay** compares the device's time with the time the frame arrived (measured
+timestamps, the reply time of OPC XML-DA answers), **Delay** compares the device's time with the time the frame arrived (measured
 against your laptop's clock). The trace points out:
 
 - an offset of about a whole number of hours: a time zone, daylight saving or UTC/local setting;
