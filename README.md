@@ -5,7 +5,7 @@ Source of the public ByteBridge website, published with GitHub Pages.
 - Static HTML and CSS, no build step. [htmx](https://htmx.org) (vendored in `site/assets/htmx.min.js`)
   loads the example setups and the download section as small HTML fragments from `site/partials/`.
 - Diagrams are inline SVG styled by `site/assets/style.css`, so they follow the light and dark theme.
-- Links are relative, so the site works under [](https://bartk1990.github.io/byte-bridge-docs)
+- Links are relative, so the site works under [https://bartk1990.github.io/byte-bridge-docs](https://bartk1990.github.io/byte-bridge-docs)
   and on a custom domain.
 - The documentation (`/docs/`, linked from the main menu) is an [Astro Starlight](https://starlight.astro.build)
   project in `docs/`. The Pages workflow builds it into `site/docs/`.
