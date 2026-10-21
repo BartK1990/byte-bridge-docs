@@ -22,6 +22,10 @@ import dnp3CheckLight from '../../../assets/screens/dnp3-check-light.webp';
 import dnp3CheckDark from '../../../assets/screens/dnp3-check-dark.webp';
 import dnp3TraceLight from '../../../assets/screens/dnp3-trace-light.webp';
 import dnp3TraceDark from '../../../assets/screens/dnp3-trace-dark.webp';
+import opcuaCheckLight from '../../../assets/screens/opcua-check-light.webp';
+import opcuaCheckDark from '../../../assets/screens/opcua-check-dark.webp';
+import opcuaTraceLight from '../../../assets/screens/opcua-trace-light.webp';
+import opcuaTraceDark from '../../../assets/screens/opcua-trace-dark.webp';
 
 When a device does not answer, or a value or command does not arrive, open the endpoint from the
 **Endpoints** list and switch to the **Troubleshoot** tab. It has two tools:
@@ -32,8 +36,8 @@ When a device does not answer, or a value or command does not arrive, open the e
   below it, and explains each field.
 
 The tab is there for client endpoints. Every TCP protocol has the TCP part of the check;
-**IEC 60870-5-104**, **Modbus TCP**, **Siemens S7** and **DNP3** also have their protocol steps
-and the frame trace. The other protocols follow.
+**IEC 60870-5-104**, **Modbus TCP**, **Siemens S7**, **DNP3** and **OPC UA** also have their
+protocol steps and the frame trace. OPC XML-DA follows.
 
 ## Connection check
 
@@ -82,6 +86,16 @@ The DNP3 check reads class 0 only: events stay in the outstation's buffer for th
 confirms an empty (null) unsolicited response, which many outstations wait for before they
 answer anything, but never one that carries events.
 
+For **OPC UA** (it reads and browses, writes nothing and creates no subscription):
+
+| Step | What it tells you |
+|---|---|
+| Hello | The server accepts the connection to the **Endpoint URL**. A server that does not know the URL's path answers with *BadTcpEndpointUrlInvalid*. |
+| Secure channel | A secure channel with security policy None opens; servers allow it for discovery even when their sessions need security. |
+| Endpoints | The endpoints the server offers, each with its logins (`None (anonymous)`, `Basic256Sha256 SignAndEncrypt (user name)`). Fails when none matches the configured **Security policy**, **Security mode** and login, naming what is offered, or when the server certificate is not trusted yet: trust it on the **Certificates** page, where the check, like a connection attempt, puts it. |
+| Session | A session is created and activated with the configured security, user name and password, on a second connection for a secured policy, as the client does. A wrong password fails here. |
+| Configured nodes | Every NodeId in **Nodes** is read and every one that fails is listed with its status (`ns=2;s=Pump1.Speed: BadNodeIdUnknown`); with **Browse for variables** on, the variables below the browse root are counted. |
+
 Steps after a failed one are skipped. Below the steps, **What the check sent and received**
 shows the frames of the check.
 
@@ -96,6 +110,9 @@ shows the frames of the check.
 
 <Image src={dnp3CheckLight} alt="Connection check of a DNP3 RTU configured for outstation address 10: the device sends from address 1024, with the hint to set it" class="dark:sl-hidden" />
 <Image src={dnp3CheckDark} alt="Connection check of a DNP3 RTU configured for outstation address 10: the device sends from address 1024, with the hint to set it" class="light:sl-hidden" />
+
+<Image src={opcuaCheckLight} alt="Connection check of an OPC UA server: hello, secure channel, endpoints and session pass; one configured NodeId does not exist, with a hint" class="dark:sl-hidden" />
+<Image src={opcuaCheckDark} alt="Connection check of an OPC UA server: hello, secure channel, endpoints and session pass; one configured NodeId does not exist, with a hint" class="light:sl-hidden" />
 
 :::note[The check respects a running connection]
 Many RTUs and Modbus gateways accept only one connection. So the check adapts to the endpoint:
@@ -180,11 +197,28 @@ explained once.
 <Image src={dnp3TraceLight} alt="Frame trace of a DNP3 master: unsolicited analog and counter events with their UTC time stamps" class="dark:sl-hidden" />
 <Image src={dnp3TraceDark} alt="Frame trace of a DNP3 master: unsolicited analog and counter events with their UTC time stamps" class="light:sl-hidden" />
 
+### OPC UA messages
+
+Each message shows its header (type, chunk, size) and the secure channel; on a channel with
+security policy **None** also the service: `#5 Read: ns=1;s=Sine`, then `#5 Response to Read:
+ns=1;s=Sine = 0.5 (Double)`. Subscriptions are explained with their monitored items, and every
+data change names its NodeId, also when you start the trace long after the client subscribed:
+`#12 Response to Publish: ns=1;s=Sine = 0.75 (Double)`. Values carry their status and source
+timestamp, so the **Delay** column compares the server's clock with yours. A login shows the user
+name, never the password: it is replaced by `*` in the bytes too, also in the TCP layer.
+
+With a secured policy (Basic256Sha256 and the others) the messages are signed and encrypted: the
+trace shows their headers and sizes only. To see the services, try the same server with policy
+None on a test system.
+
+<Image src={opcuaTraceLight} alt="Frame trace of an OPC UA client filtered by NodeId: data changes of ns=1;s=Sine with their source timestamps" class="dark:sl-hidden" />
+<Image src={opcuaTraceDark} alt="Frame trace of an OPC UA client filtered by NodeId: data changes of ns=1;s=Sine with their source timestamps" class="light:sl-hidden" />
+
 ### Filters
 
 - **Text**: matches the summary and the field values, e.g. `inrogen`, `IOA 2001`, `M_SP` or
-  `HR:40101`, `DB1.DBB10` or `AI 0`.
-- **name=value**: a field with that value, e.g. `COT=47`, `CA=5` or `FC=3`.
+  `HR:40101`, `DB1.DBB10`, `AI 0` or `ns=2;s=Pump1.Speed`.
+- **name=value**: a field with that value, e.g. `COT=47`, `CA=5` or `FC=3` (or that text).
 - **Direction**, **Warnings and errors**, **Hints only**, a **connection** (each reconnect is a
   new connection) and **TCP layer**.
 - **Follow** scrolls to new records; untick it to read in peace.
@@ -224,12 +258,21 @@ The trace adds a **Hint** where it recognises a known pattern, for example:
   *device restart* bit that stays set after the master cleared it;
 - a DNP3 control status other than SUCCESS, once per point, with what it means (for example
   *NO_SELECT*: OPERATE without a matching SELECT);
-- a DNP3 request without a response, and a link keep-alive without an answer.
+- a DNP3 request without a response, and a link keep-alive without an answer;
+- the OPC UA server's error with what to look at: an unknown path in **Endpoint URL**, a security
+  policy or mode it does not offer (with the ones it offers), our certificate not trusted by the
+  server, a login refused (user name, password, or anonymous not allowed), a lost session, too
+  many sessions, subscriptions or monitored items;
+- an OPC UA node status once per NodeId: *BadNodeIdUnknown* (check namespace and identifier in
+  **Nodes**), *BadNotReadable*, *BadNotWritable*, *BadTypeMismatch*;
+- an OPC UA request without a response, a missed keep-alive, and a secured channel whose
+  services the trace cannot show.
 
 ### Device clock
 
-For values with a time tag (IEC 104 time tags, DNP3 events with time), **Delay** compares the
-device's time with the time the frame arrived (measured against your laptop's clock). The trace points out:
+For values with a time tag (IEC 104 time tags, DNP3 events with time, OPC UA source
+timestamps), **Delay** compares the device's time with the time the frame arrived (measured
+against your laptop's clock). The trace points out:
 
 - an offset of about a whole number of hours: a time zone, daylight saving or UTC/local setting;
 - a clock that drifts, one that was set during the trace, or a time in the future;
