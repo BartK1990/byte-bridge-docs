@@ -38,6 +38,7 @@
             <a href="#roles">Roles</a>
             <a href="#tester">Tester</a>
             <a href="#gateway">Gateway</a>
+            <a href="#security">Security</a>
             <a href="#setups">Setups</a>
             <a class="keep" href="docs/">Docs</a>
             <a class="btn small" href="#download">Download</a>
@@ -364,6 +365,7 @@ p1 + p2
                 <p class="muted">Gateways keep working when the uplink does not.</p>
                 <ul class="ticks">
                     <li>Values are buffered on disk while the central is unreachable</li>
+                    <li>Connects out only: no inbound port to open, <a href="#security">see how</a></li>
                     <li>Mutual TLS with certificates issued and renewed by Central</li>
                     <li>Signed configurations, versioned, with one-click rollback</li>
                     <li>Remote commands only where you allow them, every one audited</li>
@@ -381,7 +383,161 @@ p1 + p2
     </div>
 </section>
 
-<section id="setups" class="alt">
+<section id="security" class="alt">
+    <div class="wrap">
+        <div class="section-head">
+            <div class="eyebrow">Security</div>
+            <h2>Connects out. Never lets anyone in.</h2>
+            <p>A gateway sits between the OT network and the outside world, so it is built like a one-way
+                door. It opens every connection to Central itself, from the inside out. Central never
+                connects to a gateway, and no inbound port has to be opened in the plant firewall.</p>
+        </div>
+
+        <figure class="diagram">
+            <svg viewBox="0 0 880 440" role="img" aria-labelledby="sec-t">
+                <title id="sec-t">Field devices and local SCADA stay in the OT network. The gateway at the edge opens two outbound connections through the firewall to Central: MQTT 5 with mutual TLS on port 8883 and HTTPS on port 443. Inbound connections from the IT network or the internet are blocked.</title>
+                <defs>
+                    <marker id="sec-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+                    <marker id="sec-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+                    <marker id="sec-x" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="xa" d="M0 0 10 5 0 10z"/></marker>
+                </defs>
+
+                <!-- OT network -->
+                <rect class="zone" x="10" y="30" width="310" height="370" rx="14"/>
+                <text class="zt" x="26" y="54">OT NETWORK · LEVEL 0–2</text>
+                <rect class="n" x="30" y="72" width="160" height="50" rx="10"/>
+                <text class="t" x="110" y="94" text-anchor="middle">RTU</text>
+                <text class="tm" x="110" y="112" text-anchor="middle">IEC 60870-5-104</text>
+                <rect class="n" x="30" y="137" width="160" height="50" rx="10"/>
+                <text class="t" x="110" y="159" text-anchor="middle">PLC</text>
+                <text class="tm" x="110" y="177" text-anchor="middle">Siemens S7</text>
+                <rect class="n" x="30" y="202" width="160" height="50" rx="10"/>
+                <text class="t" x="110" y="224" text-anchor="middle">Energy meter</text>
+                <text class="tm" x="110" y="242" text-anchor="middle">Modbus TCP</text>
+                <rect class="n" x="30" y="282" width="160" height="56" rx="10"/>
+                <text class="t" x="110" y="305" text-anchor="middle">Local SCADA / HMI</text>
+                <text class="tm" x="110" y="324" text-anchor="middle">gateway's OPC UA server</text>
+                <text class="tm" x="165" y="380" text-anchor="middle">field protocols stay inside the OT network</text>
+
+                <path class="e" d="M190 97C280 97 270 160 353 160" marker-end="url(#sec-a)"/>
+                <path class="e" d="M190 162C270 162 280 185 353 185" marker-end="url(#sec-a)"/>
+                <path class="e" d="M190 227C270 227 280 210 353 210" marker-end="url(#sec-a)"/>
+                <path class="e" d="M190 310C280 310 270 262 353 262" marker-end="url(#sec-a)"/>
+
+                <!-- edge -->
+                <rect class="zone" x="335" y="30" width="225" height="370" rx="14"/>
+                <text class="zt" x="351" y="54">EDGE · OT DMZ</text>
+                <rect class="nb" x="355" y="110" width="185" height="180" rx="14"/>
+                <text class="tb" x="447" y="142" text-anchor="middle">Gateway</text>
+                <text class="tba" x="447" y="172" text-anchor="middle">opens every link itself</text>
+                <text class="tba" x="447" y="194" text-anchor="middle">own key, never leaves it</text>
+                <text class="tba" x="447" y="216" text-anchor="middle">checks signed configs</text>
+                <text class="tba" x="447" y="238" text-anchor="middle">remote commands off</text>
+                <text class="tba" x="447" y="260" text-anchor="middle">web UI on localhost</text>
+                <text class="tm" x="447" y="330" text-anchor="middle">keeps running and buffers</text>
+                <text class="tm" x="447" y="348" text-anchor="middle">values if the link is down</text>
+
+                <!-- firewall -->
+                <rect class="fw" x="572" y="30" width="18" height="370" rx="4"/>
+                <text class="tx" x="581" y="424" text-anchor="middle">plant firewall</text>
+
+                <!-- IT / cloud -->
+                <rect class="zone" x="602" y="30" width="268" height="370" rx="14"/>
+                <text class="zt" x="618" y="54">IT · DATA CENTRE · CLOUD</text>
+                <rect class="nb" x="625" y="110" width="225" height="100" rx="14"/>
+                <text class="tb" x="737" y="144" text-anchor="middle">Central</text>
+                <text class="tba" x="737" y="170" text-anchor="middle">MQTT broker · HTTPS</text>
+                <text class="tba" x="737" y="192" text-anchor="middle">CA · signer · audit log</text>
+
+                <path class="f" d="M540 160H621" marker-end="url(#sec-b)"/>
+                <path class="f" d="M540 192H621" marker-end="url(#sec-b)"/>
+                <text class="lbl" x="625" y="238">→ MQTT 5 · mutual TLS · 8883</text>
+                <text class="lbl" x="625" y="258">→ HTTPS · TLS · 443</text>
+
+                <rect class="n" x="670" y="300" width="180" height="54" rx="10"/>
+                <text class="t" x="760" y="323" text-anchor="middle">IT network, internet</text>
+                <text class="tm" x="760" y="341" text-anchor="middle">tries to connect in</text>
+                <path class="x" d="M668 327H630" stroke-dasharray="5 4" marker-end="url(#sec-x)"/>
+                <path class="x" d="M574 319 588 335M588 319 574 335"/>
+                <text class="tx" x="760" y="380" text-anchor="middle">no inbound port, refused</text>
+            </svg>
+            <figcaption class="caption">The gateway is the only conduit between the OT network and the outside. Live values, commands from Central and configuration notices all travel over the connection the gateway opened.</figcaption>
+        </figure>
+
+        <div class="grid c3" style="margin-top: 32px">
+            <article class="card">
+                <h3>Inside out, by design</h3>
+                <p class="muted">Two outbound connections are all a gateway needs: MQTT 5 to the broker
+                    and HTTPS to Central. Firewall rules stay short and easy to audit.</p>
+                <ul class="ticks">
+                    <li>No inbound port, no VPN, works behind NAT</li>
+                    <li>Device protocols never leave the OT network</li>
+                    <li>Server endpoints listen only where you configure them</li>
+                </ul>
+            </article>
+            <article class="card">
+                <h3>Strong identity, encrypted links</h3>
+                <p class="muted">Every gateway proves who it is with its own certificate, issued by
+                    Central's certificate authority.</p>
+                <ul class="ticks">
+                    <li>TLS 1.2/1.3 with a client certificate per gateway</li>
+                    <li>Private key created on the gateway, never copied</li>
+                    <li>90-day certificates, renewed automatically</li>
+                    <li>Revoke one and the broker drops it at once</li>
+                </ul>
+            </article>
+            <article class="card">
+                <h3>The site keeps the final say</h3>
+                <p class="muted">How a gateway is reached, and whether it accepts commands, is set on the gateway only.</p>
+                <ul class="ticks">
+                    <li>Configurations signed with Ed25519, older versions refused</li>
+                    <li>Remote commands off unless the gateway allows them locally</li>
+                    <li>Commands expire after 30 s and are never run twice</li>
+                    <li>Passwords stored hashed or encrypted, never in plain text</li>
+                </ul>
+            </article>
+        </div>
+
+        <div class="split" style="margin-top: 56px; align-items: start">
+            <div>
+                <h2>Supports your NIS2 measures in OT</h2>
+                <p class="muted">The NIS2 directive asks operators of essential and important entities,
+                    energy, water, manufacturing and more, to manage the cyber risk of their networks,
+                    OT included. ByteBridge gives you the technical measures for the link between your
+                    plants and the rest of the company, and the records to show for them.</p>
+                <p class="muted">The design follows the zones and conduits model of IEC 62443: the OT
+                    network is its own zone, and the gateway is the single, documented conduit out of it.</p>
+                <p class="muted" style="font-size: .9rem">NIS2 obligations rest with the operator, not
+                    with a product. ByteBridge supports the measures below; it is not a certification.
+                    <a href="docs/gateway/security/">Security details</a></p>
+            </div>
+            <div class="grid c2">
+                <article class="card">
+                    <h3>Cryptography</h3>
+                    <p class="muted">Art. 21(2)(h). TLS on every link, mutual authentication, signed
+                        configurations, secrets encrypted at rest.</p>
+                </article>
+                <article class="card">
+                    <h3>Access control</h3>
+                    <p class="muted">Art. 21(2)(i). Viewer, Engineer, Operator and Admin roles, single
+                        sign-on, one identity per gateway.</p>
+                </article>
+                <article class="card">
+                    <h3>Incident handling</h3>
+                    <p class="muted">Art. 21(2)(b). Audit log of every command and deployment, online
+                        state of each gateway, instant revocation.</p>
+                </article>
+                <article class="card">
+                    <h3>Business continuity</h3>
+                    <p class="muted">Art. 21(2)(c). Gateways run on when the link fails, buffer values on
+                        disk, and roll back to any earlier configuration.</p>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="setups">
     <div class="wrap">
         <div class="section-head">
             <div class="eyebrow">Example setups</div>
@@ -403,7 +559,7 @@ p1 + p2
     </div>
 </section>
 
-<section id="download">
+<section id="download" class="alt">
     <div class="wrap">
         <div class="download">
             <div>

@@ -8,7 +8,8 @@ sidebar:
 ByteBridge Central follows many gateways: which are online, their live values, commands from
 operators and configurations deployed from one place. A gateway opens one outbound MQTT 5
 connection to central's broker (TLS with its own client certificate) and publishes every
-endpoint as a Sparkplug B device. No inbound port is needed on the gateway.
+endpoint as a Sparkplug B device. No inbound port is needed on the gateway; see
+[Security and NIS2](../security/) for the firewall rules and what protects the link.
 
 ## 1. Add the gateway in central
 
