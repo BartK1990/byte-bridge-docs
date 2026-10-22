@@ -32,8 +32,9 @@ device for all its values again (for IEC 104 this is a general interrogation). *
 
 The result comes back from the device: *Confirmed*, *Rejected*, *Timeout* or *Not connected*.
 That tells you not only that the command was sent, but whether the device accepted it. To see the
-frames of a command, start the frame trace on the **Troubleshoot** tab first (see
-[Troubleshoot a connection](../troubleshoot/)).
+frames of a command, start the frame trace on the **Troubleshoot** tab first: the result then
+offers **Show frames**, which opens the trace with only that command's frames (the same for
+**Refresh**). See [Troubleshoot a connection](../troubleshoot/#frames-of-a-command-or-refresh).
 
 Examples:
 
