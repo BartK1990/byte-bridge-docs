@@ -72,7 +72,10 @@ later.)
 - **Auto-read** reads again every 1, 2, 5 or 10 seconds and highlights the cells that changed. A
   counter that climbs by one in one column and jumps around in the others gives the order away.
   Auto-read stops when you close the panel, or after 10 minutes.
-- **Registers in hex** switches the raw registers between hex and decimal.
+- **Registers as** shows the raw registers in hex, in decimal or as **bits**. Bits are for status
+  and alarm words: each register is shown as 16 bits, bit 15 on the left and bit 0 on the right
+  (hover a bit for its number, such as `HR:40001 bit 3`). With auto-read, a bit that flipped since
+  the previous read is marked, so you can toggle something on the device and see which bit moves.
 
 A request that fails, for example because the range has a hole (exception 02, *illegal data
 address*), is listed with its range and a hint. The other requests are still shown; registers that
