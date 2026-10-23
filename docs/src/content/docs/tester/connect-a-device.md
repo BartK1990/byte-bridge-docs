@@ -25,10 +25,15 @@ and on the **Dashboard**. If it stays *connecting*, use **Test connection** in t
 | Unit id | `1` | |
 | Points to poll | `HR:40001:f32, HR:40003, IR:30001:u32, CO:1, DI:10001` | separated by commas |
 | Poll interval (ms) | `1000` | |
-| Word order of 32-bit values | `big` | change it if 32-bit values look wrong |
+| Byte order of multi-register values | `ABCD` | `CDAB`, `BADC` or `DCBA` if 32- and 64-bit values look wrong |
 
 Address prefixes: `HR` holding register, `IR` input register, `CO` coil, `DI` discrete input.
-The optional suffix sets the register type: `u16` (default), `i16`, `u32`, `i32`, `f32`.
+The optional suffix sets the register type: `u16` (default), `i16`, `u32`, `i32`, `f32`, and the
+64-bit `u64`, `i64`, `f64` (energy counters, doubles). A second suffix sets the byte order of one
+point when it differs from the endpoint's: `HR:40011:f32:CDAB`.
+
+Not sure where a value starts or which byte order the meter uses? **Read registers** in the editor
+shows the registers in all four orders side by side: see [Finding the byte order](../byte-order/).
 
 ByteBridge merges neighbouring addresses into one read request (**Max gap to merge reads**,
 **Registers per read request**), so a long point list stays fast.

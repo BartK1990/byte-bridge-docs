@@ -44,7 +44,9 @@ When a device does not answer, or a value or command does not arrive, open the e
   below it, and explains each field; you can export it for Wireshark;
 - the **AI report** puts the configuration, the check and the trace into one file for the AI
   assistant of your choice (or a colleague);
-- **Decode bytes** explains hex copied from a SCADA log or another tool.
+- **Decode bytes** explains hex copied from a SCADA log or another tool;
+- **Registers** (Modbus TCP) reads a range of registers and shows them in all four byte orders:
+  see [Finding the byte order](../byte-order/).
 
 Every TCP protocol has the TCP part of the check; **IEC 60870-5-104**, **Modbus TCP**,
 **Siemens S7**, **DNP3**, **OPC UA** and **OPC XML-DA** also have their protocol steps and the
