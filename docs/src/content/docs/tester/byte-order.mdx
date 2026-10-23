@@ -1,0 +1,102 @@
+---
+title: Finding the byte order
+description: Read a range of Modbus registers, see every start address in all four byte orders side by side, and turn the right cell into a point.
+sidebar:
+  order: 5
+---
+
+import { Image } from 'astro:assets';
+import registersLight from '../../../assets/screens/modbus-registers-light.webp';
+import registersDark from '../../../assets/screens/modbus-registers-dark.webp';
+import editorLight from '../../../assets/screens/modbus-editor-registers-light.webp';
+import editorDark from '../../../assets/screens/modbus-editor-registers-dark.webp';
+
+Modbus only knows 16-bit registers. A 32-bit or 64-bit value spans two or four of them, and every
+manufacturer picks its own order. A wrong order still gives a number, just a wrong one, and manuals
+often get it wrong or leave it out. The register map may also start a value at an odd or at an
+even register.
+
+The **register explorer** takes the guessing out: it reads a range of registers once and shows
+every possible start address with the value decoded in all four orders, side by side. You pick the
+cell that matches the device, and ByteBridge turns it into a point. ByteBridge never picks an order
+by itself: a wrong guess would look just as plausible as the right one.
+
+## The four byte orders
+
+For a 32-bit value with bytes `A B C D` (`A` the most significant):
+
+| Order | First register | Second register | Also called |
+|---|---|---|---|
+| `ABCD` | A B | C D | big-endian, the Modbus convention (the default) |
+| `CDAB` | C D | A B | word swap, low word first |
+| `BADC` | B A | D C | byte swap |
+| `DCBA` | D C | B A | little-endian |
+
+64-bit values (`u64`, `i64`, `f64`) follow the same rule over four registers; `CDAB` then means the
+four words in reverse order. 16-bit values only change with `BADC` and `DCBA` (bytes swapped).
+
+The endpoint setting **Byte order of multi-register values** applies to every point. A point that
+differs gets its own order after the type: `HR:40011:f32:CDAB`.
+
+## Read registers
+
+Open a Modbus TCP client endpoint and switch to **Troubleshoot**: the **Registers** panel is there.
+In the endpoint editor, **Read registers** opens the same panel for the settings you are editing,
+before you save them.
+
+1. Choose **Holding registers** or **Input registers**, enter the **First register** (`40001`, or an
+   address such as `HR:40001`) and the **Count** (up to 1000), and click **Read**.
+2. Choose the **Type**. Changing it decodes the same registers again, without reading.
+3. Each row is a start register; the columns are the value in `ABCD`, `CDAB`, `BADC` and `DCBA`.
+
+<Image src={registersLight} alt="The Registers panel of a Modbus meter: 16 holding registers decoded as f32 in four orders; the known value 50 matches in the CDAB column at HR:40001 and HR:40004" class="dark:sl-hidden" />
+<Image src={registersDark} alt="The Registers panel of a Modbus meter: 16 holding registers decoded as f32 in four orders; the known value 50 matches in the CDAB column at HR:40001 and HR:40004" class="light:sl-hidden" />
+
+Here the meter stores its values low word first. The value 50.0 shows up in the `CDAB` column at
+HR:40001, while `ABCD` at HR:40001 shows a tiny number such as `2.3777e-41`. (`ABCD` at HR:40002
+also shows 50, because it reads the same two registers the other way round, from one register
+later.)
+
+### Help to decide
+
+- **Known value**: type a value you can see on the device (its display, the vendor's tool, an
+  example in the manual). Every matching cell is highlighted and listed above the table as an
+  address with type and order, for example `HR:40001:f32:CDAB`. Floats match within 0.1 % unless
+  you set a **Tolerance** (`0.5`, or `1%`); integers match exactly.
+- **Dimmed values** (with a `·`) are floats that look implausible: not a number, infinite, a
+  denormal (tiny) number, or larger than 10<sup>12</sup> or smaller than 10<sup>-12</sup>. Hover
+  for the reason. This is a hint only: nothing is hidden or chosen for you.
+- **Start at** shows only the rows that start at the first or the second register of the range
+  (for 64-bit types, the first to fourth), for register maps where values start at odd or at even
+  numbers. The registers are not read again.
+- **Auto-read** reads again every 1, 2, 5 or 10 seconds and highlights the cells that changed. A
+  counter that climbs by one in one column and jumps around in the others gives the order away.
+  Auto-read stops when you close the panel, or after 10 minutes.
+- **Registers in hex** switches the raw registers between hex and decimal.
+
+A request that fails, for example because the range has a hole (exception 02, *illegal data
+address*), is listed with its range and a hint. The other requests are still shown; registers that
+could not be read stay empty, never 0.
+
+## Turn a cell into a point
+
+In the editor, hover a value: **add** puts the address into **Points to poll** (without the order
+when it is the endpoint's order, so `HR:40001:f32` rather than `HR:40001:f32:ABCD`), and **use
+CDAB** makes it the endpoint's byte order. When you change the order, a note lists the configured
+points without an order of their own whose values will change. Nothing is saved until you click
+**Save**.
+
+<Image src={editorLight} alt="Read registers in the endpoint editor: u32 values starting at even registers with auto-read every second; the counter at HR:40006 climbs by one in the CDAB column, with the add and use actions on the cell" class="dark:sl-hidden" />
+<Image src={editorDark} alt="Read registers in the endpoint editor: u32 values starting at even registers with auto-read every second; the counter at HR:40006 climbs by one in the CDAB column, with the add and use actions on the cell" class="light:sl-hidden" />
+
+## Which connection is used
+
+Many Modbus devices accept only one or two connections at a time. So the explorer uses the
+endpoint's own connection while it is online: its requests go out one at a time between the polls,
+and a poll that is due goes first. Polling continues and no second connection is opened. When the
+endpoint is connecting or faulted, its reconnect attempts pause while the explorer reads on a
+connection of its own; when it is stopped (or not saved yet), the explorer opens a connection just
+for the read.
+
+The explorer only reads (function codes 3 and 4) and never writes. While the endpoint's frame trace
+runs, **Show frames** filters the trace to the explorer's requests and answers.
