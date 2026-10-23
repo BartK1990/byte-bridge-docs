@@ -8,6 +8,8 @@ sidebar:
 import { Image } from 'astro:assets';
 import registersLight from '../../../assets/screens/modbus-registers-light.webp';
 import registersDark from '../../../assets/screens/modbus-registers-dark.webp';
+import bitsLight from '../../../assets/screens/modbus-registers-bits-light.webp';
+import bitsDark from '../../../assets/screens/modbus-registers-bits-dark.webp';
 import editorLight from '../../../assets/screens/modbus-editor-registers-light.webp';
 import editorDark from '../../../assets/screens/modbus-editor-registers-dark.webp';
 
@@ -76,6 +78,9 @@ later.)
   and alarm words: each register is shown as 16 bits, bit 15 on the left and bit 0 on the right
   (hover a bit for its number, such as `HR:40001 bit 3`). With auto-read, a bit that flipped since
   the previous read is marked, so you can toggle something on the device and see which bit moves.
+
+<Image src={bitsLight} alt="Registers shown as bits: u16 values with each register as 16 bits; at HR:40006 the counter's lowest bit, which flipped since the previous read, is highlighted" class="dark:sl-hidden" />
+<Image src={bitsDark} alt="Registers shown as bits: u16 values with each register as 16 bits; at HR:40006 the counter's lowest bit, which flipped since the previous read, is highlighted" class="light:sl-hidden" />
 
 A request that fails, for example because the range has a hole (exception 02, *illegal data
 address*), is listed with its range and a hint. The other requests are still shown; registers that
