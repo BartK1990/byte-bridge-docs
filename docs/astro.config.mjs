@@ -15,7 +15,7 @@ export default defineConfig({
         starlight({
             title: 'ByteBridge Docs',
             description: 'How to use the ByteBridge tester and configure a ByteBridge gateway.',
-            logo: { light: './src/assets/logo-light.webp', dark: './src/assets/logo-dark.webp', alt: 'ByteBridge' },
+            logo: { light: './src/assets/logo-light.gif', dark: './src/assets/logo-dark.gif', alt: 'ByteBridge' },
             favicon: '/favicon.svg',
             customCss: ['./src/styles/brand.css'],
             social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/BartK1990/byte-bridge-docs' }],
