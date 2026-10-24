@@ -41,6 +41,7 @@ Each protocol writes addresses its own way:
 | Modbus TCP | `HR:40001:f32`, `IR:30001`, `CO:1`, `DI:10001` |
 | DNP3 | `BI:0`, `DBI:0`, `BO:0`, `CT:0`, `FC:0`, `AI:0`, `AO:0` |
 | OPC UA | node id, e.g. `ns=2;s=Pump1.Speed` |
+| OPC DA | item ID, e.g. `Random.Int4` or `Plant.Line1.Speed` |
 | OPC XML-DA | `ItemName`, or `ItemPath\|ItemName` |
 | Siemens S7 | `DB1.DBX0.0`, `DB1.DBW2:INT`, `DB1.DBD4:REAL`, `MW10`, `I0.0`, `Q0.1`, `T5`, `C3` |
 | Simulator | point number, `1` to N |

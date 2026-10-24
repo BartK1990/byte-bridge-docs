@@ -29,7 +29,7 @@ gateway.
 |---|---|---|---|---|
 | MQTT 5 to the broker | gateway → central | 8883 | live values (Sparkplug B), online state, commands, configuration notices | TLS 1.2/1.3, a client certificate per gateway, topic rules per gateway |
 | HTTPS to central | gateway → central | 443 | enrollment, certificate renewal, configuration downloads | TLS; every configuration checked against a SHA-256 hash and an Ed25519 signature |
-| Device protocols | gateway → devices | per protocol | IEC 104, Modbus, S7, DNP3, OPC UA, OPC XML-DA | stay inside the OT network |
+| Device protocols | gateway → devices | per protocol | IEC 104, Modbus, S7, DNP3, OPC UA, OPC XML-DA, OPC DA (local COM, no network) | stay inside the OT network |
 | Server endpoints | OT clients → gateway | as configured | SCADA, HMI or historians reading the gateway | open only the ports of the servers you configure, on the OT side |
 
 Commands from central and configuration notices travel back over the MQTT connection the

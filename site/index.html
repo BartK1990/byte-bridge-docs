@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ByteBridge · Industrial protocol tester and gateway</title>
-    <meta name="description" content="ByteBridge is one lightweight application for industrial protocols: a tester on your desk, a gateway at the edge, and a central hub that connects many gateways. IEC 104, Modbus, DNP3, OPC UA, OPC XML-DA, Siemens S7.">
+    <meta name="description" content="ByteBridge is one lightweight application for industrial protocols: a tester on your desk, a gateway at the edge, and a central hub that connects many gateways. IEC 104, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA, Siemens S7.">
     <meta name="theme-color" content="#111828">
     <meta property="og:title" content="ByteBridge · Industrial protocol tester and gateway">
     <meta property="og:description" content="Test, bridge and connect industrial protocols with one lightweight application.">
@@ -68,6 +68,7 @@
                 <li>Modbus TCP</li>
                 <li>DNP3</li>
                 <li>OPC UA</li>
+                <li>OPC DA (classic)</li>
                 <li>OPC XML-DA</li>
                 <li>Siemens S7</li>
                 <li>REST</li>
@@ -189,14 +190,14 @@
                 <div class="eyebrow">Tester</div>
                 <h2>One interface for every protocol</h2>
                 <p class="muted">Stop switching between a different tool for every protocol. ByteBridge gives
-                    IEC 104, Modbus, DNP3, OPC UA, OPC XML-DA and Siemens S7 the same screens: the same
+                    IEC 104, Modbus, DNP3, OPC UA, classic OPC DA, OPC XML-DA and Siemens S7 the same screens: the same
                     connection editor, the same live data table, the same way to send a command.</p>
                 <ul class="ticks">
                     <li>Act as the client to read a real device, or as the server to simulate one</li>
                     <li>Live values with quality, time stamp and a trend for every point</li>
                     <li>Send commands and see the device confirm or reject them</li>
                     <li>Troubleshoot step by step: TCP port, protocol start, interrogation, with a hint at the first failure</li>
-                    <li>Browse OPC UA and OPC XML-DA servers instead of typing addresses</li>
+                    <li>Browse OPC UA, OPC DA and OPC XML-DA servers instead of typing addresses</li>
                     <li>Built-in simulator to try everything without hardware</li>
                     <li>OPC UA security policies and certificate management included</li>
                 </ul>
@@ -206,7 +207,7 @@
                     <source srcset="assets/ui-live-dark.webp" media="(prefers-color-scheme: dark)">
                     <img class="shot" src="assets/ui-live-light.webp" width="1280" height="640" loading="lazy" decoding="async" alt="ByteBridge live data view of an IEC 104 connection: values, quality, time stamps and trends, with a command form">
                 </picture>
-                <figcaption class="caption">Live data of an IEC 104 connection. Modbus, DNP3, OPC UA, OPC XML-DA and S7 look and work the same.</figcaption>
+                <figcaption class="caption">Live data of an IEC 104 connection. Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA and S7 look and work the same.</figcaption>
             </figure>
         </div>
 
@@ -304,7 +305,7 @@
                 <rect class="n" x="10" y="94" width="180" height="46" rx="10"/><text class="t" x="100" y="122" text-anchor="middle">Modbus meters</text>
                 <rect class="n" x="10" y="154" width="180" height="46" rx="10"/><text class="t" x="100" y="182" text-anchor="middle">Siemens S7 PLCs</text>
                 <rect class="n" x="10" y="214" width="180" height="46" rx="10"/><text class="t" x="100" y="242" text-anchor="middle">DNP3 outstations</text>
-                <rect class="n" x="10" y="274" width="180" height="46" rx="10"/><text class="t" x="100" y="302" text-anchor="middle">OPC UA / XML-DA</text>
+                <rect class="n" x="10" y="274" width="180" height="46" rx="10"/><text class="t" x="100" y="302" text-anchor="middle">OPC UA · DA · XML-DA</text>
 
                 <path class="f" d="M190 57C250 57 250 150 300 160" marker-end="url(#gw-b)"/>
                 <path class="f" d="M190 117C245 117 250 165 300 168"/>
@@ -551,6 +552,7 @@ p1 + p2
              hx-on:htmx:before-request="if (event.detail.elt.parentElement === this) for (const a of this.children) a.setAttribute('aria-selected', a === event.detail.elt)">
             <a role="tab" aria-selected="true" href="partials/setups/tester.html" hx-get="partials/setups/tester.html">Protocol test bench</a>
             <a role="tab" aria-selected="false" href="partials/setups/converter.html" hx-get="partials/setups/converter.html">Protocol converter</a>
+            <a role="tab" aria-selected="false" href="partials/setups/opcda.html" hx-get="partials/setups/opcda.html">Classic OPC DA, made modern</a>
             <a role="tab" aria-selected="false" href="partials/setups/plc.html" hx-get="partials/setups/plc.html">Gateway on a PLC</a>
             <a role="tab" aria-selected="false" href="partials/setups/central.html" hx-get="partials/setups/central.html">Central for many sites</a>
         </div>

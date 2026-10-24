@@ -1,0 +1,62 @@
+<div class="setup-body">
+    <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 700 340" role="img" aria-labelledby="da-t">
+            <title id="da-t">A gateway on the Windows PC that hosts a classic OPC DA server reads it over local COM and passes the values on: to SCADA through its own OPC UA server, to ByteBridge Central over an outbound TLS link, and to MES or cloud systems through REST and MQTT</title>
+            <defs>
+                <marker id="da-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
+            </defs>
+
+            <!-- Windows PC -->
+            <rect class="n" x="10" y="20" width="380" height="300" rx="14"/>
+            <text class="t" x="200" y="48" text-anchor="middle">Windows PC at the plant</text>
+
+            <rect class="nz" x="30" y="140" width="140" height="80" rx="10"/>
+            <text class="t" x="100" y="174" text-anchor="middle">OPC DA server</text>
+            <text class="tm" x="100" y="194" text-anchor="middle">vendor DCS · PLC</text>
+            <text class="tm" x="100" y="262" text-anchor="middle">no DCOM across</text>
+            <text class="tm" x="100" y="280" text-anchor="middle">the network</text>
+
+            <path class="f" d="M170 180H218" marker-end="url(#da-a)"/>
+            <text class="lbl" x="194" y="168" text-anchor="middle">COM</text>
+
+            <rect class="nb" x="220" y="70" width="150" height="220" rx="12"/>
+            <text class="tb" x="295" y="104" text-anchor="middle">Gateway</text>
+            <text class="tba" x="295" y="128" text-anchor="middle">Windows service</text>
+            <text class="tba" x="295" y="162" text-anchor="middle">OPC DA client</text>
+            <text class="tba" x="295" y="186" text-anchor="middle">mappings · scaling</text>
+            <text class="tba" x="295" y="210" text-anchor="middle">calculations</text>
+            <text class="tba" x="295" y="234" text-anchor="middle">buffered uplink</text>
+
+            <!-- consumers -->
+            <path class="f" d="M370 140C395 140 395 80 418 80" marker-end="url(#da-a)"/>
+            <path class="f" d="M370 180H418" marker-end="url(#da-a)"/>
+            <path class="f" d="M370 220C395 220 395 280 418 280" marker-end="url(#da-a)"/>
+
+            <rect class="n" x="420" y="50" width="270" height="60" rx="10"/>
+            <text class="t" x="555" y="76" text-anchor="middle">SCADA / HMI</text>
+            <text class="tm" x="555" y="96" text-anchor="middle">OPC UA · IEC 104 · Modbus</text>
+            <rect class="nb" x="420" y="150" width="270" height="60" rx="12"/>
+            <text class="tb" x="555" y="176" text-anchor="middle">ByteBridge Central</text>
+            <text class="tba" x="555" y="196" text-anchor="middle">MQTT 5 · mutual TLS · outbound</text>
+            <rect class="n" x="420" y="250" width="270" height="60" rx="10"/>
+            <text class="t" x="555" y="276" text-anchor="middle">MES · historian · cloud</text>
+            <text class="tm" x="555" y="296" text-anchor="middle">REST · MQTT</text>
+        </svg>
+    </figure>
+    <div>
+        <h3>Classic OPC DA, made modern</h3>
+        <p class="muted">Many plants still run DCS, PLC or SCADA servers that offer only classic OPC DA, which
+            is tied to Windows and DCOM. Install a gateway on the PC that hosts the DA server: it reads the
+            items locally and passes them on through the protocols today's systems expect.</p>
+        <ul class="ticks">
+            <li>Local COM on the same PC: no DCOM settings across the network, no port 135 in the firewall</li>
+            <li>Browse the server's items or list them; subscription with update rate and deadband, or read polling</li>
+            <li>Republish them through the gateway's OPC UA server, with security policies and certificates, or as IEC 104, Modbus, REST or MQTT</li>
+            <li>Report to Central over one outbound, encrypted link that buffers while offline</li>
+            <li>Writes from SCADA or Central go back to the DA item, checked against its type</li>
+            <li>No OPC wrapper or third-party SDK to buy</li>
+        </ul>
+        <p class="muted">OPC DA 2.0x client, Windows gateways only. The DA server must be registered as a local
+            (EXE) server, with the OPC Core Components installed, as its setup usually does.</p>
+    </div>
+</div>
