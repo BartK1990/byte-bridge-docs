@@ -1,0 +1,240 @@
+---
+title: Import and export points
+description: Transfer variable definitions as CSV, preview additions and updates, and reuse point lists across endpoints.
+sidebar:
+  order: 3.5
+---
+
+import { Image } from 'astro:assets';
+import liveLight from '../../../assets/screens/point-csv-live-light.jpg';
+import liveDark from '../../../assets/screens/point-csv-live-dark.jpg';
+import exportLight from '../../../assets/screens/point-csv-export-light.jpg';
+import exportDark from '../../../assets/screens/point-csv-export-dark.jpg';
+import selectLight from '../../../assets/screens/point-csv-select-light.jpg';
+import selectDark from '../../../assets/screens/point-csv-select-dark.jpg';
+import previewLight from '../../../assets/screens/point-csv-preview-light.jpg';
+import previewDark from '../../../assets/screens/point-csv-preview-dark.jpg';
+import appliedLight from '../../../assets/screens/point-csv-applied-light.jpg';
+import appliedDark from '../../../assets/screens/point-csv-applied-dark.jpg';
+import errorLight from '../../../assets/screens/point-csv-error-light.jpg';
+import errorDark from '../../../assets/screens/point-csv-error-dark.jpg';
+
+Use **Import** and **Export** to transfer an endpoint's variable definitions as a CSV file.
+This is useful when commissioning a device, preparing a longer point list in a spreadsheet,
+or reusing a configuration on another endpoint of the same protocol and role.
+
+A definition contains an **address**, a **type** and any applicable native type or byte order.
+It does not contain the latest measurement, quality, timestamp or trend history. Importing
+a CSV does not send write commands to a device.
+
+The controls are shared by the desktop Tester and the Gateway web UI. They are also available
+when editing a Central configuration draft. The screenshots below use a local Gateway with
+simulated signals; no physical device is required to reproduce the example.
+
+## Find the controls
+
+1. Open the endpoint from the **Endpoints** list in the sidebar.
+2. If the endpoint has tabs, select **Live data**.
+3. Find the orange **Import** and **Export** buttons in the **Points** panel header.
+
+<Image src={liveLight} alt="Boiler room PLC live data with three points and the orange Import and Export buttons beside the Points heading" class="dark:sl-hidden" />
+<Image src={liveDark} alt="Boiler room PLC live data with three points and the orange Import and Export buttons beside the Points heading" class="light:sl-hidden" />
+
+The example starts with three monitored addresses: `CO:1`, `HR:40001:f32` and `HR:40003`.
+The connection settings, such as host, port and unit ID, have already been configured.
+
+## Export a point list
+
+1. Open the endpoint whose point list you want to save.
+2. Click **Export**.
+3. The browser downloads a CSV named after the endpoint. For **Boiler room PLC**, the filename
+   is **`Boiler room PLC-points.csv`**.
+4. Check the **Exported … definitions.** confirmation. Open the downloaded file in a text
+   editor or a spreadsheet application if you want to inspect or edit it.
+
+<Image src={exportLight} alt="Export confirmation reading Exported 5 definitions above the live data table" class="dark:sl-hidden" />
+<Image src={exportDark} alt="Export confirmation reading Exported 5 definitions above the live data table" class="light:sl-hidden" />
+
+This screenshot was taken after the example import, so it exports five definitions.
+
+Export includes all transferable configured and discovered points for this endpoint. The
+**Filter by address or type** search does not limit the exported file. Diagnostic-only rows,
+such as S7 CPU state, are not included as variable definitions.
+
+Spaces and Unicode characters are preserved in the filename. Characters that cannot be used
+in a filename, such as `/` or `:`, are replaced with underscores.
+
+:::note[This is a definition export]
+CSV transfer does not export measurements, connection settings, credentials, mappings or
+calculations. Configure the destination endpoint's connection settings separately.
+:::
+
+## Prepare the CSV
+
+The simplest starting point is an export from an endpoint of the same protocol and role.
+An endpoint with no configured or transferable discovered points exports a header-only template.
+
+| Column | What to enter |
+|---|---|
+| `address` | Required. The protocol's native address or complete item/node identifier. |
+| `type` | Required. One of `Boolean`, `DoublePoint`, `Integer`, `Float`, `Counter` or `Bitstring`. |
+| `nativeType` | Optional column. The native encoding or point kind, where applicable. For Modbus and S7 it can also be encoded in the address. |
+| `byteOrder` | Modbus only. Optional `ABCD`, `CDAB`, `BADC` or `DCBA`. Leave it empty to use the endpoint's selected order. |
+
+The generic `type` and the `nativeType` describe different things. For example, Modbus `Float`
+can use the native encoding `f32` or `f64`. The two fields must agree with each other and with
+any type encoded in the address.
+
+### Example: Modbus TCP
+
+Download the [example CSV](../../examples/point-csv/boiler-room-modbus.csv), or save this text
+as a UTF-8 file named `boiler-room-modbus.csv`:
+
+```csv
+address,type,nativeType,byteOrder
+HR:40001,Float,f32,
+HR:40003,Integer,u16,
+CO:1,Boolean,bool,
+HR:40005,Integer,u64,
+CO:2,Boolean,bool,
+```
+
+Each data row must have the same number of fields as the header. The trailing commas in this
+example represent the empty `byteOrder` fields.
+
+For the three-point endpoint shown above, these rows update three existing definitions and
+add `HR:40005:u64` and `CO:2`. ByteBridge normalizes native addresses: `HR:40001` with `f32`
+becomes `HR:40001:f32`, while the default `u16` is displayed as `HR:40003`.
+
+To use an explicit per-point order, fill `byteOrder`, for example:
+
+```csv
+address,type,nativeType,byteOrder
+HR:40001,Float,f32,CDAB
+```
+
+The resulting address is `HR:40001:f32:CDAB`. See
+[Finding the byte order](../byte-order/) for help choosing the correct order.
+
+### Addresses in other protocols
+
+| Protocol | Example `address` | Example `type` | Example `nativeType` |
+|---|---|---|---|
+| Modbus TCP | `HR:40001` | `Float` | `f32` |
+| Siemens S7 | `DB1.DBD0` | `Float` | `REAL` |
+| OPC UA client | `ns=2;s=Pump1.Speed` | `Float` | `Double` |
+| OPC DA | `Plant.Pump1.Speed` | `Float` | `VT_R8` |
+| OPC XML-DA | `Area\|Pump1.Speed` | `Float` | `double` |
+| IEC 104 | `1001` | `Float` | `float` |
+| DNP3 | `AI:0` | `Float` | `g30v5` |
+| Simulator client | `1` | `Float` | Leave empty. |
+
+These are address-format examples, not device-specific point lists. Use identifiers and types
+that exist on your device. OPC UA clients need the complete NodeId; OPC XML-DA retains the
+item path before `|`. On OPC UA servers, use the address the server exposes.
+
+Simulator client rows must match the configured generated address range and its generated
+types. CSV import does not change the simulator's point-count setting.
+
+### File rules
+
+- Use `.csv`, encoded as **UTF-8**. A UTF-8 BOM is accepted.
+- Import accepts **comma** or **semicolon** delimiters, detected from the header. Export uses commas.
+- Quote fields containing delimiters or line breaks. Double a quote inside a quoted field.
+  An OPC UA identifier containing a comma can be written as `"ns=2;s=Pump,Speed"`.
+- Column order may change. Header names are case-insensitive, but required headers must be present.
+- Unknown or duplicate headers are rejected. Other protocols do not accept a `byteOrder` column.
+- Blank records are ignored. The maximum file size is **5 MiB**, with at most **10,000 variable
+  rows**; the merged endpoint must also stay within 10,000 definitions.
+
+When editing a CSV in a spreadsheet, keep the address column as text so that leading zeros and
+complete identifiers survive saving. Save as CSV UTF-8 rather than `.xlsx`.
+
+## Import and preview changes
+
+1. Open the **destination endpoint** and select **Live data**.
+2. Click **Import**. The CSV selection panel opens.
+3. Click **Choose File** and select your `.csv` file. Before selection, the field displays
+   **No file chosen**; after selection, it displays the selected filename.
+
+<Image src={selectLight} alt="The Import panel with the CSV file chooser, UTF-8 and 5 MiB requirements, and the Cancel button" class="dark:sl-hidden" />
+<Image src={selectDark} alt="The Import panel with the CSV file chooser, UTF-8 and 5 MiB requirements, and the Cancel button" class="light:sl-hidden" />
+
+4. Wait for validation. ByteBridge checks the CSV structure, addresses, types and duplicate
+   canonical addresses before offering to save.
+5. Review the summary and table. In this example the preview reports **2 additions, 3 updates;
+   5 definitions after import. No validation errors.**
+
+<Image src={previewLight} alt="CSV preview showing two additions, three updates, five resulting definitions, the restart notice, and Apply import and Cancel buttons" class="dark:sl-hidden" />
+<Image src={previewDark} alt="CSV preview showing two additions, three updates, five resulting definitions, the restart notice, and Apply import and Cancel buttons" class="light:sl-hidden" />
+
+**Additions** are addresses not already present. **Updates** are CSV rows matching an existing
+canonical address, including rows whose fields have not changed. The preview table shows the
+resulting definition list; for large imports it displays the first 100 definitions.
+
+Nothing has been saved yet. Click **Cancel** to leave the configuration unchanged.
+
+:::caution[Applying an import restarts a running endpoint]
+If the endpoint is running, the preview warns that applying the import restarts it with the
+updated definitions. Plan for a temporary interruption in data collection or server availability.
+:::
+
+## Apply and verify
+
+1. Click **Apply import** after reviewing the preview.
+2. Wait for the success message, such as **Imported 2 additions and 3 updates.**
+3. Verify the addresses and native types in the Points table. This example now has five rows.
+4. Check that readings arrive and that their values and quality are appropriate for your device.
+
+<Image src={appliedLight} alt="Successful import confirmation and five live points, including the added coil CO:2 and unsigned 64-bit register HR:40005:u64" class="dark:sl-hidden" />
+<Image src={appliedDark} alt="Successful import confirmation and five live points, including the added coil CO:2 and unsigned 64-bit register HR:40005:u64" class="light:sl-hidden" />
+
+Definitions are saved with the endpoint and survive an application or endpoint restart.
+A configured row without a reading displays **`—`** for value and time, rather than a
+fabricated zero. A live reading replaces the unavailable display when it arrives.
+
+On polling or subscription clients, the definitions select the addresses to collect.
+On event-driven clients, such as IEC 104 and DNP3, they describe expected rows without
+suppressing other received points. Server definitions describe exposed rows; values arrive
+through the existing publish or mapping mechanism. Discovery settings remain unchanged.
+
+Import **adds or updates** definitions. It does not delete definitions absent from the file,
+and importing the same file again does not create duplicate rows.
+
+:::note[Central configuration drafts]
+Applying an import while editing a Central draft saves that draft. Deploy the configuration
+to the gateway through the normal deployment workflow to activate it there.
+:::
+
+## Correct an invalid file
+
+An invalid file is rejected before any changes are applied. For example, this row asks for a
+Boolean point while specifying the native Modbus floating-point type `f32`:
+
+```csv
+address,type,nativeType,byteOrder
+HR:40001,Boolean,f32,
+```
+
+ByteBridge reports **Record 2: column type: expected Float, received Boolean.** There is no
+**Apply import** action for the invalid preview, and the current point list remains unchanged.
+
+<Image src={errorLight} alt="CSV validation error identifying record 2 and the type column: expected Float, received Boolean; the existing five live points remain visible" class="dark:sl-hidden" />
+<Image src={errorDark} alt="CSV validation error identifying record 2 and the type column: expected Float, received Boolean; the existing five live points remain visible" class="light:sl-hidden" />
+
+Change `Boolean` to `Float`, save the CSV and select it again to generate a fresh preview.
+Record numbers refer to CSV records, including the header as record 1; a quoted multiline
+field still belongs to one record.
+
+| Message or symptom | What to do |
+|---|---|
+| Missing, unknown or duplicated header | Start from an export for this protocol and keep the supported column names. |
+| Invalid address or incompatible type | Check the device's address format and ensure `type`, `nativeType` and any encoded suffix agree. |
+| Duplicate canonical address | Remove the repeated definition, including alternate spellings of the same address. |
+| File or row limit exceeded | Reduce the file and check how many definitions will remain after merging. |
+| Endpoint changed since preview | Select the file again, review a fresh preview and then apply it. |
+| Header-only file; Apply import is disabled | Add at least one valid variable row. A template alone has no changes to apply. |
+| Import succeeds but values remain unavailable | Check the connection, device addresses and quality. Use [Troubleshoot a connection](../troubleshoot/) to diagnose the device link. |
+
+For connection setup, see [Connect to a device](../connect-a-device/). For commands and
+publication of live values, see [Live data and commands](../live-data-and-commands/).

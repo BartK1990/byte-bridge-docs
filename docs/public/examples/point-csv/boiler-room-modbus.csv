@@ -1,0 +1,6 @@
+address,type,nativeType,byteOrder
+HR:40001,Float,f32,
+HR:40003,Integer,u16,
+CO:1,Boolean,bool,
+HR:40005,Integer,u64,
+CO:2,Boolean,bool,
