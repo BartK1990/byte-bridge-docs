@@ -36,7 +36,7 @@ the protocol gets its data:
 | IEC 104 | no | every received data message |
 | DNP3 | no | every answer from the outstation, also an event poll without events |
 | OPC UA | no | every publish response, also a keep-alive without changes |
-| Simulator | yes | every tick |
+| Simulator | no | every tick, changed values or not |
 
 Only polling endpoints show a poll interval and cycle time, and only their values turn
 **stale**. Server endpoints have no health strip.
