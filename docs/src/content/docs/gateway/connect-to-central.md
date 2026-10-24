@@ -68,6 +68,15 @@ in `appsettings.json` (see [Install the gateway](../install/#application-setting
 The gateway appears in central as online. While central is unreachable, the gateway keeps
 working and buffers values on disk; they are sent when the connection is back.
 
+## Health in central
+
+Central's page of a gateway shows, for each client endpoint, the same health strip, **Age**
+column and bad-point reasons as the gateway's own live data page (see
+[Live data and commands](../../tester/live-data-and-commands/#connection-health)). They travel
+as Sparkplug metrics under `Health/`; to keep the link's traffic low, the gateway sends changes
+to them at most once every 5 seconds per endpoint, so the *Last update* tile in central can be up
+to 5 seconds behind the gateway's. The page is read-only, like the rest of it.
+
 ## Configurations from central
 
 On the gateway's **Configuration** page in central, Engineers edit a draft with the same
