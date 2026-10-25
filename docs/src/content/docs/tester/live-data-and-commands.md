@@ -20,13 +20,26 @@ starting a trace:
 | Points | how many points there are, how many are good and bad, and how many changed in the last 10 s. |
 | Errors | while an error goes on (the same Modbus exception every poll, for example): *Failing for 2 min*, with its message and when it started. Otherwise how many errors began in the last 10 minutes and when the last one was. **Show frames** opens the [Troubleshoot](../troubleshoot/) tab. |
 
-Errors are exceptions, timeouts, negative confirmations and lost connections. An error that every
+Errors are exceptions, timeouts, negative confirmations, refused or unanswered commands and lost
+connections. An error that every
 poll repeats counts **once**, from the first poll that had it to the first poll without it, so a
 missing register does not fill the counter; a one-off failure counts each time it happens.
 
-Modbus TCP, IEC 104 and the Simulator report polls, updates and errors. The other protocols show
-the *Connection* tile and the point counts; their *Last update* and *Errors* follow in later
-versions. Server endpoints have no health strip.
+Every client protocol reports polls, updates and errors. What counts as an update depends on how
+the protocol gets its data:
+
+| Protocol | Polls? | *Last update* advances on |
+|---|---|---|
+| Modbus TCP, Siemens S7 | yes | every poll |
+| OPC XML-DA | yes, in both modes | every Read cycle, or every SubscriptionPolledRefresh answer |
+| OPC DA | in Read mode | every read cycle (Read), every data change (Subscription) |
+| IEC 104 | no | every received data message |
+| DNP3 | no | every answer from the outstation, also an event poll without events |
+| OPC UA | no | every publish response, also a keep-alive without changes |
+| Simulator | no | every tick, changed values or not |
+
+Only polling endpoints show a poll interval and cycle time, and only their values turn
+**stale**. Server endpoints have no health strip.
 
 ## The points table
 
@@ -42,10 +55,11 @@ versions. Server endpoints have no health strip.
 
 ### Age: is the value fresh?
 
-*Age* measures freshness, not activity. For a polled point (Modbus) it is the time since the last
+*Age* measures freshness, not activity. For a polled point (Modbus, S7, XML-DA, OPC DA in Read
+mode) it is the time since the last
 poll that read the value, **changed or not**: a register that has held `21.5` for an hour but is
 read every second has an age under a second. For a point the device sends by itself (an IEC 104
-spontaneous value) it is the time since the value's time stamp. The column header's tooltip says
+spontaneous value, a DNP3 event, an OPC UA data change) it is the time since the value's time stamp. The column header's tooltip says
 which applies.
 
 When the device stops answering, the ages of a polled endpoint keep growing, and after three poll
@@ -55,7 +69,10 @@ apart from a value that just does not change.
 ### Why a point is bad
 
 Under a bad point's quality the table shows the reason in the device's terms, for example
-*Modbus exception: Illegal data address* for a register the device does not have, and when the
+*Modbus exception: Illegal data address* for a register the device does not have, *object does
+not exist* for a missing S7 data block, *BadNodeIdUnknown* for an OPC UA variable the server does
+not know, *Bad: Comm Failure* for an OPC DA item or *Flags from the outstation: COMM_LOST* for a
+DNP3 point, and when the
 point was last good: *last good 12:38:02 (1 min ago)*, or *no good value since the endpoint started*.
 
 ### Find points
