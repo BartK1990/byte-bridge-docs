@@ -1,6 +1,6 @@
 ---
 title: Connect to a device
-description: Examples for reading a Modbus TCP meter, a Siemens S7 PLC and an OPC UA server with the tester.
+description: Examples for reading a Modbus TCP meter, a Siemens S7 PLC, an OPC UA server and an IEC 61850 IED with the tester.
 sidebar:
   order: 2
 ---
@@ -71,10 +71,23 @@ server. The first connection is usually rejected; open **Certificates**, find th
 certificate under **Rejected** and click **Trust**. Give the server the ByteBridge certificate
 shown under **This application**.
 
+## IEC 61850 IED
+
+| Setting | Example | Notes |
+|---|---|---|
+| Host | `192.168.10.21` | the protection relay, bay controller or meter |
+| Port | `102` | |
+| Points to read | `IED1LD0/MMXU1.TotW[MX], IED1CTRL/XCBR1.Pos[CO]` | or use **Detect points** |
+| Mode | `Reports` | values from the IED's reports; `Poll` to read every point each interval |
+
+Reports, commands, point detection and the connection settings are explained in
+[Connect an IEC 61850 IED](../iec61850/).
+
 ## No device at hand?
 
 Each protocol comes with a tester device in the
 [ByteBridge repository](https://github.com/BartK1990/byte-bridge), for example
 `cargo run -p modbus --example server_sim -- 127.0.0.1:5020` for Modbus or
-`cargo run -p s7 --example s7_server_sim -- 127.0.0.1:1102` for S7. Or use a ByteBridge
+`cargo run -p s7 --example s7_server_sim -- 127.0.0.1:1102` for S7 or
+`cargo run -p iec61850 --example iec61850_server_sim -- 127.0.0.1:10102` for IEC 61850. Or use a ByteBridge
 **server** endpoint fed by the simulator, as in the [quick start](../quick-start/).

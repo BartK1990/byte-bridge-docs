@@ -12,7 +12,7 @@ role and the driver's settings (host, port, poll interval, ...).
 
 | Role | What it does | Examples |
 |---|---|---|
-| **Client** | connects to a device and reads its data | IEC 104 controlling station, Modbus master, DNP3 master, OPC UA client, S7 client |
+| **Client** | connects to a device and reads its data | IEC 104 controlling station, Modbus master, DNP3 master, OPC UA client, S7 client, IEC 61850 MMS client |
 | **Server** | exposes data to other systems | IEC 104 controlled station, Modbus slave, DNP3 outstation, OPC UA server |
 
 The *Simulator* client produces changing test values, so you can try everything without hardware.
@@ -44,6 +44,7 @@ Each protocol writes addresses its own way:
 | OPC DA | item ID, e.g. `Random.Int4` or `Plant.Line1.Speed` |
 | OPC XML-DA | `ItemName`, or `ItemPath\|ItemName` |
 | Siemens S7 | `DB1.DBX0.0`, `DB1.DBW2:INT`, `DB1.DBD4:REAL`, `MW10`, `I0.0`, `Q0.1`, `T5`, `C3` |
+| IEC 61850 | object reference with functional constraint, e.g. `IED1LD0/MMXU1.TotW[MX]`, `IED1CTRL/XCBR1.Pos[CO]` |
 | Simulator | point number, `1` to N |
 
 ## Mapping
