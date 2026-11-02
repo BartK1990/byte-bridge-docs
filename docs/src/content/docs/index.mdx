@@ -17,7 +17,7 @@ hero:
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 ByteBridge is one application for industrial protocols: IEC 60870-5-104, Modbus TCP, DNP3,
-OPC UA, OPC DA (classic, Windows), OPC XML-DA and Siemens S7. Every protocol uses the same screens: the same endpoint
+OPC UA, OPC DA (classic, Windows), OPC XML-DA, Siemens S7 and IEC 61850 (MMS). Every protocol uses the same screens: the same endpoint
 editor, the same live data table and the same way to send a command.
 
 <CardGrid>
@@ -41,5 +41,6 @@ editor, the same live data table and the same way to send a command.
 <LinkCard title="Concepts" description="Endpoints, mappings, calculations and point addresses in five minutes." href="concepts/" />
 <LinkCard title="Tester quick start" description="Try ByteBridge without hardware: a simulator, an IEC 104 server and a client." href="tester/quick-start/" />
 <LinkCard title="Connect to a device" description="Modbus TCP, Siemens S7 and OPC UA examples, with the address formats." href="tester/connect-a-device/" />
+<LinkCard title="Connect an IEC 61850 IED" description="Reports, control models and point detection for protection relays and bay controllers." href="tester/iec61850/" />
 <LinkCard title="Install the gateway" description="Run ByteBridge as a Windows service." href="gateway/install/" />
 <LinkCard title="Configure the gateway" description="Expose an IEC 104 RTU through OPC UA and Modbus, with scaling." href="gateway/configure/" />
