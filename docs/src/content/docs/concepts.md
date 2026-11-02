@@ -33,6 +33,15 @@ Points are protocol-neutral, so a value read over IEC 104 can be published over 
 Quality follows IEC 104: **IV** invalid, **NT** not topical, **SB** substituted, **BL** blocked,
 **OV** overflow.
 
+A point can also have a **name**, a description such as *Feeder 3 active power*. You write it,
+or the device proposes it (an IEC 61850 description, an OPC UA DisplayName). The name is only a
+description: mappings, commands and CSV files always find a point by its address, and two
+points may have the same name.
+
+A value can carry **flags**: facts from the device that are not quality, such as *test* (the
+device is in test mode) or *clock not synchronized*. Flags are shown next to the quality but
+never make a value bad; see [Live data](../tester/live-data-and-commands/#flags).
+
 Each protocol writes addresses its own way:
 
 | Protocol | Address examples |

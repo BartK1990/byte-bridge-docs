@@ -23,7 +23,8 @@ Use **Import** and **Export** to transfer an endpoint's variable definitions as 
 This is useful when commissioning a device, preparing a longer point list in a spreadsheet,
 or reusing a configuration on another endpoint of the same protocol and role.
 
-A definition contains an **address**, a **type** and any applicable native type or byte order.
+A definition contains an **address**, a **type**, an optional **name** and any applicable native
+type or byte order.
 It does not contain the latest measurement, quality, timestamp or trend history. Importing
 a CSV does not send write commands to a device.
 
@@ -80,6 +81,15 @@ An endpoint with no configured or transferable discovered points exports a heade
 | `type` | Required. One of `Boolean`, `DoublePoint`, `Integer`, `Float`, `Counter` or `Bitstring`. |
 | `nativeType` | Optional column. The native encoding or point kind, where applicable. For Modbus and S7 it can also be encoded in the address. |
 | `byteOrder` | Modbus only. Optional `ABCD`, `CDAB`, `BADC` or `DCBA`. Leave it empty to use the endpoint's selected order. |
+| `name` | Optional column, every protocol. The point's description, up to 255 characters. Export writes it last. |
+
+**Names in an import.** A file without the `name` column leaves the names of the points it
+updates as they are. With the column, an empty cell clears a point's name and text replaces it.
+The name never decides which point a row updates: that is always the address, so a row with
+another point's name but a new address adds a point.
+
+For an OPC UA client that browses, the exported variables carry their DisplayName from the
+server as the name; a name you gave a point is kept.
 
 The generic `type` and the `nativeType` describe different things. For example, Modbus `Float`
 can use the native encoding `f32` or `f64`. The two fields must agree with each other and with
