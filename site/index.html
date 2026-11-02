@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ByteBridge · Industrial protocol tester and gateway</title>
-    <meta name="description" content="ByteBridge is one lightweight application for industrial protocols: a tester on your desk, a gateway at the edge, and a central hub that connects many gateways. IEC 104, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA, Siemens S7.">
+    <meta name="description" content="ByteBridge is one lightweight application for industrial protocols: a tester on your desk, a gateway at the edge, and a central hub that connects many gateways. IEC 104, IEC 61850, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA, Siemens S7.">
     <meta name="theme-color" content="#111828">
     <meta property="og:title" content="ByteBridge · Industrial protocol tester and gateway">
     <meta property="og:description" content="Test, bridge and connect industrial protocols with one lightweight application.">
@@ -65,6 +65,7 @@
             </div>
             <ul class="chips" aria-label="Supported protocols">
                 <li>IEC 60870-5-104</li>
+                <li>IEC 61850 (MMS)</li>
                 <li>Modbus TCP</li>
                 <li>DNP3</li>
                 <li>OPC UA</li>
@@ -190,7 +191,7 @@
                 <div class="eyebrow">Tester</div>
                 <h2>One interface for every protocol</h2>
                 <p class="muted">Stop switching between a different tool for every protocol. ByteBridge gives
-                    IEC 104, Modbus, DNP3, OPC UA, classic OPC DA, OPC XML-DA and Siemens S7 the same screens: the same
+                    IEC 104, IEC 61850, Modbus, DNP3, OPC UA, classic OPC DA, OPC XML-DA and Siemens S7 the same screens: the same
                     connection editor, the same live data table, the same way to send a command.</p>
                 <ul class="ticks">
                     <li>Act as the client to read a real device, or as the server to simulate one</li>
@@ -198,7 +199,7 @@
                     <li>Connection health at a glance: online since, last update, stale data and ongoing errors</li>
                     <li>Send commands and see the device confirm or reject them</li>
                     <li>Troubleshoot step by step: TCP port, protocol start, interrogation, with a hint at the first failure</li>
-                    <li>Browse OPC UA, OPC DA and OPC XML-DA servers instead of typing addresses</li>
+                    <li>Browse OPC UA, OPC DA and OPC XML-DA servers, or detect the points of IEC 104, DNP3 and IEC 61850 devices, instead of typing addresses</li>
                     <li>Built-in simulator to try everything without hardware</li>
                     <li>OPC UA security policies and certificate management included</li>
                 </ul>
@@ -208,7 +209,7 @@
                     <source srcset="assets/ui-live-dark.webp" media="(prefers-color-scheme: dark)">
                     <img class="shot" src="assets/ui-live-light.webp" width="1280" height="640" loading="lazy" decoding="async" alt="ByteBridge live data view of an IEC 104 connection: values, quality, time stamps and trends, with a command form">
                 </picture>
-                <figcaption class="caption">Live data of an IEC 104 connection. Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA and S7 look and work the same.</figcaption>
+                <figcaption class="caption">Live data of an IEC 104 connection. IEC 61850, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA and S7 look and work the same.</figcaption>
             </figure>
         </div>
 
@@ -222,13 +223,13 @@
                 <ul class="ticks">
                     <li>Every frame decoded: type, cause of transmission, addresses, values, quality bits, time tags</li>
                     <li>Optional TCP layer: connects, bytes on the wire, who closed the connection and how</li>
-                    <li>Hints for known problems, such as a wrong common address, a Modbus register that does not exist, an S7 rack/slot or PUT/GET setting, a DNP3 link address, an OPC UA security policy or NodeId, an XML-DA item or login, or a port that speaks another protocol</li>
+                    <li>Hints for known problems, such as a wrong common address, a Modbus register that does not exist, an S7 rack/slot or PUT/GET setting, a DNP3 link address, an OPC UA security policy or NodeId, an XML-DA item or login, an IEC 61850 selector or report control block in use by another client, or a port that speaks another protocol</li>
                     <li>Device clock checked against arrival time: time zone, drift, clock not synchronised</li>
                     <li>The frames of one command at a click, the IEC 104 server side per SCADA client, and hex from a SCADA log decoded</li>
                     <li>Export for Wireshark, or an AI report: one anonymized file to paste into the assistant of your choice</li>
                     <li>No admin rights and no capture driver needed</li>
                 </ul>
-                <p class="muted">IEC 104, Modbus TCP, Siemens S7, DNP3, OPC UA and OPC XML-DA. <a href="docs/tester/troubleshoot/">How it works</a></p>
+                <p class="muted">IEC 104, IEC 61850, Modbus TCP, Siemens S7, DNP3, OPC UA and OPC XML-DA. <a href="docs/tester/troubleshoot/">How it works</a></p>
             </div>
             <figure style="margin:0">
                 <picture>
@@ -305,7 +306,7 @@
                 <rect class="n" x="10" y="34" width="180" height="46" rx="10"/><text class="t" x="100" y="62" text-anchor="middle">IEC 104 RTUs</text>
                 <rect class="n" x="10" y="94" width="180" height="46" rx="10"/><text class="t" x="100" y="122" text-anchor="middle">Modbus meters</text>
                 <rect class="n" x="10" y="154" width="180" height="46" rx="10"/><text class="t" x="100" y="182" text-anchor="middle">Siemens S7 PLCs</text>
-                <rect class="n" x="10" y="214" width="180" height="46" rx="10"/><text class="t" x="100" y="242" text-anchor="middle">DNP3 outstations</text>
+                <rect class="n" x="10" y="214" width="180" height="46" rx="10"/><text class="t" x="100" y="242" text-anchor="middle">DNP3 · IEC 61850</text>
                 <rect class="n" x="10" y="274" width="180" height="46" rx="10"/><text class="t" x="100" y="302" text-anchor="middle">OPC UA · DA · XML-DA</text>
 
                 <path class="f" d="M190 57C250 57 250 150 300 160" marker-end="url(#gw-b)"/>
