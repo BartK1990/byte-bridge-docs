@@ -85,9 +85,6 @@ Reports, commands, point detection and the connection settings are explained in
 
 ## No device at hand?
 
-Each protocol comes with a tester device in the
-[ByteBridge repository](https://github.com/BartK1990/byte-bridge), for example
-`cargo run -p modbus --example server_sim -- 127.0.0.1:5020` for Modbus or
-`cargo run -p s7 --example s7_server_sim -- 127.0.0.1:1102` for S7 or
-`cargo run -p iec61850 --example iec61850_server_sim -- 127.0.0.1:10102` for IEC 61850. Or use a ByteBridge
-**server** endpoint fed by the simulator, as in the [quick start](../quick-start/).
+Use a ByteBridge **server** endpoint fed by the simulator as the device, as in the
+[quick start](../quick-start/): IEC 104, Modbus TCP, DNP3 and OPC UA have a server role. For
+IEC 61850, see [No IED at hand?](../iec61850/#no-ied-at-hand).
