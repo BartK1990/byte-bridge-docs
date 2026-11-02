@@ -46,9 +46,10 @@ Only polling endpoints show a poll interval and cycle time, and only their value
 | Column | Meaning |
 |---|---|
 | Address | the point's address in the protocol's own format |
+| Name | the point's description, if it has one (see *Names* below); a long name is cut, the whole name is its tooltip |
 | Type | `Boolean`, `DoublePoint`, `Integer`, `Float`, `Counter` or `Bitstring` |
 | Value | the latest value; `—` for a defined point that has not been received yet |
-| Quality | flags such as **IV** (invalid) or **NT** (not topical); empty means good. For a bad point also why, and when it was last good (see below) |
+| Quality | **Good**, or the quality bits such as **IV** (invalid) or **NT** (not topical); then the value's flags as small labels (see *Flags* below). For a bad point also why, and when it was last good |
 | Time | the device's time stamp, or the time the value arrived |
 | Age | how fresh the value is (client endpoints, see below) |
 | Trend | the recent history of the value |
@@ -75,11 +76,44 @@ not know, *Bad: Comm Failure* for an OPC DA item or *Flags from the outstation: 
 DNP3 point, and when the
 point was last good: *last good 12:38:02 (1 min ago)*, or *no good value since the endpoint started*.
 
+### Flags
+
+Some devices say more about a value than good or bad. These facts are shown as small labels
+next to the quality; hover over a label for its meaning. A value with flags but no quality bits
+is still **good**: mappings, calculations, the health tiles and *Age* treat it like any good
+value.
+
+| Flag | Meaning |
+|---|---|
+| test | the value comes from a device in test mode |
+| failure | the device reports an internal failure for this value |
+| oscillatory | the value oscillates; the device suppresses changes |
+| inconsistent | the device found the value inconsistent |
+| inaccurate | the value is inaccurate |
+| out of range | outside the value's configured range |
+| bad reference | the device's reference (calibration) is bad |
+| clock not synchronized | the time stamp comes from an unsynchronised clock |
+| clock failure | the device's clock has failed |
+| polled | read by polling because the device's preferred delivery (reports) is not available |
+
+Today IEC 61850 sets them (see [IEC 61850](../iec61850/#quality-time-stamps-and-flags)). Server
+endpoints do not send flags on; a mapping keeps them in the gateway and in central.
+
+### Names
+
+Give a point a name when you add it (the **Name** field of **Add point**), in a CSV file (the
+`name` column, see [Import and export points](../import-export-points/)), or take the name the
+device proposes in **Detect points**. In **Multiple points**, `{n}` in the name numbers the
+points: with an address pattern it is the number in the address (start index and padding
+included), otherwise 1, 2, 3, ... So *Pump {n} speed* gives *Pump 1 speed*, *Pump 2 speed*, ... Names
+have up to 255 characters; shorter ones read better in tables.
+
 ### Find points
 
 The **All / Bad quality / Changed < 10 s** buttons, each with its count, narrow the table to the
-points that need attention or the ones that are moving. Type in **Filter by address or type** to
-find points in a long list. **Refresh all** asks the device for all its values again (for IEC 104
+points that need attention or the ones that are moving. Type in **Filter by address, name or
+type** to find points in a long list; the column filters under the headers work per column, and
+the Quality filter also finds flags (`test`). **Refresh all** asks the device for all its values again (for IEC 104
 this is a general interrogation). **Stop** and **Start** disconnect and reconnect the endpoint.
 
 ## Send a command (client endpoints)

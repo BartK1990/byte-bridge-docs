@@ -68,6 +68,13 @@ in `appsettings.json` (see [Install the gateway](../install/#application-setting
 The gateway appears in central as online. While central is unreachable, the gateway keeps
 working and buffers values on disk; they are sent when the connection is back.
 
+## Names and flags in central
+
+Central's gateway page shows each point's name next to its address, and the value's
+[flags](../../tester/live-data-and-commands/#flags) next to its quality, as the gateway has them.
+The search finds points by name too. A rename on the gateway reaches central at once. With a
+gateway of an older version, central shows the points without names and flags.
+
 ## Health in central
 
 Central's page of a gateway shows, for each client endpoint, the same health strip, **Age**
