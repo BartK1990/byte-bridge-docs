@@ -120,7 +120,10 @@ this is a general interrogation). **Stop** and **Start** disconnect and reconnec
 
 1. Click **control** on a point, or type its address in the **Send command** form.
 2. Pick the **Type** and enter the **Value**; `Boolean` and `DoublePoint` have **ON** and **OFF**.
-3. Tick **Select before operate** if the device expects a select first (IEC 104, DNP3).
+3. Tick **Select before operate** if the device expects a select first. The option appears only
+   for IEC 104 and DNP3, the protocols that have it (not for IEC 104 bitstring commands);
+   other protocols write directly. IEC 61850 follows the control model
+   of the object instead (see [IEC 61850](../iec61850/)).
 4. Click **Send**.
 
 The result comes back from the device: *Confirmed*, *Rejected*, *Timeout* or *Not connected*.
