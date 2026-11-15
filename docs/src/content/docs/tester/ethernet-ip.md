@@ -78,6 +78,14 @@ status word), `Controller.Faulted` (a major fault), `Controller.MinorFault`, and
 
 STRING tags are not numbers and cannot be points.
 
+### How points are read
+
+Every point is read each poll interval. ByteBridge packs the reads into as few requests as the
+controller allows (about 500 bytes each): array elements close together are read as one range,
+and when several points are members of the same element of a UDT (`Motors[3].Current`,
+`Motors[3].Speed`, ...), the element is read once if that is shorter. Long tag names cost space
+in every request, so short names fit more points into one request.
+
 ### Quality and the *device faulted* flag
 
 EtherNet/IP carries no quality and no time stamp: a point is good when it is read, with the
@@ -110,8 +118,10 @@ name is the point's name, so no other name is proposed. Options:
 - **Controller scope only**: leave out the programs' tags.
 - **Include module-defined I/O tags** (`Local:1:I.Data`, ...): off by default.
 - **Include status bits of timers, counters and controls** (`.EN`, `.TT`, `.DN`): on by default.
+- **Elements offered per array**: 64 by default. Longer arrays offer their first elements, with
+  a note on how many were left out.
 
-Arrays offer their first 64 elements, with a note on how many were left out. System tags,
+ System tags,
 STRING tags and tags with External Access *None* are left out; read-only tags are offered and
 listed in a note. Detection stops at 20,000 points. With **Detect points on connect** the
 endpoint adds the controller's points by itself each time it connects.
