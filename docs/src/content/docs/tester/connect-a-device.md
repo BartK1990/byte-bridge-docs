@@ -83,8 +83,21 @@ shown under **This application**.
 Reports, commands, point detection and the connection settings are explained in
 [Connect an IEC 61850 IED](../iec61850/).
 
+## Allen-Bradley Logix controller (EtherNet/IP)
+
+| Setting | Example | Notes |
+|---|---|---|
+| Host | `192.168.1.20` | the Ethernet module or the controller's built-in port |
+| Port | `44818` | |
+| Route path | `1,0` | backplane, slot of the controller; CompactLogix: `1,0` |
+| Points to read | `Line1_Speed, Motors[3].Current, Program:MainProgram.Count` | or use **Detect points** |
+
+Route paths, tag addresses, writing and point detection are explained in
+[Connect an Allen-Bradley Logix controller](../ethernet-ip/).
+
 ## No device at hand?
 
 Use a ByteBridge **server** endpoint fed by the simulator as the device, as in the
 [quick start](../quick-start/): IEC 104, Modbus TCP, DNP3 and OPC UA have a server role. For
-IEC 61850, see [No IED at hand?](../iec61850/#no-ied-at-hand).
+IEC 61850, see [No IED at hand?](../iec61850/#no-ied-at-hand); for EtherNet/IP, see
+[No controller at hand?](../ethernet-ip/#no-controller-at-hand).
