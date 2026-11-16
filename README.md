@@ -48,6 +48,22 @@ cd site && python3 -m http.server 8000       # http://localhost:8000/docs/
 Add a page by creating a Markdown file in `docs/src/content/docs/tester/` or `.../gateway/`; the
 sidebar lists it by itself (`sidebar.order` in the front matter sets the position).
 
+## Protocol lists
+
+When ByteBridge gains a protocol, or a protocol gains a role or a feature named on the site,
+update every place that lists protocols, in the same PR as the protocol's documentation page:
+
+- `site/index.html`: the meta description, the protocol chips under the title, the overview,
+  gateway and security diagrams (the device boxes), the tester section's text and screenshot
+  caption, the troubleshooting hints and the list of protocols with a connection check;
+- `site/partials/setups/*.html`: the example setups whose diagrams name field protocols;
+- `docs/src/content/docs/`: `index.mdx` (protocol sentence and cards), `concepts.md` (roles and
+  address formats), `tester/connect-a-device.md`, `tester/live-data-and-commands.md` (polled
+  protocols, flags) and a page of its own under `tester/`.
+
+`grep -rn "Siemens S7" site docs/src/content` finds most of them. Check that a longer label still
+fits its diagram box (12.5 px text, about 6.5 px per character).
+
 ## Publishing
 
 1. In the repository settings, **Pages > Build and deployment > Source: GitHub Actions** (once).

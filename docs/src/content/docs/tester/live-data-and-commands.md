@@ -30,7 +30,7 @@ the protocol gets its data:
 
 | Protocol | Polls? | *Last update* advances on |
 |---|---|---|
-| Modbus TCP, Siemens S7 | yes | every poll |
+| Modbus TCP, Siemens S7, EtherNet/IP | yes | every poll |
 | OPC XML-DA | yes, in both modes | every Read cycle, or every SubscriptionPolledRefresh answer |
 | OPC DA | in Read mode | every read cycle (Read), every data change (Subscription) |
 | IEC 104 | no | every received data message |
@@ -95,8 +95,9 @@ value.
 | clock not synchronized | the time stamp comes from an unsynchronised clock |
 | clock failure | the device's clock has failed |
 | polled | read by polling because the device's preferred delivery (reports) is not available |
+| device faulted | the device reports a major fault; values may not be updated by its program |
 
-Today IEC 61850 sets them (see [IEC 61850](../iec61850/#quality-time-stamps-and-flags)). Server
+Today IEC 61850 sets them (see [IEC 61850](../iec61850/#quality-time-stamps-and-flags)), and EtherNet/IP sets *device faulted* (see [EtherNet/IP](../ethernet-ip/#quality-and-the-device-faulted-flag)). Server
 endpoints do not send flags on; a mapping keeps them in the gateway and in central.
 
 ### Names
