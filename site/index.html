@@ -136,7 +136,7 @@
                 <text class="tm" x="100" y="146" text-anchor="middle">Modbus TCP</text>
                 <rect class="n" x="10" y="228" width="180" height="54" rx="10"/>
                 <text class="t" x="100" y="252" text-anchor="middle">PLC</text>
-                <text class="tm" x="100" y="270" text-anchor="middle">Siemens S7</text>
+                <text class="tm" x="100" y="270" text-anchor="middle">Siemens S7 · EtherNet/IP</text>
                 <rect class="n" x="10" y="302" width="180" height="54" rx="10"/>
                 <text class="t" x="100" y="326" text-anchor="middle">Protection relay</text>
                 <text class="tm" x="100" y="344" text-anchor="middle">IEC 61850</text>
@@ -210,7 +210,7 @@
                     <source srcset="assets/ui-live-dark.webp" media="(prefers-color-scheme: dark)">
                     <img class="shot" src="assets/ui-live-light.webp" width="1280" height="640" loading="lazy" decoding="async" alt="ByteBridge live data view of an IEC 104 connection: values, quality, time stamps and trends, with a command form">
                 </picture>
-                <figcaption class="caption">Live data of an IEC 104 connection. IEC 61850, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA and S7 look and work the same.</figcaption>
+                <figcaption class="caption">Live data of an IEC 104 connection. IEC 61850, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA, S7 and EtherNet/IP look and work the same.</figcaption>
             </figure>
         </div>
 
@@ -224,7 +224,7 @@
                 <ul class="ticks">
                     <li>Every frame decoded: type, cause of transmission, addresses, values, quality bits, time tags</li>
                     <li>Optional TCP layer: connects, bytes on the wire, who closed the connection and how</li>
-                    <li>Hints for known problems, such as a wrong common address, a Modbus register that does not exist, an S7 rack/slot or PUT/GET setting, a DNP3 link address, an OPC UA security policy or NodeId, an XML-DA item or login, an IEC 61850 selector or report control block in use by another client, or a port that speaks another protocol</li>
+                    <li>Hints for known problems, such as a wrong common address, a Modbus register that does not exist, an S7 rack/slot or PUT/GET setting, a Logix route path or slot, a DNP3 link address, an OPC UA security policy or NodeId, an XML-DA item or login, an IEC 61850 selector or report control block in use by another client, or a port that speaks another protocol</li>
                     <li>Device clock checked against arrival time: time zone, drift, clock not synchronised</li>
                     <li>The frames of one command at a click, the IEC 104 server side per SCADA client, and hex from a SCADA log decoded</li>
                     <li>Export for Wireshark, or an AI report: one anonymized file to paste into the assistant of your choice</li>
@@ -306,7 +306,7 @@
                 <text class="tm" x="100" y="20" text-anchor="middle">SOURCES</text>
                 <rect class="n" x="10" y="34" width="180" height="46" rx="10"/><text class="t" x="100" y="62" text-anchor="middle">IEC 104 RTUs</text>
                 <rect class="n" x="10" y="94" width="180" height="46" rx="10"/><text class="t" x="100" y="122" text-anchor="middle">Modbus meters</text>
-                <rect class="n" x="10" y="154" width="180" height="46" rx="10"/><text class="t" x="100" y="182" text-anchor="middle">Siemens S7 PLCs</text>
+                <rect class="n" x="10" y="154" width="180" height="46" rx="10"/><text class="t" x="100" y="182" text-anchor="middle">S7 · Logix PLCs</text>
                 <rect class="n" x="10" y="214" width="180" height="46" rx="10"/><text class="t" x="100" y="242" text-anchor="middle">DNP3 · IEC 61850</text>
                 <rect class="n" x="10" y="274" width="180" height="46" rx="10"/><text class="t" x="100" y="302" text-anchor="middle">OPC UA · DA · XML-DA</text>
 
@@ -416,7 +416,7 @@ p1 + p2
                 <text class="tm" x="110" y="112" text-anchor="middle">IEC 60870-5-104</text>
                 <rect class="n" x="30" y="137" width="160" height="50" rx="10"/>
                 <text class="t" x="110" y="159" text-anchor="middle">PLC</text>
-                <text class="tm" x="110" y="177" text-anchor="middle">Siemens S7</text>
+                <text class="tm" x="110" y="177" text-anchor="middle">S7 · EtherNet/IP</text>
                 <rect class="n" x="30" y="202" width="160" height="50" rx="10"/>
                 <text class="t" x="110" y="224" text-anchor="middle">Energy meter</text>
                 <text class="tm" x="110" y="242" text-anchor="middle">Modbus TCP</text>
