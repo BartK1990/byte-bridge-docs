@@ -75,6 +75,12 @@ Central's gateway page shows each point's name next to its address, and the valu
 The search finds points by name too. A rename on the gateway reaches central at once. With a
 gateway of an older version, central shows the points without names and flags.
 
+A [read-only point](../../tester/live-data-and-commands/#read-only-points) has a lock before its
+name in central too, and central offers no command for it. Central's data access (REST, MQTT,
+OPC UA) never makes it a control, whatever the exposure rule says: its access is *read*, and a
+control to it is refused before anything is sent to the gateway. Changing the mark on the
+gateway reaches central at once.
+
 ## Health in central
 
 Central's page of a gateway shows, for each client endpoint, the same health strip, **Age**

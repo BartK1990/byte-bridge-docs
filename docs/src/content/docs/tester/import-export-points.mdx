@@ -82,6 +82,7 @@ An endpoint with no configured or transferable discovered points exports a heade
 | `nativeType` | Optional column. The native encoding or point kind, where applicable. For Modbus and S7 it can also be encoded in the address. |
 | `byteOrder` | Modbus only. Optional `ABCD`, `CDAB`, `BADC` or `DCBA`. Leave it empty to use the endpoint's selected order. |
 | `name` | Optional column, every protocol. The point's description, up to 255 characters. Export writes it last. |
+| `readOnly` | Optional column, every protocol. `true` marks the point read-only: no command is sent to it (see [Read-only points](../live-data-and-commands/#read-only-points)). `false` clears the mark. |
 
 **Names in an import.** A file without the `name` column leaves the names of the points it
 updates as they are. With the column, an empty cell clears a point's name and text replaces it.
@@ -90,6 +91,12 @@ another point's name but a new address adds a point.
 
 For an OPC UA client that browses, the exported variables carry their DisplayName from the
 server as the name; a name you gave a point is kept.
+
+**Read-only marks in an import.** `readOnly` works like `name`: a file without the column, or an
+empty cell, leaves a point's mark as it is; `true` sets it and `false` clears it (any letter
+case). Anything else is refused with the record number. Export writes `true` for a read-only
+point and leaves the cell empty otherwise. An OPC UA or XML-DA client that browses marks the
+variables the server reports as not writable.
 
 The generic `type` and the `nativeType` describe different things. For example, Modbus `Float`
 can use the native encoding `f32` or `f64`. The two fields must agree with each other and with
