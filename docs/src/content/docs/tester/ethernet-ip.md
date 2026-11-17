@@ -122,8 +122,9 @@ name is the point's name, so no other name is proposed. Options:
   a note on how many were left out.
 
  System tags,
-STRING tags and tags with External Access *None* are left out; read-only tags are offered and
-listed in a note. Detection stops at 20,000 points. With **Detect points on connect** the
+STRING tags and tags with External Access *None* are left out; tags with External Access *Read
+Only* are offered as [read-only points](../live-data-and-commands/#read-only-points): ByteBridge
+sends no write to them. Detection stops at 20,000 points. With **Detect points on connect** the
 endpoint adds the controller's points by itself each time it connects.
 
 Tag descriptions cannot be read from the controller. Export the tags from Studio 5000 and

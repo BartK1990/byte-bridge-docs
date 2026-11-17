@@ -46,7 +46,7 @@ Only polling endpoints show a poll interval and cycle time, and only their value
 | Column | Meaning |
 |---|---|
 | Address | the point's address in the protocol's own format |
-| Name | the point's description, if it has one (see *Names* below); a long name is cut, the whole name is its tooltip |
+| Name | the point's description, if it has one (see *Names* below); a long name is cut, the whole name is its tooltip. A lock before it marks a [read-only point](#read-only-points) |
 | Type | `Boolean`, `DoublePoint`, `Integer`, `Float`, `Counter` or `Bitstring` |
 | Value | the latest value; `—` for a defined point that has not been received yet |
 | Quality | **Good**, or the quality bits such as **IV** (invalid) or **NT** (not topical); then the value's flags as small labels (see *Flags* below). For a bad point also why, and when it was last good |
@@ -109,10 +109,39 @@ points: with an address pattern it is the number in the address (start index and
 included), otherwise 1, 2, 3, ... So *Pump {n} speed* gives *Pump 1 speed*, *Pump 2 speed*, ... Names
 have up to 255 characters; shorter ones read better in tables.
 
+### Read-only points
+
+A point can be marked **read-only** when the device accepts no writes to it: a Logix tag whose
+External Access is *Read Only*, an OPC UA variable without write access, an IEC 61850 status or
+measurement. The table shows a lock before its name, and a client endpoint offers no
+**command** for it. If a command reaches it anyway (from the API, a mapping or central), it is
+answered **Rejected** with *The point is read-only; the command was not sent.*, nothing goes to
+the device, and the endpoint's health counts it like a refusal from the device.
+
+Where the mark comes from:
+
+- **Detect points** proposes it from what the device says (EtherNet/IP External Access, IEC 61850
+  `[ST]` and `[MX]`). A point you already have keeps its own mark; tick **Use the device's
+  access** to take the device's, which lists each change first. Protocols that do not say
+  (Modbus, IEC 104, DNP3, S7) never change it.
+- An OPC UA or OPC XML-DA client that browses marks the variables the server reports as not
+  writable when they become points.
+- You set or clear it yourself: the **Read-only** box of **Add point** (for **Multiple points**,
+  all of them), the **Read-only** column of the table, or the `readOnly` column of a CSV file
+  (see [Import and export points](../import-export-points/)).
+
+Changing the mark takes effect at once, without reconnecting. The **Mappings** page warns about
+a mapping that forwards commands to a read-only point: those commands are refused.
+
+On a **server** endpoint the mark protects the point from the peer: a write that SCADA sends to
+a read-only point is refused with the protocol's own answer (a Modbus exception, an IEC 104
+negative confirmation, a DNP3 refusal, OPC UA *BadNotWritable*) and is not forwarded by any
+mapping. An OPC UA server endpoint also shows the variable as not writable.
+
 ### Find points
 
-The **All / Bad quality / Changed < 10 s** buttons, each with its count, narrow the table to the
-points that need attention or the ones that are moving. Type in **Filter by address, name or
+The **All / Bad quality / Changed < 10 s / Read-only** buttons, each with its count, narrow the
+table to the points that need attention, the ones that are moving, or the read-only ones. Type in **Filter by address, name or
 type** to find points in a long list; the column filters under the headers work per column, and
 the Quality filter also finds flags (`test`). **Refresh all** asks the device for all its values again (for IEC 104
 this is a general interrogation). **Stop** and **Start** disconnect and reconnect the endpoint.
@@ -126,6 +155,8 @@ this is a general interrogation). **Stop** and **Start** disconnect and reconnec
    other protocols write directly. IEC 61850 follows the control model
    of the object instead (see [IEC 61850](../iec61850/)).
 4. Click **Send**.
+
+A read-only point has no **command** link (see [Read-only points](#read-only-points)).
 
 The result comes back from the device: *Confirmed*, *Rejected*, *Timeout* or *Not connected*.
 That tells you not only that the command was sent, but whether the device accepted it. To see the
@@ -149,7 +180,8 @@ SCADA raises the alarm, or set a measured value out of range.
 Click **edit** on a point to fill the form with it, change the value and click **Publish**.
 Tick **Invalid quality** to check how SCADA shows a failed measurement. Commands that SCADA sends
 to the server show up as new values; with a mapping that has *forward commands* on, they are
-sent on to the real device.
+sent on to the real device. Commands to a [read-only point](#read-only-points) of the server are
+refused.
 
 ## Replay a recorded or simulated source
 
