@@ -1,6 +1,6 @@
 ---
 title: Connect to a device
-description: Examples for reading a Modbus TCP meter, a Siemens S7 PLC, an OPC UA server and an IEC 61850 IED with the tester.
+description: Examples for reading a Modbus TCP meter, a Siemens S7 PLC, an OPC UA server, an IEC 61850 IED, a DNP3 outstation and a Logix controller with the tester.
 sidebar:
   order: 2
 ---
@@ -82,6 +82,28 @@ shown under **This application**.
 
 Reports, commands, point detection and the connection settings are explained in
 [Connect an IEC 61850 IED](../iec61850/).
+
+## DNP3 outstation (RTU, IED)
+
+| Setting | Example | Notes |
+|---|---|---|
+| Host | `192.168.1.30` | the RTU, IED or DNP3 gateway |
+| Port | `20000` | |
+| Master link address / Outstation link address | `1` / `1024` | as configured in the outstation |
+| Enable unsolicited reporting | on | the outstation sends class 1, 2 and 3 events by itself |
+| Class 1 / 2 / 3 event poll interval (ms) | `1000` / `10000` / `60000` | `0`: disabled |
+| Integrity poll interval (s) | `3600` | reads every value again (class 0); `0`: only after connecting and after an event buffer overflow |
+
+After connecting, ByteBridge runs an integrity poll and then takes events as the outstation
+reports them. Each event class can also be polled on its own interval, for example class 1
+(often breaker and alarm states) every second and class 3 every minute. Classes that are due at
+the same time are read in one request. The polls run whether unsolicited reporting is on or off,
+so they also catch events of an outstation that reports unsolicited only for some classes. With
+all three intervals at `0` and unsolicited reporting off, events are read when the outstation
+says it has some.
+
+ByteBridge confirms every unsolicited response, so the outstation removes those events from
+its buffer.
 
 ## Allen-Bradley Logix controller (EtherNet/IP)
 
