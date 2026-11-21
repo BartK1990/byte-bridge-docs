@@ -140,15 +140,19 @@ mapping. An OPC UA server endpoint also shows the variable as not writable.
 
 ### Find points
 
-The **All / Bad quality / Changed < 10 s / Read-only** buttons, each with its count, narrow the
-table to the points that need attention, the ones that are moving, or the read-only ones. Type in **Filter by address, name or
-type** to find points in a long list; the column filters under the headers work per column, and
-the Quality filter also finds flags (`test`). **Refresh all** asks the device for all its values again (for IEC 104
-this is a general interrogation). **Stop** and **Start** disconnect and reconnect the endpoint.
+The filter row right above the points narrows the table. Type in the **Find** box to find points
+by address, name, description or type in a long list. The **Show** list (**All**, **Bad quality**,
+**Changed < 10 s**, **Read-only**, each with its count) keeps the points that need attention, the
+ones that are moving, or the read-only ones. **Column filters** adds a filter under each header;
+the Quality filter also finds flags (`test`). **Refresh all** on the toolbar asks the device for
+all its values again (for IEC 104 this is a general interrogation). **Stop** and **Start** on the
+toolbar disconnect and reconnect the endpoint.
 
 ## Send a command (client endpoints)
 
-1. Click **control** on a point, or type its address in the **Send command** form.
+1. Click **command** at the end of a point's row: the command form opens under the row. For an
+   address that is not in the table, choose **Command to another address** in the **⋯** menu at
+   the end of the button row above the table, and type the address.
 2. Pick the **Type** and enter the **Value**; `Boolean` and `DoublePoint` have **ON** and **OFF**.
 3. Tick **Select before operate** if the device expects a select first. The option appears only
    for IEC 104 and DNP3, the protocols that have it (not for IEC 104 bitstring commands);
@@ -173,11 +177,13 @@ Examples:
 
 ## Publish a value (server endpoints)
 
-On a **server** endpoint the same form is called **Publish value**. Use it to play the
+On a **server** endpoint the same form publishes a value instead of sending a command. Use it to play the
 device's part towards a SCADA system under test: publish `1` on an alarm point and check that
 SCADA raises the alarm, or set a measured value out of range.
 
-Click **edit** on a point to fill the form with it, change the value and click **Publish**.
+Click **publish** at the end of a point's row (or choose **Publish to another address** in the
+**⋯** menu above the table for an address that is not in it), enter the value and click
+**Publish**.
 Tick **Invalid quality** to check how SCADA shows a failed measurement. Commands that SCADA sends
 to the server show up as new values; with a mapping that has *forward commands* on, they are
 sent on to the real device. Commands to a [read-only point](#read-only-points) of the server are
