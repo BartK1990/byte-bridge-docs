@@ -20,7 +20,7 @@ first and copy the configuration file over (see [Move a configuration](#move-a-c
 
 ## 1. The source: an IEC 104 client
 
-**Add endpoint**, name `RTU Substation A`, protocol **IEC 60870-5-104**, role **Client**:
+**New endpoint**, name `RTU Substation A`, protocol **IEC 60870-5-104**, role **Client**:
 
 | Setting | Value |
 |---|---|

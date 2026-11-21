@@ -20,16 +20,16 @@ preinstalled on current Windows.
 
 ## 1. Add a simulator
 
-1. Click **Add endpoint**.
+1. Click **New endpoint** on the toolbar.
 2. Enter a **Name**, e.g. `Simulator`.
 3. Choose the protocol **Simulator** and the role **Client**.
 4. Keep the defaults (12 points, updated every 1000 ms) and click **Save**.
 
-The endpoint appears under **Endpoints** in the menu. Open it to see its points change.
+The endpoint appears under **Endpoints** in the explorer on the left. Open it to see its points change.
 
 ## 2. Add an IEC 104 server
 
-1. Click **Add endpoint** again.
+1. Click **New endpoint** again.
 2. Name it `IEC 104 server`, choose **IEC 60870-5-104** and the role **Server**.
 3. Keep **Listen address** `0.0.0.0`, **Port** `2404` and **Common address (ASDU)** `1`.
 4. Click **Save**.

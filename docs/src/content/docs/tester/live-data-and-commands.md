@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-Open an endpoint from the **Endpoints** list in the menu to see its live data. The page is the
+Open an endpoint from the **Endpoints** section of the explorer to see its live data on the **Points** tab. The page is the
 same for every protocol.
 
 ## Connection health
