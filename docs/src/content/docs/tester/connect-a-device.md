@@ -5,14 +5,15 @@ sidebar:
   order: 2
 ---
 
-Every device is a **client** endpoint. Click **Add endpoint**, choose the protocol and the role
+Every device is a **client** endpoint. Click **New endpoint** on the toolbar (or **+** next to
+**Endpoints** in the explorer), choose the protocol and the role
 **Client**, and fill in the settings below. The form only shows the settings of the chosen
 protocol, each with its default value.
 
 :::note
 Make sure the laptop can reach the device: the same network, the right IP address and no
-firewall in between. The endpoint shows its state (connecting, running, faulted) in the menu
-and on the **Dashboard**. If it stays *connecting*, use **Test connection** in the editor or the
+firewall in between. The endpoint shows its state (connecting, running, faulted) in the explorer
+and on the **Overview**. If it stays *connecting*, use **Test connection** in the editor or the
 **Troubleshoot** tab: see [Troubleshoot a connection](../troubleshoot/).
 :::
 

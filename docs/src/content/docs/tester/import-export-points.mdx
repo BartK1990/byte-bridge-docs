@@ -14,6 +14,8 @@ import selectLight from '../../../assets/screens/point-csv-select-light.jpg';
 import selectDark from '../../../assets/screens/point-csv-select-dark.jpg';
 import previewLight from '../../../assets/screens/point-csv-preview-light.jpg';
 import previewDark from '../../../assets/screens/point-csv-preview-dark.jpg';
+import reviewLight from '../../../assets/screens/point-csv-review-light.jpg';
+import reviewDark from '../../../assets/screens/point-csv-review-dark.jpg';
 import appliedLight from '../../../assets/screens/point-csv-applied-light.jpg';
 import appliedDark from '../../../assets/screens/point-csv-applied-dark.jpg';
 import errorLight from '../../../assets/screens/point-csv-error-light.jpg';
@@ -34,12 +36,12 @@ simulated signals; no physical device is required to reproduce the example.
 
 ## Find the controls
 
-1. Open the endpoint from the **Endpoints** list in the sidebar.
-2. If the endpoint has tabs, select **Live data**.
-3. Find the orange **Import** and **Export** buttons in the **Points** panel header.
+1. Open the endpoint from the **Endpoints** section of the explorer on the left.
+2. Select the **Points** tab.
+3. Find **Import** and **Export** in the row of buttons above the points table.
 
-<Image src={liveLight} alt="Boiler room PLC live data with three points and the orange Import and Export buttons beside the Points heading" class="dark:sl-hidden" />
-<Image src={liveDark} alt="Boiler room PLC live data with three points and the orange Import and Export buttons beside the Points heading" class="light:sl-hidden" />
+<Image src={liveLight} alt="Boiler room PLC on the Points tab: three points, with Import and Export in the button row above the table" class="dark:sl-hidden" />
+<Image src={liveDark} alt="Boiler room PLC on the Points tab: three points, with Import and Export in the button row above the table" class="light:sl-hidden" />
 
 The example starts with three monitored addresses: `CO:1`, `HR:40001:f32` and `HR:40003`.
 The connection settings, such as host, port and unit ID, have already been configured.
@@ -53,13 +55,13 @@ The connection settings, such as host, port and unit ID, have already been confi
 4. Check the **Exported … definitions.** confirmation. Open the downloaded file in a text
    editor or a spreadsheet application if you want to inspect or edit it.
 
-<Image src={exportLight} alt="Export confirmation reading Exported 5 definitions above the live data table" class="dark:sl-hidden" />
-<Image src={exportDark} alt="Export confirmation reading Exported 5 definitions above the live data table" class="light:sl-hidden" />
+<Image src={exportLight} alt="Export confirmation reading Exported 5 definitions above the points table" class="dark:sl-hidden" />
+<Image src={exportDark} alt="Export confirmation reading Exported 5 definitions above the points table" class="light:sl-hidden" />
 
 This screenshot was taken after the example import, so it exports five definitions.
 
 Export includes all transferable configured and discovered points for this endpoint. The
-**Filter by address or type** search does not limit the exported file. Diagnostic-only rows,
+**Find** box and the **Show** filter do not limit the exported file. Diagnostic-only rows,
 such as S7 CPU state, are not included as variable definitions.
 
 Spaces and Unicode characters are preserved in the filename. Characters that cannot be used
@@ -81,7 +83,8 @@ An endpoint with no configured or transferable discovered points exports a heade
 | `type` | Required. One of `Boolean`, `DoublePoint`, `Integer`, `Float`, `Counter` or `Bitstring`. |
 | `nativeType` | Optional column. The native encoding or point kind, where applicable. For Modbus and S7 it can also be encoded in the address. |
 | `byteOrder` | Modbus only. Optional `ABCD`, `CDAB`, `BADC` or `DCBA`. Leave it empty to use the endpoint's selected order. |
-| `name` | Optional column, every protocol. The point's description, up to 255 characters. Export writes it last. |
+| `name` | Optional column, every protocol. The point's name, up to 255 characters. |
+| `description` | Optional column, every protocol. Free text about the point, up to 1024 characters; it may span lines (quote the field). Export writes `name`, `description` and `readOnly` last. |
 | `readOnly` | Optional column, every protocol. `true` marks the point read-only: no command is sent to it (see [Read-only points](../live-data-and-commands/#read-only-points)). `false` clears the mark. |
 
 **Names in an import.** A file without the `name` column leaves the names of the points it
@@ -169,21 +172,22 @@ complete identifiers survive saving. Save as CSV UTF-8 rather than `.xlsx`.
 
 ## Import and preview changes
 
-1. Open the **destination endpoint** and select **Live data**.
-2. Click **Import**. The CSV selection panel opens.
+1. Open the **destination endpoint** and select the **Points** tab.
+2. Click **Import**. The CSV selection panel opens above the points table.
 3. Click **Choose File** and select your `.csv` file. Before selection, the field displays
    **No file chosen**; after selection, it displays the selected filename.
 
-<Image src={selectLight} alt="The Import panel with the CSV file chooser, UTF-8 and 5 MiB requirements, and the Cancel button" class="dark:sl-hidden" />
-<Image src={selectDark} alt="The Import panel with the CSV file chooser, UTF-8 and 5 MiB requirements, and the Cancel button" class="light:sl-hidden" />
+<Image src={selectLight} alt="The Import panel with the CSV file chooser, the UTF-8 and 5 MiB requirements, and the Cancel button" class="dark:sl-hidden" />
+<Image src={selectDark} alt="The Import panel with the CSV file chooser, the UTF-8 and 5 MiB requirements, and the Cancel button" class="light:sl-hidden" />
 
 4. Wait for validation. ByteBridge checks the CSV structure, addresses, types and duplicate
-   canonical addresses before offering to save.
+   canonical addresses before offering to add the changes.
 5. Review the summary and table. In this example the preview reports **2 additions, 3 updates;
-   5 definitions after import. No validation errors.**
+   5 definitions after import. No validation errors.**, says how the change would be applied
+   (here **Applied without interrupting the connection**) and lists the resulting definitions.
 
-<Image src={previewLight} alt="CSV preview showing two additions, three updates, five resulting definitions, the restart notice, and Apply import and Cancel buttons" class="dark:sl-hidden" />
-<Image src={previewDark} alt="CSV preview showing two additions, three updates, five resulting definitions, the restart notice, and Apply import and Cancel buttons" class="light:sl-hidden" />
+<Image src={previewLight} alt="CSV preview showing two additions, three updates, five resulting definitions, how the change is applied, and the Add to pending changes and Cancel buttons" class="dark:sl-hidden" />
+<Image src={previewDark} alt="CSV preview showing two additions, three updates, five resulting definitions, how the change is applied, and the Add to pending changes and Cancel buttons" class="light:sl-hidden" />
 
 **Additions** are addresses not already present. **Updates** are CSV rows matching an existing
 canonical address, including rows whose fields have not changed. The preview table shows the
@@ -191,20 +195,34 @@ resulting definition list; for large imports it displays the first 100 definitio
 
 Nothing has been saved yet. Click **Cancel** to leave the configuration unchanged.
 
-:::caution[Applying an import restarts a running endpoint]
-If the endpoint is running, the preview warns that applying the import restarts it with the
-updated definitions. Plan for a temporary interruption in data collection or server availability.
+:::caution[A driver that cannot apply the change live restarts the endpoint]
+Most drivers apply new definitions to the running connection. Where a driver cannot, the preview
+and the review say that applying restarts the endpoint with the updated definitions. Plan for a
+temporary interruption in data collection or server availability.
 :::
 
 ## Apply and verify
 
-1. Click **Apply import** after reviewing the preview.
-2. Wait for the success message, such as **Imported 2 additions and 3 updates.**
-3. Verify the addresses and native types in the Points table. This example now has five rows.
-4. Check that readings arrive and that their values and quality are appropriate for your device.
+1. Click **Add to pending changes**. The panel reports **2 additions and 3 updates are pending
+   in the table**; the added rows appear in the points table marked **new**, and updated rows
+   whose fields change are marked as edited.
+2. Click **Review and apply** (on the toolbar or under the table). The review lists each change
+   (here **+ add HR:40005:u64 Integer** and **+ add CO:2 Boolean**; updates that change nothing
+   are left out) and how it is applied.
+
+<Image src={reviewLight} alt="The review of the import: two added points, applied without interrupting the connection, with the Apply 2 changes and Back to editing buttons; the two new rows are marked new in the table" class="dark:sl-hidden" />
+<Image src={reviewDark} alt="The review of the import: two added points, applied without interrupting the connection, with the Apply 2 changes and Back to editing buttons; the two new rows are marked new in the table" class="light:sl-hidden" />
+
+3. Click **Apply 2 changes** and wait for the confirmation, such as **Applied 2 changes (2 added).
+   Applied without interrupting the connection.**
+4. Verify the addresses and native types in the points table. This example now has five rows.
+5. Check that readings arrive and that their values and quality are appropriate for your device.
 
 <Image src={appliedLight} alt="Successful import confirmation and five live points, including the added coil CO:2 and unsigned 64-bit register HR:40005:u64" class="dark:sl-hidden" />
 <Image src={appliedDark} alt="Successful import confirmation and five live points, including the added coil CO:2 and unsigned 64-bit register HR:40005:u64" class="light:sl-hidden" />
+
+Until you apply them, the imported rows are pending changes like any other edit of the table:
+**Undo** takes them back and **Discard all** drops them.
 
 Definitions are saved with the endpoint and survive an application or endpoint restart.
 A configured row without a reading displays **`—`** for value and time, rather than a
@@ -219,8 +237,8 @@ Import **adds or updates** definitions. It does not delete definitions absent fr
 and importing the same file again does not create duplicate rows.
 
 :::note[Central configuration drafts]
-Applying an import while editing a Central draft saves that draft. Deploy the configuration
-to the gateway through the normal deployment workflow to activate it there.
+Applying the pending changes while editing a Central draft saves that draft. Deploy the
+configuration to the gateway through the normal deployment workflow to activate it there.
 :::
 
 ## Correct an invalid file
@@ -234,7 +252,7 @@ HR:40001,Boolean,f32,
 ```
 
 ByteBridge reports **Record 2: column type: expected Float, received Boolean.** There is no
-**Apply import** action for the invalid preview, and the current point list remains unchanged.
+**Add to pending changes** action for the invalid preview, and the current point list remains unchanged.
 
 <Image src={errorLight} alt="CSV validation error identifying record 2 and the type column: expected Float, received Boolean; the existing five live points remain visible" class="dark:sl-hidden" />
 <Image src={errorDark} alt="CSV validation error identifying record 2 and the type column: expected Float, received Boolean; the existing five live points remain visible" class="light:sl-hidden" />
@@ -249,8 +267,8 @@ field still belongs to one record.
 | Invalid address or incompatible type | Check the device's address format and ensure `type`, `nativeType` and any encoded suffix agree. |
 | Duplicate canonical address | Remove the repeated definition, including alternate spellings of the same address. |
 | File or row limit exceeded | Reduce the file and check how many definitions will remain after merging. |
-| Endpoint changed since preview | Select the file again, review a fresh preview and then apply it. |
-| Header-only file; Apply import is disabled | Add at least one valid variable row. A template alone has no changes to apply. |
+| Endpoint changed since preview | Select the file again, review a fresh preview and then add it to the pending changes. |
+| Header-only file; nothing to add | Add at least one valid variable row. A template alone has no changes to apply. |
 | Import succeeds but values remain unavailable | Check the connection, device addresses and quality. Use [Troubleshoot a connection](../troubleshoot/) to diagnose the device link. |
 
 For connection setup, see [Connect to a device](../connect-a-device/). For commands and
