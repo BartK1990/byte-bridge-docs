@@ -36,23 +36,34 @@ The endpoint appears under **Endpoints** in the explorer on the left. Open it to
 
 ## 3. Map the simulator onto the server
 
-1. Open **Mappings** and click **Add mapping**.
-2. **Source endpoint (client)**: `Simulator`, **Source address**: `*`.
-3. **Target endpoint (server)**: `IEC 104 server`. Leave the target address empty.
-4. Tick **Forward commands from the target back to the source** and click **Save**.
+Mappings are an editable table: you add and change rows in place, then review and apply all
+the changes at once.
 
-Every simulator point is now published by the IEC 104 server under the same address. The
-**Last value** column of the mapping shows the values passing through.
+1. Under **Data flow** in the explorer, open **Mappings** and click **Add row**. A new row
+   appears, marked **new**.
+2. Fill in its cells (click a cell, choose or type the value, press **Enter**):
+   - **Source endpoint**: `Simulator`, **Source address**: `*` (every point of the source);
+   - **Target endpoint**: `IEC 104 server`. Leave **Target address** empty: every point keeps
+     its address on the server.
+3. Tick **Forward commands** in the same row, so commands sent to the server reach the
+   simulator.
+4. Click **Review and apply** on the toolbar, check the line it lists and click **Apply 1 change**.
+
+Every simulator point is now published by the IEC 104 server under the same address: open
+**IEC 104 server** in the explorer to see the values on its **Points** tab. (The mapping's
+**Last value** column shows a value for a mapping of a single point; with `*` it stays empty.)
 
 ## 4. Read it back with an IEC 104 client
 
-1. Add an endpoint `IEC 104 client` with protocol **IEC 60870-5-104** and role **Client**.
+1. Click **New endpoint**, name it `IEC 104 client`, and choose protocol **IEC 60870-5-104**
+   and role **Client**.
 2. Set **Host** `127.0.0.1` and **Port** `2404`; keep **General interrogation on connect** on.
-3. Click **Save** and open the endpoint.
+3. Click **Save** and open the endpoint from the explorer.
 
-The values arrive with their quality and time stamp. Send a command to one of the points from
-the live view (see [Live data and commands](../live-data-and-commands/)): it travels through
-the server and the mapping back to the simulator, and the client shows the confirmation.
+The values arrive on the **Points** tab with their quality and time stamp. Send a command to
+one of the points with the **command** link in its row (see
+[Live data and commands](../live-data-and-commands/)): it travels through the server and the
+mapping back to the simulator, and the client shows the confirmation.
 
 :::tip[Next step]
 This configuration is already a working gateway. See
