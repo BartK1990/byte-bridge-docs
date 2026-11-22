@@ -1,6 +1,6 @@
 ---
 title: Concepts
-description: Endpoints, mappings, calculations and points, the building blocks of every ByteBridge configuration.
+description: Endpoints, mappings, calculations and points, the building blocks of every Protocol Bridge configuration.
 ---
 
 The tester and the gateway share one model. Learn these four words and every screen makes sense.

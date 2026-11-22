@@ -1,11 +1,11 @@
 ---
 title: Connect to central
-description: Enroll a gateway with ByteBridge Central over MQTT (Sparkplug B) and receive signed configurations.
+description: Enroll a gateway with Protocol Bridge Central over MQTT (Sparkplug B) and receive signed configurations.
 sidebar:
   order: 4
 ---
 
-ByteBridge Central follows many gateways: which are online, their live values, commands from
+Protocol Bridge Central follows many gateways: which are online, their live values, commands from
 operators and configurations deployed from one place. A gateway opens one outbound MQTT 5
 connection to central's broker (TLS with its own client certificate) and publishes every
 endpoint as a Sparkplug B device. No inbound port is needed on the gateway; see

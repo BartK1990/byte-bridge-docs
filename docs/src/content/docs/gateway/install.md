@@ -1,12 +1,15 @@
 ---
 title: Install the gateway
-description: Run the ByteBridge gateway as a Windows service with its web UI.
+description: Run the Protocol Bridge gateway as a Windows service with its web UI.
 sidebar:
   order: 1
 ---
 
-The gateway is the same ByteBridge, without a desktop window. It runs as a Windows service,
+The gateway is the same Protocol Bridge, without a desktop window. It runs as a Windows service,
 starts with the machine, restarts after failures and serves its user interface in the browser.
+
+Protocol Bridge was called ByteBridge before. Folders, file names, the service name and the
+settings below keep the earlier name, so an existing installation updates in place.
 
 ## Install as a Windows service
 
@@ -20,7 +23,7 @@ starts with the machine, restarts after failures and serves its user interface i
 
 3. Open http://localhost:5180 in a browser on that machine.
 
-The service is called `ByteBridgeGateway` (display name *ByteBridge Gateway*). It starts
+The service is called `ByteBridgeGateway` (display name *Protocol Bridge Gateway*). It starts
 automatically, restarts 5 seconds after a crash (60 seconds after the third crash in a day)
 and logs to the Windows Event Log.
 

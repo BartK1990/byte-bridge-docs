@@ -1,6 +1,6 @@
 ---
 title: Troubleshoot a connection
-description: Find out why a device does not answer, read every frame of a connection and let ByteBridge explain what it means.
+description: Find out why a device does not answer, read every frame of a connection and let Protocol Bridge explain what it means.
 sidebar:
   order: 4
 ---
@@ -55,7 +55,7 @@ frame trace. **IEC 104 server** endpoints have the frame trace too, see
 
 ## Connection check
 
-Click **Check connection**. ByteBridge opens a connection of its own and runs these steps in
+Click **Check connection**. Protocol Bridge opens a connection of its own and runs these steps in
 order. First, for every protocol:
 
 | Step | What it tells you |
@@ -116,7 +116,7 @@ tries):
 | Step | What it tells you |
 |---|---|
 | TLS | For an `https://` **Service URL**: the TLS version and the server certificate. A certificate that is not trusted (self-signed, or from your own CA: put it in **CA certificate file**), issued for another host name (use that name in the URL, not the IP address) or expired fails here. Skipped for `http://`. |
-| GetStatus | The service answers: vendor, version, the server's state and how far its clock is from yours. *HTTP 401* means a wrong **User name** or **Password**, or a server that asks for Windows authentication (NTLM), which ByteBridge does not do; *404* or a web page instead of SOAP means a wrong path in the URL (often `/OPCXMLDA/Service.asmx`). A state other than *running* is a warning. |
+| GetStatus | The service answers: vendor, version, the server's state and how far its clock is from yours. *HTTP 401* means a wrong **User name** or **Password**, or a server that asks for Windows authentication (NTLM), which Protocol Bridge does not do; *404* or a web page instead of SOAP means a wrong path in the URL (often `/OPCXMLDA/Service.asmx`). A state other than *running* is a warning. |
 | Browse | With **Browse for items** on: the items and branches found below the browse root, as the endpoint finds them, and every branch the server refuses. |
 | Configured items | Every item in **Items** is read from the device. Each one that fails is listed with its result, e.g. `Line1.Speed: E_UNKNOWNITEMNAME`; a bad or uncertain quality is a warning. |
 | Subscription | With **Collect values by** set to Subscription: the server creates a subscription for the items, answers one polled refresh and cancels it. A server that cannot subscribe fails here: use Read. |
@@ -164,7 +164,7 @@ the same check with the values in the form.
 Click **Start** to record the endpoint's frames. Starting does not reconnect the endpoint; the
 trace shows the running connection from now on. With **Include TCP layer** (on by default) you
 also see the connects, the bytes as they were read from and written to the socket, and how each
-connection ended (closed by the device, reset, closed by ByteBridge with the reason, for example
+connection ended (closed by the device, reset, closed by Protocol Bridge with the reason, for example
 `t1 expired`).
 
 <Image src={traceLight} alt="Frame trace of an IEC 104 connection: the frame list on the left, the decoded fields of a general interrogation answer on the right" class="dark:sl-hidden" />
@@ -176,7 +176,7 @@ The list shows for each record:
 |---|---|
 | # | Record number within the trace. |
 | Time, Δt | When it was recorded, and the time since the previous record shown. |
-| Arrow | `→` sent by ByteBridge, `←` received from the device. |
+| Arrow | `→` sent by Protocol Bridge, `←` received from the device. |
 | Delay | Arrival time minus the device's own time stamp in the frame (see below). |
 | Summary | The frame in one line, e.g. `I(118,2) M_ME_NC_1 inrogen CA=1 IOA 1001=60.6`. |
 
@@ -317,7 +317,7 @@ The trace adds a **Hint** where it recognises a known pattern, for example:
 - an OPC UA request without a response, a missed keep-alive, and a secured channel whose
   services the trace cannot show;
 - an OPC XML-DA server's HTTP error with what to look at: *401* (user name and password, or
-  Windows authentication that ByteBridge does not do), *403*, *404* (the path in **Service
+  Windows authentication that Protocol Bridge does not do), *403*, *404* (the path in **Service
   URL**), a proxy error (*502* to *504*), and an answer that is not SOAP (a web page);
 - an OPC XML-DA fault or item result once per item: *E_UNKNOWNITEMNAME* (check **Items**),
   *E_READONLY* and the other write errors, *E_SERVERSTATE*, *E_BUSY*, a subscription the server
@@ -356,12 +356,12 @@ that points at the network or a device that is overloaded, not at the protocol s
 
 ### Export
 
-**Export pcapng** saves the trace for Wireshark. ByteBridge records what the endpoint read and
+**Export pcapng** saves the trace for Wireshark. Protocol Bridge records what the endpoint read and
 wrote on its socket, not packets on the wire, so the file is built: each read and write becomes a
 TCP segment with Ethernet, IP and TCP headers made up from the connection's addresses, and a
 connect a three-way handshake. Wireshark reassembles the streams and applies its own dissector
 (for a port other than the protocol's usual one: *Decode As*). Each packet's comment names its
-record number (`#123`) in ByteBridge. **Export JSON** saves every record with its decoded
+record number (`#123`) in Protocol Bridge. **Export JSON** saves every record with its decoded
 fields, as the runtime API returns them.
 
 ### Limits
@@ -372,12 +372,12 @@ on the computer that runs the endpoint: it is never sent to central.
 
 ## Server endpoints
 
-When ByteBridge is the **IEC 104 server** (controlled station) for a SCADA, the trace shows every
+When Protocol Bridge is the **IEC 104 server** (controlled station) for a SCADA, the trace shows every
 connected SCADA client, each on a connection of its own; the **connection** filter picks one.
-Starting the trace disconnects no one. A client that ByteBridge turns away because **Max
+Starting the trace disconnects no one. A client that Protocol Bridge turns away because **Max
 connections** are in use shows up as a connection that closes right away, with the reason.
 
-The hints look at the frames from ByteBridge's side: the SCADA addressed a common address this
+The hints look at the frames from Protocol Bridge's side: the SCADA addressed a common address this
 server does not have (COT 46), used an IOA that no point of this server has (COT 47) or a type
 it does not support (COT 44), or a command that this server refused, with the usual reasons (no
 mapping forwards commands to the point, the source device refused it, or it did not answer in
@@ -386,7 +386,7 @@ time).
 ## AI report
 
 **AI report** in the frame trace panel writes one Markdown file to paste into the chat of an AI
-assistant, or to send to a colleague, to find the root cause. ByteBridge itself calls no AI
+assistant, or to send to a colleague, to find the root cause. Protocol Bridge itself calls no AI
 service and sends the report nowhere: you copy or save it and decide where it goes.
 
 <Image src={reportLight} alt="The AI report panel: symptom, Anonymize, size, the report's preview with the placeholders marked, and the key from placeholder to real value" class="dark:sl-hidden" />

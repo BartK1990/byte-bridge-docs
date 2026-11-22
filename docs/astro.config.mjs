@@ -13,14 +13,14 @@ export default defineConfig({
     trailingSlash: 'always',
     integrations: [
         starlight({
-            title: 'ByteBridge Docs',
-            description: 'How to use the ByteBridge tester and configure a ByteBridge gateway.',
-            logo: { light: './src/assets/logo-light.gif', dark: './src/assets/logo-dark.gif', alt: 'ByteBridge' },
+            title: 'Protocol Bridge Docs',
+            description: 'How to use the Protocol Bridge tester and configure a Protocol Bridge gateway.',
+            logo: { light: './src/assets/logo-light.gif', dark: './src/assets/logo-dark.gif', alt: 'Protocol Bridge' },
             favicon: '/favicon.svg',
             customCss: ['./src/styles/brand.css'],
             social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/BartK1990/byte-bridge-docs' }],
             sidebar: [
-                { label: '← ByteBridge website', link: `${site}${siteBase}/`, attrs: { target: '_self' } },
+                { label: '← Protocol Bridge website', link: `${site}${siteBase}/`, attrs: { target: '_self' } },
                 {
                     label: 'Start here',
                     items: [

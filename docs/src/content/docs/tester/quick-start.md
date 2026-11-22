@@ -1,6 +1,6 @@
 ---
 title: Quick start
-description: Install the ByteBridge desktop tester and try it without hardware.
+description: Install the Protocol Bridge desktop tester and try it without hardware.
 sidebar:
   order: 1
 ---
@@ -11,7 +11,7 @@ software is needed.
 
 ## Install
 
-1. Download the latest ByteBridge Desktop zip from the
+1. Download the latest Protocol Bridge Desktop zip from the
    [download section](../../../#download) of the website.
 2. Unzip it to a folder of your choice and start `ByteBridge.Desktop.exe`.
 
