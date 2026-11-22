@@ -5,6 +5,12 @@ sidebar:
   order: 4
 ---
 
+import { Image } from 'astro:assets';
+import gatewayLight from '../../../assets/screens/central-gateway-light.webp';
+import gatewayDark from '../../../assets/screens/central-gateway-dark.webp';
+import deployLight from '../../../assets/screens/central-deploy-light.webp';
+import deployDark from '../../../assets/screens/central-deploy-dark.webp';
+
 ByteBridge Central follows many gateways: which are online, their live values, commands from
 operators and configurations deployed from one place. A gateway opens one outbound MQTT 5
 connection to central's broker (TLS with its own client certificate) and publishes every
@@ -14,8 +20,9 @@ endpoint as a Sparkplug B device. No inbound port is needed on the gateway; see
 ## 1. Add the gateway in central
 
 1. Sign in to central as an Admin.
-2. On the **Gateways** page, click **Add a gateway**. Enter the **Gateway id** and the
-   **Site** (1 to 32 characters: `a-z`, `0-9` and `-`).
+2. Click **Add a gateway** on the toolbar of the **Gateways** page, or **+** next to
+   *Gateways* in the explorer. Enter the **Gateway id** and the **Site** (1 to 32 characters:
+   `a-z`, `0-9` and `-`).
 3. Click **Create enrollment token** and copy the one-time token.
 
 ## 2. Enroll the gateway
@@ -65,8 +72,14 @@ To keep the gateway's web UI as well, run the runtime as its own service and set
 to `"Runtime": "Remote"` with `RuntimeUrl` (e.g. `http://127.0.0.1:5104`) and `RuntimeToken`
 in `appsettings.json` (see [Install the gateway](../install/#application-settings)).
 
-The gateway appears in central as online. While central is unreachable, the gateway keeps
+The gateway appears in central as online: in the explorer under *Gateways*, with its site and
+its endpoints running, and on its own page with each endpoint's live values. The status bar
+at the bottom shows central's connection to the broker and how many gateways are online; it
+turns red while central has lost the broker. While central is unreachable, the gateway keeps
 working and buffers values on disk; they are sent when the connection is back.
+
+<Image src={gatewayLight} alt="Central: the explorer with two gateways, and a gateway's page with its endpoint's health and live values" class="dark:sl-hidden" />
+<Image src={gatewayDark} alt="Central: the explorer with two gateways, and a gateway's page with its endpoint's health and live values" class="light:sl-hidden" />
 
 ## Names and flags in central
 
@@ -92,11 +105,20 @@ to 5 seconds behind the gateway's. The page is read-only, like the rest of it.
 
 ## Configurations from central
 
-On the gateway's **Configuration** page in central, Engineers edit a draft with the same
-endpoint, mapping and calculation editors as the tester. Each change is checked like the
-gateway checks it. **Deploy** signs the version and announces it; the gateway downloads it,
-verifies the signature and checksum, and applies it as a whole. Central shows each version as
-sent, applied or rejected, and rolls back by deploying an older version again.
+**Configuration** on a gateway's toolbar opens its draft. Engineers edit it with the same
+endpoint, mapping and calculation editors as the tester: while the draft is open, its
+endpoints, mappings and calculation groups are listed in the explorer under the gateway, below
+*Configuration*, which leads back to the draft's overview. Each change is checked like the
+gateway checks it.
+
+**Deploy as version** on the toolbar first shows what the deployment does to each endpoint and
+asks for a comment; **Deploy** then signs the version and announces it. The gateway downloads
+it, verifies the signature and checksum, and applies it as a whole. Central shows each version
+as sent, applied or rejected; a version's page rolls back to it (**Roll back to this version**)
+or copies it into the draft (**Edit from this version**).
+
+<Image src={deployLight} alt="Central: a gateway's draft with its endpoints and calculation group in the explorer, and the deployment's effect and comment before Deploy" class="dark:sl-hidden" />
+<Image src={deployDark} alt="Central: a gateway's draft with its endpoints and calculation group in the explorer, and the deployment's effect and comment before Deploy" class="light:sl-hidden" />
 
 A configuration from central cannot change `link.json`, so a bad deployment never cuts the
 gateway off from central.
