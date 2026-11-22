@@ -73,7 +73,7 @@ fits its diagram box (12.5 px text, about 6.5 px per character).
 
 The download section lists the files of the **latest release of this repository**.
 
-1. Build the desktop app (`dotnet publish apps/ByteBridge.Desktop -c Release -r win-x64` in the
+1. Build the desktop app (`dotnet publish apps/ProtocolBridge.Desktop -c Release -r win-x64` in the
    application repository) and zip the output, e.g. `ProtocolBridge-Desktop-1.0.0-win-x64.zip`.
 2. Create a release here (`gh release create v1.0.0 ProtocolBridge-Desktop-1.0.0-win-x64.zip
    --repo BartK1990/byte-bridge-docs --notes "..."`).

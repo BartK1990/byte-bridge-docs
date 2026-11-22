@@ -23,7 +23,7 @@ endpoint as a Sparkplug B device. No inbound port is needed on the gateway; see
 On the gateway machine, in the gateway's folder:
 
 ```powershell
-bytebridge-runtime enroll --central https://central.example --token <token> --dir C:\ByteBridge\link
+protocolbridge-runtime enroll --central https://central.example --token <token> --dir C:\ProtocolBridge\link
 ```
 
 This creates the gateway's key, gets a 90-day client certificate and writes `link.json`. The
@@ -58,7 +58,7 @@ Unknown fields are an error, so a misspelled security setting does not go unnoti
 ## 4. Start the runtime with the link
 
 ```powershell
-bytebridge-runtime --config C:\ProgramData\ByteBridge\gateway.json --link C:\ByteBridge\link\link.json
+protocolbridge-runtime --config C:\ProgramData\ProtocolBridge\gateway.json --link C:\ProtocolBridge\link\link.json
 ```
 
 To keep the gateway's web UI as well, run the runtime as its own service and set the gateway

@@ -13,7 +13,7 @@ software is needed.
 
 1. Download the latest Protocol Bridge Desktop zip from the
    [download section](../../../#download) of the website.
-2. Unzip it to a folder of your choice and start `ByteBridge.Desktop.exe`.
+2. Unzip it to a folder of your choice and start `ProtocolBridge.Desktop.exe`.
 
 Requirements: Windows 10 or 11 (64-bit) with the Microsoft Edge WebView2 runtime, which is
 preinstalled on current Windows.

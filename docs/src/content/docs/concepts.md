@@ -79,7 +79,7 @@ Endpoints, mappings and calculations are stored together in one JSON file:
 
 | App | File |
 |---|---|
-| Desktop tester | `%LOCALAPPDATA%\ByteBridge\desktop.json` |
-| Gateway | `%ProgramData%\ByteBridge\gateway.json` |
+| Desktop tester | `%LOCALAPPDATA%\ProtocolBridge\desktop.json` |
+| Gateway | `%ProgramData%\ProtocolBridge\gateway.json` |
 
 Because the format is the same, a configuration built in the tester runs on a gateway as it is.
