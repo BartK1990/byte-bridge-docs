@@ -39,7 +39,7 @@ Save it and open the endpoint. Check that the values arrive before you go on.
 | Setting | Value | Notes |
 |---|---|---|
 | Port | `4840` | |
-| Folder | `ByteBridge` | the points appear below *Objects/ByteBridge* |
+| Folder | `ProtocolBridge` | the points appear below *Objects/ProtocolBridge* |
 | Clients may write | on | writes become commands |
 | Security | `None and secured` | |
 | Allow anonymous users | off | add **Users** instead |
@@ -68,7 +68,7 @@ The **Last value** column shows what passes through each mapping.
 
 ## 4. The configuration file
 
-Everything is saved in `%ProgramData%\ByteBridge\gateway.json`. The example above looks like
+Everything is saved in `%ProgramData%\ProtocolBridge\gateway.json`. The example above looks like
 this (driver settings that keep their defaults are left out):
 
 ```json title="gateway.json"
@@ -99,11 +99,11 @@ defaults; unknown fields are ignored.
 ## Move a configuration from the tester
 
 1. Build and test the configuration in the desktop app.
-2. Copy `%LOCALAPPDATA%\ByteBridge\desktop.json` from the laptop to the gateway as
-   `%ProgramData%\ByteBridge\gateway.json`.
+2. Copy `%LOCALAPPDATA%\ProtocolBridge\desktop.json` from the laptop to the gateway as
+   `%ProgramData%\ProtocolBridge\gateway.json`.
 3. Change the addresses that differ on site (for example, server endpoints that listened on
    `127.0.0.1` during the test).
-4. Restart the service: `Restart-Service ByteBridgeGateway`.
+4. Restart the service: `Restart-Service ProtocolBridgeGateway`.
 
 :::tip
 Gateways connected to [central](../connect-to-central/) get their configuration from central

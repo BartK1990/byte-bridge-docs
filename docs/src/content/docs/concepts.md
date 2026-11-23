@@ -1,6 +1,6 @@
 ---
 title: Concepts
-description: Endpoints, mappings, calculations and points, the building blocks of every ByteBridge configuration.
+description: Endpoints, mappings, calculations and points, the building blocks of every Protocol Bridge configuration.
 ---
 
 The tester and the gateway share one model. Learn these four words and every screen makes sense.
@@ -79,7 +79,7 @@ Endpoints, mappings and calculations are stored together in one JSON file:
 
 | App | File |
 |---|---|
-| Desktop tester | `%LOCALAPPDATA%\ByteBridge\desktop.json` |
-| Gateway | `%ProgramData%\ByteBridge\gateway.json` |
+| Desktop tester | `%LOCALAPPDATA%\ProtocolBridge\desktop.json` |
+| Gateway | `%ProgramData%\ProtocolBridge\gateway.json` |
 
 Because the format is the same, a configuration built in the tester runs on a gateway as it is.

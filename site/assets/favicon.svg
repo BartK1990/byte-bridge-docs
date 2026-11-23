@@ -1,14 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
-  <title>ByteBridge</title>
+  <title>Protocol Bridge</title>
   <rect width="900" height="900" rx="200" fill="#111828"/>
-  <g fill="#f3f4f6" fill-rule="evenodd">
-    <path d="M121 311H260C305 311 343 345 343 388C343 415 330 433 312 445C332 457 348 475 348 505C348 545 318 589 262 589H121A8 8 0 0 1 113 581V319A8 8 0 0 1 121 311ZM185 362V422H240A29 30 0 0 0 240 362ZM185 471V538H235A39 33.5 0 0 0 235 471Z"/>
-    <path d="M121 311H260C305 311 343 345 343 388C343 415 330 433 312 445C332 457 348 475 348 505C348 545 318 589 262 589H121A8 8 0 0 1 113 581V319A8 8 0 0 1 121 311ZM185 362V422H240A29 30 0 0 0 240 362ZM185 471V538H235A39 33.5 0 0 0 235 471Z" transform="matrix(-1 0 0 1 900 0)"/>
-  </g>
-  <path d="M332 440 312 450 332 460ZM568 440 588 450 568 460Z" fill="#f2a33a"/>
-  <g fill="none" stroke="#f2a33a">
-    <path d="M331.1 450A139.5 139.5 0 0 1 568.9 450A139.5 139.5 0 0 1 331.1 450Z" stroke-width="15" stroke-miterlimit="8"/>
-    <path d="M332 450H568" stroke-width="22"/>
-    <path d="M387.5 392V508M450 386V514M512.5 392V508" stroke-width="11"/>
+  <g transform="translate(140 140) scale(1.0333)">
+    <defs>
+      <mask id="pb-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="600">
+        <rect width="600" height="600" fill="#fff"/>
+        <g fill="none" stroke="#000" stroke-linejoin="round">
+          <path d="M135 289.2A229.5 229.5 0 0 1 465 289.2A229.5 229.5 0 0 1 135 289.2Z" stroke-width="53.8" stroke-miterlimit="8"/>
+          <path d="M135 289.2H465" stroke-width="62.5"/>
+          <path d="M217.5 239.5V338.9M300 224.2V354.2M382.5 239.5V338.9" stroke-width="48.8" stroke-linecap="round"/>
+        </g>
+        <path d="M136 276.7 111 289.2 136 301.7ZM464 276.7 489 289.2 464 301.7Z" stroke="#000" stroke-width="35" stroke-linejoin="round"/>
+      </mask>
+    </defs>
+    <g fill="#f3f4f6" fill-rule="evenodd" mask="url(#pb-cut)">
+      <path d="M335 30H405A145.8 145.8 0 0 1 405 321.6H335ZM345 94.8H405A81 81 0 0 1 405 256.8H345Z" transform="matrix(-1 0 0 1 600 0)"/>
+      <path d="M265.8 30H413.4A129.6 129.6 0 0 1 413.4 289.2H414.6A140.4 140.4 0 0 1 414.6 570H265.8A10.8 10.8 0 0 1 255 559.2V40.8A10.8 10.8 0 0 1 265.8 30ZM345 94.8H413.4A59.4 81 0 0 1 413.4 256.8H345ZM345 321.6H414.6A70.2 91.8 0 0 1 414.6 505.2H345Z"/>
+    </g>
+    <g fill="none" stroke="#f2a33a" stroke-linejoin="round">
+      <path d="M135 289.2A229.5 229.5 0 0 1 465 289.2A229.5 229.5 0 0 1 135 289.2Z" stroke-width="18.8" stroke-miterlimit="8"/>
+      <path d="M135 289.2H465" stroke-width="27.5"/>
+      <path d="M217.5 239.5V338.9M300 224.2V354.2M382.5 239.5V338.9" stroke-width="13.8" stroke-linecap="round"/>
+    </g>
+    <path d="M136 276.7 111 289.2 136 301.7ZM464 276.7 489 289.2 464 301.7Z" fill="#f2a33a"/>
   </g>
 </svg>

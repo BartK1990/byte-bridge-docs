@@ -123,7 +123,7 @@ Each data row must have the same number of fields as the header. The trailing co
 example represent the empty `byteOrder` fields.
 
 For the three-point endpoint shown above, these rows update three existing definitions and
-add `HR:40005:u64` and `CO:2`. ByteBridge normalizes native addresses: `HR:40001` with `f32`
+add `HR:40005:u64` and `CO:2`. Protocol Bridge normalizes native addresses: `HR:40001` with `f32`
 becomes `HR:40001:f32`, while the default `u16` is displayed as `HR:40003`.
 
 To use an explicit per-point order, fill `byteOrder`, for example:
@@ -180,7 +180,7 @@ complete identifiers survive saving. Save as CSV UTF-8 rather than `.xlsx`.
 <Image src={selectLight} alt="The Import panel with the CSV file chooser, the UTF-8 and 5 MiB requirements, and the Cancel button" class="dark:sl-hidden" />
 <Image src={selectDark} alt="The Import panel with the CSV file chooser, the UTF-8 and 5 MiB requirements, and the Cancel button" class="light:sl-hidden" />
 
-4. Wait for validation. ByteBridge checks the CSV structure, addresses, types and duplicate
+4. Wait for validation. Protocol Bridge checks the CSV structure, addresses, types and duplicate
    canonical addresses before offering to add the changes.
 5. Review the summary and table. In this example the preview reports **2 additions, 3 updates;
    5 definitions after import. No validation errors.**, says how the change would be applied
@@ -251,7 +251,7 @@ address,type,nativeType,byteOrder
 HR:40001,Boolean,f32,
 ```
 
-ByteBridge reports **Record 2: column type: expected Float, received Boolean.** There is no
+Protocol Bridge reports **Record 2: column type: expected Float, received Boolean.** There is no
 **Add to pending changes** action for the invalid preview, and the current point list remains unchanged.
 
 <Image src={errorLight} alt="CSV validation error identifying record 2 and the type column: expected Float, received Boolean; the existing five live points remain visible" class="dark:sl-hidden" />

@@ -1,11 +1,11 @@
-# ByteBridge website
+# Protocol Bridge website
 
-Source of the public ByteBridge website, published with GitHub Pages.
+Source of the public Protocol Bridge website, published with GitHub Pages.
 
 - Static HTML and CSS, no build step. [htmx](https://htmx.org) (vendored in `site/assets/htmx.min.js`)
   loads the example setups and the download section as small HTML fragments from `site/partials/`.
 - Diagrams are inline SVG styled by `site/assets/style.css`, so they follow the light and dark theme.
-- Links are relative, so the site works under [https://bartk1990.github.io/byte-bridge-docs](https://bartk1990.github.io/byte-bridge-docs)
+- Links are relative, so the site works under [https://bartk1990.github.io/protocol-bridge-docs](https://bartk1990.github.io/protocol-bridge-docs)
   and on a custom domain.
 - The documentation (`/docs/`, linked from the main menu) is an [Astro Starlight](https://starlight.astro.build)
   project in `docs/`. The Pages workflow builds it into `site/docs/`.
@@ -35,7 +35,7 @@ cd site && python3 -m http.server 8000     # http://localhost:8000
 The documentation, with live reload (Node.js 22.12 or later):
 
 ```bash
-cd docs && npm install && npm run dev        # http://localhost:4321/byte-bridge-docs/docs/
+cd docs && npm install && npm run dev        # http://localhost:4321/protocol-bridge-docs/docs/
 ```
 
 To see it under the website as it is published, build it into `site/docs/` (ignored by git):
@@ -50,7 +50,7 @@ sidebar lists it by itself (`sidebar.order` in the front matter sets the positio
 
 ## Protocol lists
 
-When ByteBridge gains a protocol, or a protocol gains a role or a feature named on the site,
+When Protocol Bridge gains a protocol, or a protocol gains a role or a feature named on the site,
 update every place that lists protocols, in the same PR as the protocol's documentation page:
 
 - `site/index.html`: the meta description, the protocol chips under the title, the overview,
@@ -73,9 +73,9 @@ fits its diagram box (12.5 px text, about 6.5 px per character).
 
 The download section lists the files of the **latest release of this repository**.
 
-1. Build the desktop app (`dotnet publish apps/ByteBridge.Desktop -c Release -r win-x64` in the
-   application repository) and zip the output, e.g. `ByteBridge-Desktop-1.0.0-win-x64.zip`.
-2. Create a release here (`gh release create v1.0.0 ByteBridge-Desktop-1.0.0-win-x64.zip
-   --repo BartK1990/byte-bridge-docs --notes "..."`).
+1. Build the desktop app (`dotnet publish apps/ProtocolBridge.Desktop -c Release -r win-x64` in the
+   application repository) and zip the output, e.g. `ProtocolBridge-Desktop-1.0.0-win-x64.zip`.
+2. Create a release here (`gh release create v1.0.0 ProtocolBridge-Desktop-1.0.0-win-x64.zip
+   --repo BartK1990/protocol-bridge-docs --notes "..."`).
 3. Publishing, editing or deleting a release redeploys the site, and the download buttons,
    version and date update by themselves.

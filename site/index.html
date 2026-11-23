@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ByteBridge · Industrial protocol tester and gateway</title>
-    <meta name="description" content="ByteBridge is one lightweight application for industrial protocols: a tester on your desk, a gateway at the edge, and a central hub that connects many gateways. IEC 104, IEC 61850, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA, Siemens S7, EtherNet/IP.">
+    <title>Protocol Bridge · Industrial protocol tester and gateway</title>
+    <meta name="description" content="Protocol Bridge is one lightweight application for industrial protocols: a tester on your desk, a gateway at the edge, and a central hub that connects many gateways. IEC 104, IEC 61850, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA, Siemens S7, EtherNet/IP.">
     <meta name="theme-color" content="#111828">
-    <meta property="og:title" content="ByteBridge · Industrial protocol tester and gateway">
+    <meta property="og:title" content="Protocol Bridge · Industrial protocol tester and gateway">
     <meta property="og:description" content="Test, bridge and connect industrial protocols with one lightweight application.">
     <meta property="og:type" content="website">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -19,20 +19,34 @@
 
 <header class="top">
     <div class="wrap">
-        <a class="brand" href="#top" aria-label="ByteBridge home">
-            <svg viewBox="100 300 700 300" aria-hidden="true">
-                <g fill="currentColor" fill-rule="evenodd">
-                    <path id="bb-b" d="M121 311H260C305 311 343 345 343 388C343 415 330 433 312 445C332 457 348 475 348 505C348 545 318 589 262 589H121A8 8 0 0 1 113 581V319A8 8 0 0 1 121 311ZM185 362V422H240A29 30 0 0 0 240 362ZM185 471V538H235A39 33.5 0 0 0 235 471Z"/>
-                    <use href="#bb-b" transform="matrix(-1 0 0 1 900 0)"/>
-                </g>
-                <path d="M332 440 312 450 332 460ZM568 440 588 450 568 460Z" fill="#f2a33a"/>
-                <g fill="none" stroke="#f2a33a">
-                    <path d="M331.1 450A139.5 139.5 0 0 1 568.9 450A139.5 139.5 0 0 1 331.1 450Z" stroke-width="15"/>
-                    <path d="M332 450H568" stroke-width="22"/>
-                    <path d="M387.5 392V508M450 386V514M512.5 392V508" stroke-width="11"/>
+        <a class="brand" href="#top" aria-label="Protocol Bridge home">
+            <svg viewBox="40 22 520 556" aria-hidden="true">
+                <defs>
+                    <mask id="pb-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="600">
+                        <rect width="600" height="600" fill="#fff"/>
+                        <g fill="none" stroke="#000" stroke-linejoin="round">
+                            <path d="M135 289.2A229.5 229.5 0 0 1 465 289.2A229.5 229.5 0 0 1 135 289.2Z" stroke-width="53.8" stroke-miterlimit="8"/>
+                            <path d="M135 289.2H465" stroke-width="62.5"/>
+                            <path d="M217.5 239.5V338.9M300 224.2V354.2M382.5 239.5V338.9" stroke-width="48.8" stroke-linecap="round"/>
+                        </g>
+                        <path d="M136 276.7 111 289.2 136 301.7ZM464 276.7 489 289.2 464 301.7Z" stroke="#000" stroke-width="35" stroke-linejoin="round"/>
+                    </mask>
+                </defs>
+                <!-- The Protocol Bridge mark (branding/icon-dark.svg of the app repository); the footer reuses it. -->
+                <g id="pb-mark">
+                    <g fill="currentColor" fill-rule="evenodd" mask="url(#pb-cut)">
+                        <path d="M335 30H405A145.8 145.8 0 0 1 405 321.6H335ZM345 94.8H405A81 81 0 0 1 405 256.8H345Z" transform="matrix(-1 0 0 1 600 0)"/>
+                        <path d="M265.8 30H413.4A129.6 129.6 0 0 1 413.4 289.2H414.6A140.4 140.4 0 0 1 414.6 570H265.8A10.8 10.8 0 0 1 255 559.2V40.8A10.8 10.8 0 0 1 265.8 30ZM345 94.8H413.4A59.4 81 0 0 1 413.4 256.8H345ZM345 321.6H414.6A70.2 91.8 0 0 1 414.6 505.2H345Z"/>
+                    </g>
+                    <g fill="none" stroke="#f2a33a" stroke-linejoin="round">
+                        <path d="M135 289.2A229.5 229.5 0 0 1 465 289.2A229.5 229.5 0 0 1 135 289.2Z" stroke-width="18.8" stroke-miterlimit="8"/>
+                        <path d="M135 289.2H465" stroke-width="27.5"/>
+                        <path d="M217.5 239.5V338.9M300 224.2V354.2M382.5 239.5V338.9" stroke-width="13.8" stroke-linecap="round"/>
+                    </g>
+                    <path d="M136 276.7 111 289.2 136 301.7ZM464 276.7 489 289.2 464 301.7Z" fill="#f2a33a"/>
                 </g>
             </svg>
-            ByteBridge
+            Protocol Bridge
         </a>
         <nav class="nav" aria-label="Main">
             <a href="#roles">Roles</a>
@@ -53,7 +67,7 @@
         <div>
             <div class="eyebrow">Industrial protocols, one tool</div>
             <h1>Test it. Bridge it. Connect it all.</h1>
-            <p class="lead">ByteBridge is one lightweight application for industrial communication. It is a protocol
+            <p class="lead">Protocol Bridge is one lightweight application for industrial communication. It is a protocol
                 tester on your desk, a gateway next to your devices, and the central point that ties
                 many gateways together.</p>
             <div class="actions">
@@ -80,7 +94,7 @@
         <div class="hero-logo">
             <picture>
                 <source srcset="assets/logo-dark.gif" media="(prefers-color-scheme: dark)">
-                <img src="assets/logo-light.gif" width="600" height="267" alt="Animated ByteBridge logo: two mirrored B letters joined by a bridge">
+                <img src="assets/logo-light.gif" width="480" height="513" alt="Animated Protocol Bridge logo: a P and a B on one spine, with bits crossing the bridge between them">
             </picture>
         </div>
     </div>
@@ -121,7 +135,7 @@
 
         <figure class="diagram" style="margin: 32px 0 0">
             <svg viewBox="0 0 880 400" role="img" aria-labelledby="ov-t">
-                <title id="ov-t">Devices connect to ByteBridge gateways, gateways connect to Central and to SCADA, MES or cloud systems; a tester connects directly to devices</title>
+                <title id="ov-t">Devices connect to Protocol Bridge gateways, gateways connect to Central and to SCADA, MES or cloud systems; a tester connects directly to devices</title>
                 <defs>
                     <marker id="ov-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
                     <marker id="ov-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
@@ -191,7 +205,7 @@
             <div>
                 <div class="eyebrow">Tester</div>
                 <h2>One interface for every protocol</h2>
-                <p class="muted">Stop switching between a different tool for every protocol. ByteBridge gives
+                <p class="muted">Stop switching between a different tool for every protocol. Protocol Bridge gives
                     IEC 104, IEC 61850, Modbus, DNP3, OPC UA, classic OPC DA, OPC XML-DA, Siemens S7 and EtherNet/IP the same screens: the same
                     connection editor, the same live data table, the same way to send a command.</p>
                 <ul class="ticks">
@@ -208,7 +222,7 @@
             <figure style="margin:0">
                 <picture>
                     <source srcset="assets/ui-live-dark.webp" media="(prefers-color-scheme: dark)">
-                    <img class="shot" src="assets/ui-live-light.webp" width="1280" height="640" loading="lazy" decoding="async" alt="ByteBridge points of an IEC 104 connection: an editable table with values, quality, time stamps, age and trends, the explorer on the left and the selected point in the Properties pane">
+                    <img class="shot" src="assets/ui-live-light.webp" width="1280" height="640" loading="lazy" decoding="async" alt="Protocol Bridge points of an IEC 104 connection: an editable table with values, quality, time stamps, age and trends, the explorer on the left and the selected point in the Properties pane">
                 </picture>
                 <figcaption class="caption">Live data of an IEC 104 connection. IEC 61850, Modbus, DNP3, OPC UA, OPC DA, OPC XML-DA, S7 and EtherNet/IP look and work the same.</figcaption>
             </figure>
@@ -235,7 +249,7 @@
             <figure style="margin:0">
                 <picture>
                     <source srcset="assets/ui-trace-dark.webp" media="(prefers-color-scheme: dark)">
-                    <img class="shot" src="assets/ui-trace-light.webp" width="1000" height="578" loading="lazy" decoding="async" alt="ByteBridge frame trace of an IEC 104 connection: the list of frames and the decoded fields of a general interrogation answer">
+                    <img class="shot" src="assets/ui-trace-light.webp" width="1000" height="578" loading="lazy" decoding="async" alt="Protocol Bridge frame trace of an IEC 104 connection: the list of frames and the decoded fields of a general interrogation answer">
                 </picture>
                 <figcaption class="caption">The frame trace of an IEC 104 connection, with the fields of one frame.</figcaption>
             </figure>
@@ -298,7 +312,7 @@
 
         <figure class="diagram">
             <svg viewBox="0 0 880 330" role="img" aria-labelledby="gw-t">
-                <title id="gw-t">Devices feed a ByteBridge gateway, which maps, converts and calculates, then exposes data through REST, MQTT, OPC UA, IEC 104 and Modbus</title>
+                <title id="gw-t">Devices feed a Protocol Bridge gateway, which maps, converts and calculates, then exposes data through REST, MQTT, OPC UA, IEC 104 and Modbus</title>
                 <defs>
                     <marker id="gw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
                     <marker id="gw-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
@@ -317,7 +331,7 @@
                 <path class="f" d="M190 297C250 297 250 205 300 195" marker-end="url(#gw-b)"/>
 
                 <rect class="nb" x="304" y="70" width="272" height="216" rx="14"/>
-                <text class="tb" x="440" y="104" text-anchor="middle">ByteBridge Gateway</text>
+                <text class="tb" x="440" y="104" text-anchor="middle">Protocol Bridge Gateway</text>
                 <text class="tba" x="440" y="140" text-anchor="middle">map points between protocols</text>
                 <text class="tba" x="440" y="164" text-anchor="middle">rename addresses · convert types</text>
                 <text class="tba" x="440" y="188" text-anchor="middle">scale and offset</text>
@@ -382,7 +396,7 @@ p1 + p2
         <figure style="margin: 40px 0 0">
             <picture>
                 <source srcset="assets/ui-dashboard-dark.webp" media="(prefers-color-scheme: dark)">
-                <img class="shot" src="assets/ui-dashboard-light.webp" width="1280" height="625" loading="lazy" decoding="async" alt="ByteBridge gateway overview in a browser: simulator, IEC 104, OPC UA and Modbus endpoints in one table per role, all online">
+                <img class="shot" src="assets/ui-dashboard-light.webp" width="1280" height="625" loading="lazy" decoding="async" alt="Protocol Bridge gateway overview in a browser: simulator, IEC 104, OPC UA and Modbus endpoints in one table per role, all online">
             </picture>
             <figcaption class="caption">The gateway's web interface: every endpoint, its state and its points, from any browser.</figcaption>
         </figure>
@@ -509,12 +523,12 @@ p1 + p2
                 <h2>Supports your NIS2 measures in OT</h2>
                 <p class="muted">The NIS2 directive asks operators of essential and important entities,
                     energy, water, manufacturing and more, to manage the cyber risk of their networks,
-                    OT included. ByteBridge gives you the technical measures for the link between your
+                    OT included. Protocol Bridge gives you the technical measures for the link between your
                     plants and the rest of the company, and the records to show for them.</p>
                 <p class="muted">The design follows the zones and conduits model of IEC 62443: the OT
                     network is its own zone, and the gateway is the single, documented conduit out of it.</p>
                 <p class="muted" style="font-size: .9rem">NIS2 obligations rest with the operator, not
-                    with a product. ByteBridge supports the measures below; it is not a certification.
+                    with a product. Protocol Bridge supports the measures below; it is not a certification.
                     <a href="docs/gateway/security/">Security details</a></p>
             </div>
             <div class="grid c2">
@@ -548,7 +562,7 @@ p1 + p2
         <div class="section-head">
             <div class="eyebrow">Example setups</div>
             <h2>From a single laptop to a fleet of sites</h2>
-            <p>A few ways ByteBridge is put to work. Pick one to see how it fits together.</p>
+            <p>A few ways Protocol Bridge is put to work. Pick one to see how it fits together.</p>
         </div>
 
         <div class="tabs" role="tablist" hx-target="#setup" hx-swap="innerHTML"
@@ -571,12 +585,12 @@ p1 + p2
         <div class="download">
             <div>
                 <div class="eyebrow">Download</div>
-                <h2>Get the ByteBridge desktop tester</h2>
+                <h2>Get the Protocol Bridge desktop tester</h2>
                 <p class="muted">The desktop app is the tester and a full gateway on your workstation: every
                     protocol, mappings, calculations and the built-in simulator.</p>
                 <div id="release" hx-get="partials/release.html" hx-trigger="load" hx-swap="innerHTML">
                     <div class="release-assets">
-                        <a class="btn" href="https://github.com/BartK1990/byte-bridge-docs/releases/latest">
+                        <a class="btn" href="https://github.com/BartK1990/protocol-bridge-docs/releases/latest">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
                             Latest release for Windows
                         </a>
@@ -599,7 +613,7 @@ p1 + p2
                 <p class="muted" style="margin-top: 16px">Step by step, with device and gateway examples, in the
                     <a href="docs/tester/quick-start/">documentation</a>.</p>
                 <p class="muted" style="margin-top: 16px">Interested in the gateway or central edition for your
-                    sites? <a href="https://github.com/BartK1990/byte-bridge-docs/issues">Get in touch</a>.</p>
+                    sites? <a href="https://github.com/BartK1990/protocol-bridge-docs/issues">Get in touch</a>.</p>
             </div>
         </div>
     </div>
@@ -609,8 +623,8 @@ p1 + p2
 
 <footer>
     <div class="wrap">
-        <span class="brand"><svg viewBox="100 300 700 300" aria-hidden="true"><g fill="currentColor"><use href="#bb-b"/><use href="#bb-b" transform="matrix(-1 0 0 1 900 0)"/></g><path d="M331.1 450A139.5 139.5 0 0 1 568.9 450A139.5 139.5 0 0 1 331.1 450ZM332 450H568" fill="none" stroke="#f2a33a" stroke-width="18"/></svg> ByteBridge</span>
-        <span>© 2026 ByteBridge. Industrial protocol tester and gateway.</span>
+        <span class="brand"><svg viewBox="40 22 520 556" aria-hidden="true"><use href="#pb-mark"/></svg> Protocol Bridge</span>
+        <span>© 2026 Protocol Bridge. Industrial protocol tester and gateway.</span>
     </div>
 </footer>
 

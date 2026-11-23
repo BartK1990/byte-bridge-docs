@@ -1,25 +1,25 @@
 ---
 title: Security and NIS2
-description: How a ByteBridge gateway connects from the OT network to central from the inside out, and which NIS2 measures it supports.
+description: How a Protocol Bridge gateway connects from the OT network to central from the inside out, and which NIS2 measures it supports.
 sidebar:
   order: 5
 ---
 
 A gateway sits on the boundary between the OT network (devices, PLCs, local SCADA) and the rest
 of the company. It is designed so that this boundary only has to let traffic **out**: the
-gateway opens every connection to ByteBridge Central itself, and central never connects to a
+gateway opens every connection to Protocol Bridge Central itself, and central never connects to a
 gateway.
 
 ## Inside out: the connections a gateway makes
 
 ```
  OT network (level 0-2)    Edge / OT DMZ    firewall   IT / data centre / cloud
-┌────────────────────┐   ┌──────────────┐     ║     ┌─────────────────────┐
-│ RTU    IEC 104     │──▶│              │ (1) ║     │                     │
-│ PLC    Siemens S7  │──▶│   Gateway    │─────╫────▶│ ByteBridge Central  │
-│ Meter  Modbus TCP  │──▶│              │ (2) ║     │ broker · CA · audit │
-│ SCADA  OPC UA      │──▶│              │─────╫────▶│                     │
-└────────────────────┘   └──────────────┘     ║     └─────────────────────┘
+┌────────────────────┐   ┌──────────────┐     ║     ┌─────────────────────────┐
+│ RTU    IEC 104     │──▶│              │ (1) ║     │                         │
+│ PLC    Siemens S7  │──▶│   Gateway    │─────╫────▶│ Protocol Bridge Central │
+│ Meter  Modbus TCP  │──▶│              │ (2) ║     │ broker · CA · audit     │
+│ SCADA  OPC UA      │──▶│              │─────╫────▶│                         │
+└────────────────────┘   └──────────────┘     ║     └─────────────────────────┘
                                               ║◀──✕── inbound connections are refused
 
  (1) MQTT 5, mutual TLS, port 8883    (2) HTTPS, port 443
@@ -75,10 +75,10 @@ The gateway's web UI listens on `localhost` by default (see
 The NIS2 directive (EU 2022/2555) requires essential and important entities, among them energy,
 water, transport and manufacturing, to take risk-management measures for their network and
 information systems, OT included (Article 21). The obligations rest with the operator; no product
-makes an organisation compliant on its own. ByteBridge supports these measures for the link
+makes an organisation compliant on its own. Protocol Bridge supports these measures for the link
 between the plants and central:
 
-| NIS2 Article 21(2) | How ByteBridge supports it |
+| NIS2 Article 21(2) | How Protocol Bridge supports it |
 |---|---|
 | (b) Incident handling | Audit log of commands and deployments in central; online and offline state of every gateway; immediate revocation of a gateway |
 | (c) Business continuity | Gateways keep running without central and buffer values on disk; versioned configurations with rollback |

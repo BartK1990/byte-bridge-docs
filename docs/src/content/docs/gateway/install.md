@@ -1,36 +1,36 @@
 ---
 title: Install the gateway
-description: Run the ByteBridge gateway as a Windows service with its web UI.
+description: Run the Protocol Bridge gateway as a Windows service with its web UI.
 sidebar:
   order: 1
 ---
 
-The gateway is the same ByteBridge, without a desktop window. It runs as a Windows service,
+The gateway is the same Protocol Bridge, without a desktop window. It runs as a Windows service,
 starts with the machine, restarts after failures and serves its user interface in the browser.
 
 ## Install as a Windows service
 
-1. Copy the gateway files to the machine, e.g. to `C:\ByteBridge`. (From source:
-   `dotnet publish apps/ByteBridge.Gateway -c Release -r win-x64 -o C:\ByteBridge`.)
+1. Copy the gateway files to the machine, e.g. to `C:\ProtocolBridge`. (From source:
+   `dotnet publish apps/ProtocolBridge.Gateway -c Release -r win-x64 -o C:\ProtocolBridge`.)
 2. Open PowerShell **as Administrator** and run:
 
    ```powershell
-   C:\ByteBridge\scripts\install-service.ps1 -Urls "http://localhost:5180"
+   C:\ProtocolBridge\scripts\install-service.ps1 -Urls "http://localhost:5180"
    ```
 
 3. Open http://localhost:5180 in a browser on that machine.
 
-The service is called `ByteBridgeGateway` (display name *ByteBridge Gateway*). It starts
+The service is called `ProtocolBridgeGateway` (display name *Protocol Bridge Gateway*). It starts
 automatically, restarts 5 seconds after a crash (60 seconds after the third crash in a day)
 and logs to the Windows Event Log.
 
 | Parameter | Default | Meaning |
 |---|---|---|
-| `-Name` | `ByteBridgeGateway` | service name |
-| `-Exe` | `..\ByteBridge.Gateway.exe` next to the script | the gateway program |
+| `-Name` | `ProtocolBridgeGateway` | service name |
+| `-Exe` | `..\ProtocolBridge.Gateway.exe` next to the script | the gateway program |
 | `-Urls` | `http://localhost:5180` | where the web UI listens |
 
-To remove the service, run `C:\ByteBridge\scripts\uninstall-service.ps1` as Administrator.
+To remove the service, run `C:\ProtocolBridge\scripts\uninstall-service.ps1` as Administrator.
 
 :::caution
 The gateway UI has no sign-in yet. Keep it bound to `localhost`, or put it behind a reverse
@@ -52,26 +52,26 @@ Client endpoints connect outwards and need no inbound rule.
 
 ## Application settings
 
-`appsettings.json` next to `ByteBridge.Gateway.exe`:
+`appsettings.json` next to `ProtocolBridge.Gateway.exe`:
 
 ```json
 {
   "Urls": "http://localhost:5180",
-  "ByteBridge": {
+  "ProtocolBridge": {
     "AutoStart": true,
     "Runtime": "Process",
-    "ConfigurationPath": "C:\\ProgramData\\ByteBridge\\gateway.json"
+    "ConfigurationPath": "C:\\ProgramData\\ProtocolBridge\\gateway.json"
   }
 }
 ```
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `ByteBridge:ConfigurationPath` | `%ProgramData%\ByteBridge\gateway.json` | the configuration file |
-| `ByteBridge:AutoStart` | `true` | start enabled endpoints when the service starts |
-| `ByteBridge:Runtime` | `Process` | `Process`: the gateway starts the protocol runtime itself. `Remote`: connect to a runtime that already runs (set `RuntimeUrl` and `RuntimeToken`) |
+| `ProtocolBridge:ConfigurationPath` | `%ProgramData%\ProtocolBridge\gateway.json` | the configuration file |
+| `ProtocolBridge:AutoStart` | `true` | start enabled endpoints when the service starts |
+| `ProtocolBridge:Runtime` | `Process` | `Process`: the gateway starts the protocol runtime itself. `Remote`: connect to a runtime that already runs (set `RuntimeUrl` and `RuntimeToken`) |
 
-In `Process` mode the gateway starts `bytebridge-runtime.exe` from its folder on `127.0.0.1`
+In `Process` mode the gateway starts `protocolbridge-runtime.exe` from its folder on `127.0.0.1`
 with a random port and token, and restarts it if it stops unexpectedly.
 
 ## Status API

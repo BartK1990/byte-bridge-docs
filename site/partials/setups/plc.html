@@ -1,7 +1,7 @@
 <div class="setup-body">
     <figure class="diagram" style="margin:0">
         <svg viewBox="0 0 680 400" role="img" aria-labelledby="plc-t">
-            <title id="plc-t">ByteBridge runs as a Docker container on a WAGO PFC200 PLC next to the control program; the web interface runs on a separate machine</title>
+            <title id="plc-t">Protocol Bridge runs as a Docker container on a WAGO PFC200 PLC next to the control program; the web interface runs on a separate machine</title>
             <defs>
                 <marker id="plc-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="aa" d="M0 0 10 5 0 10z"/></marker>
                 <marker id="plc-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
@@ -13,7 +13,7 @@
             <rect class="nz" x="210" y="62" width="260" height="48" rx="8"/>
             <text class="tm" x="340" y="91" text-anchor="middle">PLC program · local I/O</text>
             <rect class="nb" x="210" y="124" width="260" height="128" rx="12"/>
-            <text class="tb" x="340" y="152" text-anchor="middle">ByteBridge runtime</text>
+            <text class="tb" x="340" y="152" text-anchor="middle">Protocol Bridge runtime</text>
             <text class="tba" x="340" y="174" text-anchor="middle">Docker container · ARM</text>
             <text class="tba" x="340" y="198" text-anchor="middle">drivers · mappings · calculations</text>
             <text class="tba" x="340" y="222" text-anchor="middle">small memory footprint</text>
@@ -49,11 +49,11 @@
     </figure>
     <div>
         <h3>Gateway on a PLC</h3>
-        <p class="muted">No extra box in the cabinet. The ByteBridge runtime is light enough to run as a Docker
+        <p class="muted">No extra box in the cabinet. The Protocol Bridge runtime is light enough to run as a Docker
             container on a controller such as the WAGO PFC200, right next to the PLC program.</p>
         <ul class="ticks">
             <li>Native runtime for ARM and x64 Linux, packaged as a container</li>
-            <li>The PLC keeps controlling; ByteBridge handles the communication</li>
+            <li>The PLC keeps controlling; Protocol Bridge handles the communication</li>
             <li>The web interface runs elsewhere and connects to the runtime remotely</li>
             <li>Join a central later without changing the setup</li>
         </ul>

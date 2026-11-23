@@ -1,4 +1,4 @@
-/* ByteBridge website. Brand colours follow the app: navy #111828, amber #f2a33a. */
+/* Protocol Bridge website. Brand colours follow the app: navy #111828, amber #f2a33a. */
 :root {
     --navy: #111828;
     --amber: #f2a33a;
@@ -100,7 +100,7 @@ code { font-family: var(--mono); font-size: .9em; }
 .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; font-weight: 700; color: var(--link); margin-bottom: 12px; }
 .lead { font-size: 1.2rem; color: var(--muted); max-width: 38em; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 24px; }
-.hero-logo { justify-self: center; width: min(420px, 80vw); aspect-ratio: 600 / 267; }
+.hero-logo { justify-self: center; width: min(300px, 64vw); aspect-ratio: 480 / 513; }
 .hero-logo img { width: 100%; height: 100%; display: block; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }

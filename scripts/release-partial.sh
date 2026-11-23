@@ -4,7 +4,7 @@
 # placeholder stays. Needs gh and jq (both on GitHub's runners) and GH_TOKEN.
 set -euo pipefail
 
-repo="${GITHUB_REPOSITORY:-BartK1990/byte-bridge-docs}"
+repo="${GITHUB_REPOSITORY:-BartK1990/protocol-bridge-docs}"
 out="site/partials/release.html"
 
 if ! json="$(gh api "repos/$repo/releases/latest" 2>/dev/null)"; then

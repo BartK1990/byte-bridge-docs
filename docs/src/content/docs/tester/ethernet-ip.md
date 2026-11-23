@@ -5,13 +5,13 @@ sidebar:
   order: 2.6
 ---
 
-ByteBridge talks to Allen-Bradley **ControlLogix**, **CompactLogix** and **GuardLogix**
+Protocol Bridge talks to Allen-Bradley **ControlLogix**, **CompactLogix** and **GuardLogix**
 controllers directly over EtherNet/IP (CIP explicit messaging). It reads and writes tags **by
 their names**, as Studio 5000 shows them, finds the tags by browsing the controller, and reads
 attributes of other CIP devices such as drives, I/O adapters and power monitors.
 
 No Rockwell data server (RSLinx, FactoryTalk Linx) is needed, nothing is installed on the
-computer, and nothing has to be enabled on the controller. ByteBridge uses *unconnected*
+computer, and nothing has to be enabled on the controller. Protocol Bridge uses *unconnected*
 messages only: it opens no CIP connection in the controller and does not change its I/O
 configuration.
 
@@ -56,7 +56,7 @@ link*, the way Rockwell writes it:
 | `T1.ACC`, `T1.DN` | members of a TIMER (also COUNTER, CONTROL and AOI members) |
 | `Line1_Speed:REAL` | with the type it must have (optional) |
 
-ByteBridge takes the type from the controller. If you add a type after a colon and the
+Protocol Bridge takes the type from the controller. If you add a type after a colon and the
 controller's tag has another type, the point turns invalid and says both types: useful after a
 program change, so a retyped tag does not silently give wrong numbers.
 
@@ -80,7 +80,7 @@ STRING tags are not numbers and cannot be points.
 
 ### How points are read
 
-Every point is read each poll interval. ByteBridge packs the reads into as few requests as the
+Every point is read each poll interval. Protocol Bridge packs the reads into as few requests as the
 controller allows (about 500 bytes each): array elements close together are read as one range,
 and when several points are members of the same element of a UDT (`Motors[3].Current`,
 `Motors[3].Speed`, ...), the element is read once if that is shorter. Long tag names cost space
@@ -93,7 +93,7 @@ time it arrived. A tag that fails turns only its own point invalid, with the rea
 for example *path segment error (tag or object not found)*. A REAL that reads as NaN or
 infinity is invalid. When the connection is lost, every point turns invalid.
 
-While the controller reports a **major fault**, its program does not run. ByteBridge still
+While the controller reports a **major fault**, its program does not run. Protocol Bridge still
 reads the values, and every point carries the [flag](../live-data-and-commands/#flags)
 *device faulted*.
 
@@ -123,7 +123,7 @@ name is the point's name, so no other name is proposed. Options:
 
  System tags,
 STRING tags and tags with External Access *None* are left out; tags with External Access *Read
-Only* are offered as [read-only points](../live-data-and-commands/#read-only-points): ByteBridge
+Only* are offered as [read-only points](../live-data-and-commands/#read-only-points): Protocol Bridge
 sends no write to them. Detection stops at 20,000 points. With **Detect points on connect** the
 endpoint adds the controller's points by itself each time it connects.
 
@@ -152,12 +152,12 @@ their tag names and the values read and written.
 ## Not supported
 
 Micro800 controllers, SLC 500, MicroLogix and PLC-5 (PCCC), CIP Security, I/O connections and
-produced/consumed tags. ByteBridge cannot act as a target that a controller's MSG instruction
+produced/consumed tags. Protocol Bridge cannot act as a target that a controller's MSG instruction
 reads.
 
 ## No controller at hand?
 
-The ByteBridge source has a test controller with tags of every type, arrays, UDTs, a TIMER and
+The Protocol Bridge source has a test controller with tags of every type, arrays, UDTs, a TIMER and
 two programs: `cargo run -p enip --example enip_server_sim -- 127.0.0.1:44818`. Connect an
 endpoint to host `127.0.0.1` with route path `1,0` and detect its points, or use `DintTag`,
 `Motors[1].Current` and `Program:MainProgram.Count`.
@@ -165,5 +165,5 @@ endpoint to host `127.0.0.1` with route path `1,0` and detect its points, or use
 ---
 
 EtherNet/IP and CIP are trademarks of ODVA, Inc.; Allen-Bradley, Logix, ControlLogix,
-CompactLogix and GuardLogix are trademarks of Rockwell Automation, Inc. ByteBridge is not
+CompactLogix and GuardLogix are trademarks of Rockwell Automation, Inc. Protocol Bridge is not
 affiliated with or endorsed by either.

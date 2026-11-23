@@ -36,7 +36,7 @@ point when it differs from the endpoint's: `HR:40011:f32:CDAB`.
 Not sure where a value starts or which byte order the meter uses? **Read registers** in the editor
 shows the registers in all four orders side by side: see [Finding the byte order](../byte-order/).
 
-ByteBridge merges neighbouring addresses into one read request (**Max gap to merge reads**,
+Protocol Bridge merges neighbouring addresses into one read request (**Max gap to merge reads**,
 **Registers per read request**), so a long point list stays fast.
 
 ## Siemens S7 PLC
@@ -64,12 +64,12 @@ Besides the polled addresses, the point `CPU.Run` shows the CPU state.
 | Browse for variables | on | finds the server's variables by itself |
 | Nodes | `ns=2;s=Pump1.Speed` | extra node ids to subscribe to |
 
-With **Browse for variables** on, you do not have to type addresses: ByteBridge browses the
+With **Browse for variables** on, you do not have to type addresses: Protocol Bridge browses the
 server from **Browse root** (`i=85`, the Objects folder) and subscribes to what it finds.
 
-With a secured policy, the server has to trust ByteBridge and ByteBridge has to trust the
+With a secured policy, the server has to trust Protocol Bridge and Protocol Bridge has to trust the
 server. The first connection is usually rejected; open **Certificates**, find the server's
-certificate under **Rejected** and click **Trust**. Give the server the ByteBridge certificate
+certificate under **Rejected** and click **Trust**. Give the server the Protocol Bridge certificate
 shown under **This application**.
 
 ## IEC 61850 IED
@@ -95,7 +95,7 @@ Reports, commands, point detection and the connection settings are explained in
 | Class 1 / 2 / 3 event poll interval (ms) | `1000` / `10000` / `60000` | `0`: disabled |
 | Integrity poll interval (s) | `3600` | reads every value again (class 0); `0`: only after connecting and after an event buffer overflow |
 
-After connecting, ByteBridge runs an integrity poll and then takes events as the outstation
+After connecting, Protocol Bridge runs an integrity poll and then takes events as the outstation
 reports them. Each event class can also be polled on its own interval, for example class 1
 (often breaker and alarm states) every second and class 3 every minute. Classes that are due at
 the same time are read in one request. The polls run whether unsolicited reporting is on or off,
@@ -103,7 +103,7 @@ so they also catch events of an outstation that reports unsolicited only for som
 all three intervals at `0` and unsolicited reporting off, events are read when the outstation
 says it has some.
 
-ByteBridge confirms every unsolicited response, so the outstation removes those events from
+Protocol Bridge confirms every unsolicited response, so the outstation removes those events from
 its buffer.
 
 ## Allen-Bradley Logix controller (EtherNet/IP)
@@ -120,7 +120,7 @@ Route paths, tag addresses, writing and point detection are explained in
 
 ## No device at hand?
 
-Use a ByteBridge **server** endpoint fed by the simulator as the device, as in the
+Use a Protocol Bridge **server** endpoint fed by the simulator as the device, as in the
 [quick start](../quick-start/): IEC 104, Modbus TCP, DNP3 and OPC UA have a server role. For
 IEC 61850, see [No IED at hand?](../iec61850/#no-ied-at-hand); for EtherNet/IP, see
 [No controller at hand?](../ethernet-ip/#no-controller-at-hand).
