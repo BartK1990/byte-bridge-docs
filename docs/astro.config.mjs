@@ -2,10 +2,10 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// The docs are served under the website: https://bartk1990.github.io/byte-bridge-docs/docs/.
+// The docs are served under the website: https://bartk1990.github.io/protocol-bridge-docs/docs/.
 // The Pages workflow passes the site's base path (it changes with a custom domain).
 const site = process.env.SITE_URL || 'https://bartk1990.github.io';
-const siteBase = (process.env.SITE_BASE ?? '/byte-bridge-docs').replace(/\/$/, '');
+const siteBase = (process.env.SITE_BASE ?? '/protocol-bridge-docs').replace(/\/$/, '');
 
 export default defineConfig({
     site,
@@ -18,7 +18,7 @@ export default defineConfig({
             logo: { light: './src/assets/logo-light.gif', dark: './src/assets/logo-dark.gif', alt: 'Protocol Bridge' },
             favicon: '/favicon.svg',
             customCss: ['./src/styles/brand.css'],
-            social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/BartK1990/byte-bridge-docs' }],
+            social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/BartK1990/protocol-bridge-docs' }],
             sidebar: [
                 { label: '← Protocol Bridge website', link: `${site}${siteBase}/`, attrs: { target: '_self' } },
                 {
