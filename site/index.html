@@ -92,34 +92,12 @@
             </ul>
         </div>
         <div class="hero-logo">
-            <svg class="pb-anim" viewBox="40 20 520 556" role="img" aria-labelledby="pb-anim-t">
-                <title id="pb-anim-t">Animated Protocol Bridge logo: a P and a B on one spine, with bits crossing the bridge between them</title>
-                <defs>
-                    <clipPath id="pb-in"><path d="M135 289.2A229.5 229.5 0 0 1 465 289.2A229.5 229.5 0 0 1 135 289.2Z"/></clipPath>
-                    <mask id="pb-hero-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="600">
-                        <rect width="600" height="600" fill="#fff"/>
-                        <path d="M135 289.2A229.5 229.5 0 0 1 465 289.2A229.5 229.5 0 0 1 135 289.2Z" fill="#000" stroke="#000" stroke-width="53.8" stroke-linejoin="round" stroke-miterlimit="8"/>
-                        <path d="M136 276.7 111 289.2 136 301.7ZM464 276.7 489 289.2 464 301.7Z" stroke="#000" stroke-width="35" stroke-linejoin="round"/>
-                    </mask>
-                </defs>
-                <g class="pb-letters" fill-rule="evenodd" mask="url(#pb-hero-cut)">
-                    <path d="M335 30H405A145.8 145.8 0 0 1 405 321.6H335ZM345 94.8H405A81 81 0 0 1 405 256.8H345Z" transform="matrix(-1 0 0 1 600 0)"/>
-                    <path d="M265.8 30H413.4A129.6 129.6 0 0 1 413.4 289.2H414.6A140.4 140.4 0 0 1 414.6 570H265.8A10.8 10.8 0 0 1 255 559.2V40.8A10.8 10.8 0 0 1 265.8 30ZM345 94.8H413.4A59.4 81 0 0 1 413.4 256.8H345ZM345 321.6H414.6A70.2 91.8 0 0 1 414.6 505.2H345Z"/>
-                </g>
-                <g class="pb-bridge" fill="none" stroke-linejoin="round">
-                    <path class="arc" d="M135 289.2A229.5 229.5 0 0 1 465 289.2A229.5 229.5 0 0 1 135 289.2Z" pathLength="1" stroke-width="18.8" stroke-miterlimit="8"/>
-                    <path class="deck" d="M135 289.2H465" pathLength="1" stroke-width="27.5"/>
-                    <path class="post" d="M217.5 239.5V338.9M300 224.2V354.2M382.5 239.5V338.9" stroke-width="13.8" stroke-linecap="round"/>
-                    <path class="tip" d="M136 276.7 111 289.2 136 301.7ZM464 276.7 489 289.2 464 301.7Z" stroke="none"/>
-                    <path class="ack" d="M136 276.7 111 289.2 136 301.7Z" stroke="none"/>
-                </g>
-                <g class="pb-flow">
-                    <circle class="v" cx="135" cy="289.2" r="9"/>
-                    <circle class="v" cx="135" cy="289.2" r="9"/>
-                    <circle class="v" cx="135" cy="289.2" r="9"/>
-                    <circle class="cmd" cx="465" cy="289.2" r="11"/>
-                </g>
-            </svg>
+            <picture>
+                <source srcset="assets/logo-dark.svg#still" media="(prefers-color-scheme: dark) and (prefers-reduced-motion: reduce)">
+                <source srcset="assets/logo-dark.svg" media="(prefers-color-scheme: dark)">
+                <source srcset="assets/logo-light.svg#still" media="(prefers-reduced-motion: reduce)">
+                <img src="assets/logo-light.svg" width="480" height="513" alt="Animated Protocol Bridge logo: a P and a B on one spine; values cross the bridge between them and a command comes back">
+            </picture>
         </div>
     </div>
 </section>

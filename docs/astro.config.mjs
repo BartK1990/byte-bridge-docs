@@ -15,7 +15,7 @@ export default defineConfig({
         starlight({
             title: 'Protocol Bridge Docs',
             description: 'How to use the Protocol Bridge tester and configure a Protocol Bridge gateway.',
-            logo: { light: './src/assets/logo-light.gif', dark: './src/assets/logo-dark.gif', alt: 'Protocol Bridge' },
+            logo: { light: '../site/assets/logo-light.svg', dark: '../site/assets/logo-dark.svg', alt: 'Protocol Bridge' },
             favicon: '/favicon.svg',
             customCss: ['./src/styles/brand.css'],
             social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/BartK1990/protocol-bridge-docs' }],
