@@ -36,10 +36,12 @@ the protocol gets its data:
 | IEC 104 | no | every received data message |
 | DNP3 | no | every answer from the outstation, also an event poll without events |
 | OPC UA | no | every publish response, also a keep-alive without changes |
+| MQTT | no | every message on a subscribed topic, also one that gives no point a value |
 | Simulator | no | every tick, changed values or not |
 
 Only polling endpoints show a poll interval and cycle time, and only their values turn
-**stale**. Server endpoints have no health strip.
+**stale**. An MQTT endpoint can mark a point not topical after a time without messages
+(**Stale after**, see [MQTT](../mqtt/#message-layout)). Server endpoints have no health strip.
 
 ## The points table
 

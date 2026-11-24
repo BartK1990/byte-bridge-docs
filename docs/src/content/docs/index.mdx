@@ -17,7 +17,7 @@ hero:
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 Protocol Bridge is one application for industrial protocols: IEC 60870-5-104, Modbus TCP, DNP3,
-OPC UA, OPC DA (classic, Windows), OPC XML-DA, Siemens S7, IEC 61850 (MMS) and EtherNet/IP (Allen-Bradley Logix). Every protocol uses the same screens: the same endpoint
+OPC UA, OPC DA (classic, Windows), OPC XML-DA, Siemens S7, IEC 61850 (MMS), EtherNet/IP (Allen-Bradley Logix) and MQTT with JSON values. Every protocol uses the same screens: the same endpoint
 editor, the same live data table and the same way to send a command.
 
 <CardGrid>
@@ -43,5 +43,6 @@ editor, the same live data table and the same way to send a command.
 <LinkCard title="Connect to a device" description="Modbus TCP, Siemens S7 and OPC UA examples, with the address formats." href="tester/connect-a-device/" />
 <LinkCard title="Connect an IEC 61850 IED" description="Reports, control models and point detection for protection relays and bay controllers." href="tester/iec61850/" />
 <LinkCard title="Connect an Allen-Bradley Logix controller" description="EtherNet/IP: ControlLogix and CompactLogix tags by name, route paths and point detection." href="tester/ethernet-ip/" />
+<LinkCard title="Read values from an MQTT broker" description="MQTT: map fields of JSON documents, or plain text values, to points in the settings, with TLS and point detection." href="tester/mqtt/" />
 <LinkCard title="Install the gateway" description="Run Protocol Bridge as a Windows service." href="gateway/install/" />
 <LinkCard title="Configure the gateway" description="Expose an IEC 104 RTU through OPC UA and Modbus, with scaling." href="gateway/configure/" />
