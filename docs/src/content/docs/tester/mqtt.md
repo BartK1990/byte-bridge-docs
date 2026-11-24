@@ -13,7 +13,7 @@ which hold the time stamp, quality and unit. The values become ordinary points, 
 them to IEC 104, OPC UA or Modbus, use them in calculations, or send them to central.
 
 The client is **read-only**: it subscribes and never publishes, and commands to its points are
-refused before anything is sent. It speaks MQTT 3.1.1 and 5.0, with or without TLS.
+refused before anything is sent; the live data page offers no commands for its points. It speaks MQTT 3.1.1 and 5.0, with or without TLS.
 
 Add an endpoint with the protocol **MQTT** and the role **Client**.
 
