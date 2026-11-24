@@ -101,7 +101,26 @@ code { font-family: var(--mono); font-size: .9em; }
 .lead { font-size: 1.2rem; color: var(--muted); max-width: 38em; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 24px; }
 .hero-logo { justify-self: center; width: min(300px, 64vw); aspect-ratio: 480 / 513; }
-.hero-logo img { width: 100%; height: 100%; display: block; }
+.hero-logo img, .hero-logo svg { width: 100%; height: 100%; display: block; }
+
+/* Hero logo animation: bridge draws in, then bits stream across both lanes. Pure CSS, no assets. */
+.pb-letters { fill: var(--text); }
+.pb-bridge { stroke: var(--amber); fill: var(--amber); }
+.pb-bridge .arc, .pb-bridge .deck { fill: none; stroke-dasharray: 1; stroke-dashoffset: 1; animation: pb-draw 1.1s cubic-bezier(.6, 0, .2, 1) forwards; }
+.pb-bridge .deck { animation-delay: .35s; }
+.pb-bridge .post, .pb-bridge .tip { fill: var(--amber); opacity: 0; animation: pb-fade .4s ease-out 1s forwards; }
+.pb-bridge .post { fill: none; }
+.pb-bits path { stroke: var(--text); stroke-width: 13; opacity: 0; animation: pb-fade .6s ease-out 1.2s forwards, pb-flow 1.6s linear infinite; }
+.pb-bits .up { stroke-dasharray: 0 22 0 22 0 44; }
+.pb-bits .down { stroke-dasharray: 0 22 0 44 0 22 0 22; stroke: var(--link); animation-duration: .6s, 2.1s; animation-delay: 1.4s, 0s; }
+.pb-bits .down { animation-name: pb-fade, pb-flow-d; }
+@keyframes pb-draw { to { stroke-dashoffset: 0; } }
+@keyframes pb-fade { to { opacity: 1; } }
+@keyframes pb-flow { to { stroke-dashoffset: -88; } }
+@keyframes pb-flow-d { to { stroke-dashoffset: -110; } }
+@media (prefers-reduced-motion: reduce) {
+    .pb-bridge .arc, .pb-bridge .deck, .pb-bridge .post, .pb-bridge .tip, .pb-bits path { animation: none; stroke-dashoffset: 0; opacity: 1; }
+}
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
 .chips li {
