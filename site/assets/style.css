@@ -103,23 +103,31 @@ code { font-family: var(--mono); font-size: .9em; }
 .hero-logo { justify-self: center; width: min(300px, 64vw); aspect-ratio: 480 / 513; }
 .hero-logo img, .hero-logo svg { width: 100%; height: 100%; display: block; }
 
-/* Hero logo animation: bridge draws in, then bits stream across both lanes. Pure CSS, no assets. */
+/* Hero logo animation: the bridge draws in, then values and commands cross it. Pure CSS, no assets. */
 .pb-letters { fill: var(--text); }
 .pb-bridge { stroke: var(--amber); fill: var(--amber); }
 .pb-bridge .arc, .pb-bridge .deck { fill: none; stroke-dasharray: 1; stroke-dashoffset: 1; animation: pb-draw 1.1s cubic-bezier(.6, 0, .2, 1) forwards; }
 .pb-bridge .deck { animation-delay: .35s; }
 .pb-bridge .post, .pb-bridge .tip { fill: var(--amber); opacity: 0; animation: pb-fade .4s ease-out 1s forwards; }
 .pb-bridge .post { fill: none; }
-.pb-bits path { stroke: var(--text); stroke-width: 13; opacity: 0; animation: pb-fade .6s ease-out 1.2s forwards, pb-flow 1.6s linear infinite; }
-.pb-bits .up { stroke-dasharray: 0 22 0 22 0 44; }
-.pb-bits .down { stroke-dasharray: 0 22 0 44 0 22 0 22; stroke: var(--link); animation-duration: .6s, 2.1s; animation-delay: 1.4s, 0s; }
-.pb-bits .down { animation-name: pb-fade, pb-flow-d; }
+/* Same story as the tutorial's title card: values flow over the bridge, a command travels back on the same deck,
+   and the sending side lights up green when it arrives. */
+.pb-flow circle { opacity: 0; transform-box: view-box; }
+.pb-flow .v { fill: #fde68a; filter: drop-shadow(0 0 5px #f2a33a); animation: pb-value 1.5s linear infinite; }
+.pb-flow .v:nth-child(1) { animation-delay: 1.4s; }
+.pb-flow .v:nth-child(2) { animation-delay: 1.9s; }
+.pb-flow .v:nth-child(3) { animation-delay: 2.4s; }
+.pb-flow .cmd { fill: #4ade80; filter: drop-shadow(0 0 6px #4ade80); animation: pb-cmd 4.5s linear 3s infinite; }
+.pb-bridge .ack { fill: #4ade80; filter: drop-shadow(0 0 10px #4ade80); opacity: 0; animation: pb-ack 4.5s ease-out 3s infinite; }
+@keyframes pb-value { 0% { transform: translateX(0); opacity: 0; } 15%, 85% { opacity: 1; } 100% { transform: translateX(330px); opacity: 0; } }
+@keyframes pb-cmd { 0% { transform: translateX(0); opacity: 1; } 16% { transform: translateX(-330px); opacity: 1; } 16.01%, 100% { opacity: 0; } }
+@keyframes pb-ack { 0%, 15% { opacity: 0; } 18% { opacity: 1; } 30%, 100% { opacity: 0; } }
+@media (prefers-color-scheme: light) { .pb-flow .v { fill: #fff7d6; filter: drop-shadow(0 0 4px #b45309); } }
 @keyframes pb-draw { to { stroke-dashoffset: 0; } }
 @keyframes pb-fade { to { opacity: 1; } }
-@keyframes pb-flow { to { stroke-dashoffset: -88; } }
-@keyframes pb-flow-d { to { stroke-dashoffset: -110; } }
 @media (prefers-reduced-motion: reduce) {
-    .pb-bridge .arc, .pb-bridge .deck, .pb-bridge .post, .pb-bridge .tip, .pb-bits path { animation: none; stroke-dashoffset: 0; opacity: 1; }
+    .pb-bridge .arc, .pb-bridge .deck, .pb-bridge .post, .pb-bridge .tip { animation: none; stroke-dashoffset: 0; opacity: 1; }
+    .pb-flow, .pb-bridge .ack { display: none; }
 }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
