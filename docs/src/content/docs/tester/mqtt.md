@@ -49,6 +49,21 @@ trusts every broker that CA issued. All MQTT endpoints share this trust list.
 and Protocol Bridge with one ID, or two endpoints), the broker disconnects the first one, which
 reconnects and disconnects the second, and so on.
 
+### Subscription QoS
+
+**Subscription QoS** (in *Advanced*) is the delivery guarantee the endpoint asks the broker for.
+A message is always delivered with the **lower** of the publisher's QoS and this one:
+
+- **0, at most once** (the default): each message is sent once; one in flight when the connection
+  drops is lost. Fine for values that are published again soon.
+- **1, at least once**: the broker resends a message until the endpoint confirms it, so none is
+  lost while connected; one can arrive twice, which does no harm to a value.
+
+QoS 1 only helps when the publisher also sends QoS 1 or 2. Together with **Clean start** off and a
+**Session expiry**, the broker also keeps QoS 1 messages while the endpoint is disconnected and
+delivers them, oldest first, after the reconnect. The connection check shows what the broker
+grants and which QoS the messages actually arrive with (see [Connection check](#connection-check)).
+
 ## Message layout
 
 These settings describe the documents and apply to every point of the endpoint. Changing them
@@ -137,6 +152,13 @@ they change need a listen time longer than their slowest change.
 | MQTT connect | the broker refuses: wrong user name or password, not authorized, client ID refused, MQTT version | the login, the client ID, the MQTT version |
 | Subscribe | the broker refuses a topic | read permission on the broker |
 | Listen | (a warning) nothing arrives in 10 s, or nothing matches a point | the topics, the key and value fields; *Detect points* shows what arrives |
+
+**What the broker offers.** With MQTT 5, *MQTT connect* lists the limits the broker states: the
+highest QoS it accepts, whether it keeps retained messages, wildcard and shared subscriptions,
+the session expiry it grants and more. It warns when **Subscription QoS** or **Session expiry**
+asks for more than the broker gives. MQTT 3.1.1 brokers state no limits. *Subscribe* shows the QoS
+granted for each topic, and *Listen* the QoS the messages arrived with: when every message
+arrives with QoS 0, the publisher sends QoS 0 and Subscription QoS 1 changes nothing.
 
 The check connects with the endpoint's client ID plus `-check`, so it never takes the endpoint's
 session over, and it publishes nothing. MQTT has no frame trace. Instead, the endpoint's
