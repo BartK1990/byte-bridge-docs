@@ -17,11 +17,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  # Two jobs, as in GitHub's Pages starter workflows: deploy-pages looks the artifact up through the
+  # API, and right after an upload in the same job that lookup can miss it (or also see an earlier
+  # attempt's), so the deploy runs in its own job once the build job has finished.
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - id: pages
@@ -47,5 +47,13 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
