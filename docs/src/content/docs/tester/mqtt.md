@@ -134,7 +134,7 @@ when the publisher sends them again. **Stale after** tells you when a tag has go
 
 ## Detect points
 
-**Detect points** listens to the broker for **Listen for (seconds)** (30 by default, up to 150)
+**Detect points** listens to the broker for **Listen for (seconds)** (30 by default, up to 600)
 and proposes what arrives: one point per topic and key, or, without a key field, one per number
 or boolean in each document. It listens to **Detect points topic filter** (for example
 `site1/#`), or to the points' topics, or to everything (`#`) when there are none yet. The key
