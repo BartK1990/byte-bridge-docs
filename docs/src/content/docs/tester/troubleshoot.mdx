@@ -50,8 +50,9 @@ When a device does not answer, or a value or command does not arrive, open the e
 
 Every TCP protocol has the TCP part of the check; **IEC 60870-5-104**, **Modbus TCP**,
 **Siemens S7**, **DNP3**, **OPC UA** and **OPC XML-DA** also have their protocol steps and the
-frame trace. **IEC 104 server** endpoints have the frame trace too, see
-[Server endpoints](#server-endpoints).
+frame trace. **MQTT** has its protocol steps (TLS, connect, subscribe, listen) without a
+frame trace, see [MQTT](../mqtt/#connection-check). **IEC 104 server** endpoints have the frame
+trace too, see [Server endpoints](#server-endpoints).
 
 ## Connection check
 

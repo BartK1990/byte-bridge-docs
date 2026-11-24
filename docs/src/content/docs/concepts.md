@@ -12,7 +12,7 @@ role and the driver's settings (host, port, poll interval, ...).
 
 | Role | What it does | Examples |
 |---|---|---|
-| **Client** | connects to a device and reads its data | IEC 104 controlling station, Modbus master, DNP3 master, OPC UA client, S7 client, IEC 61850 MMS client, EtherNet/IP client |
+| **Client** | connects to a device and reads its data | IEC 104 controlling station, Modbus master, DNP3 master, OPC UA client, S7 client, IEC 61850 MMS client, EtherNet/IP client, MQTT client (read-only) |
 | **Server** | exposes data to other systems | IEC 104 controlled station, Modbus slave, DNP3 outstation, OPC UA server |
 
 The *Simulator* client produces changing test values, so you can try everything without hardware.
@@ -55,6 +55,7 @@ Each protocol writes addresses its own way:
 | Siemens S7 | `DB1.DBX0.0`, `DB1.DBW2:INT`, `DB1.DBD4:REAL`, `MW10`, `I0.0`, `Q0.1`, `T5`, `C3` |
 | IEC 61850 | object reference with functional constraint, e.g. `IED1LD0/MMXU1.TotW[MX]`, `IED1CTRL/XCBR1.Pos[CO]` |
 | EtherNet/IP | Logix tag, e.g. `Motors[3].Current`, `Program:Main.Count`, `Status.7`; CIP attribute `@0x01/1/5:WORD` |
+| MQTT | `topic#key\|path`, e.g. `site1/telemetry#PUMP1_SPEED`, `plant/meter1\|data.P` |
 | Simulator | point number, `1` to N |
 
 ## Mapping

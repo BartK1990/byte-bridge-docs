@@ -118,9 +118,25 @@ its buffer.
 Route paths, tag addresses, writing and point detection are explained in
 [Connect an Allen-Bradley Logix controller](../ethernet-ip/).
 
+## MQTT broker with JSON values
+
+| Setting | Example | Notes |
+|---|---|---|
+| Host | `mqtt.example.com` | |
+| Port | `8883` | with TLS on; `1883` without |
+| User name, Password | | the password is stored encrypted |
+| Client ID | | unique on the broker; empty: one derived from the endpoint |
+| Key field, Value field | `Tag`, `Value` | which fields of a document name the point and hold its value |
+| Decimal separator | `,` | for numbers written in strings, such as `"2,55"` |
+
+Points are `topic#key`, for example `site1/telemetry#PUMP1_SPEED`; **Detect points** proposes
+them by listening to the broker. The message layout, TLS and the points are explained in
+[Read values from an MQTT broker](../mqtt/).
+
 ## No device at hand?
 
 Use a Protocol Bridge **server** endpoint fed by the simulator as the device, as in the
 [quick start](../quick-start/): IEC 104, Modbus TCP, DNP3 and OPC UA have a server role. For
 IEC 61850, see [No IED at hand?](../iec61850/#no-ied-at-hand); for EtherNet/IP, see
-[No controller at hand?](../ethernet-ip/#no-controller-at-hand).
+[No controller at hand?](../ethernet-ip/#no-controller-at-hand); for MQTT, see
+[No broker at hand?](../mqtt/#no-broker-at-hand).
